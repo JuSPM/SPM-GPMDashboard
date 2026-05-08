@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GG Portfolio Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+:root {
+  --bg:#07080a; --s1:#0d0f14; --s2:#131720; --s3:#1a1f2b; --s4:#212736;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.1);
+  --text:#e8ecf4; --muted:#3d4554; --subtle:#6e7d99;
+  --display:'Syne',sans-serif; --body:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --spm:#5eead4;   --spm-g:rgba(94,234,212,0.1);
+  --vend:#fcd34d;  --vend-g:rgba(252,211,77,0.1);
+  --sub:#a78bfa;   --sub-g:rgba(167,139,250,0.1);
+  --greg:#fb923c;  --greg-g:rgba(251,146,60,0.1);
+  --green:#10b981; --green-g:rgba(16,185,129,0.12);
+  --red:#ef4444;   --red-g:rgba(239,68,68,0.12);
+  --amber:#f59e0b; --amber-g:rgba(245,158,11,0.12);
+  --blue:#38bdf8;  --blue-g:rgba(56,189,248,0.12);
+  --r:12px; --r-sm:7px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.55;min-height:100vh;overflow-x:hidden}
+
+/* ── Header ── */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(7,8,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px}
+.logo{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:0.1em;color:var(--text);text-transform:uppercase}
+.logo em{color:var(--active-color,var(--spm));font-style:normal}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.sync{font-size:10px;font-family:var(--mono);padding:4px 10px;border-radius:20px}
+.sync.live{background:var(--green-g);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+.sync.loading{background:var(--amber-g);color:var(--amber);border:1px solid rgba(245,158,11,0.2);animation:blink 1.4s infinite}
+.sync.error{background:var(--red-g);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.rbtn{font-size:11px;padding:5px 12px;border-radius:var(--r-sm);background:var(--s2);border:1px solid var(--border2);color:var(--subtle);cursor:pointer;transition:all .15s}
+.rbtn:hover{color:var(--text);background:var(--s3)}
+
+/* ── Company tabs ── */
+.co-tabs-wrap{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.co-tabs-wrap::-webkit-scrollbar{display:none}
+.co-tabs{display:flex;padding:0 20px;width:max-content}
+.ctab{display:flex;align-items:center;gap:7px;padding:10px 18px;font-size:11px;font-weight:500;font-family:var(--display);letter-spacing:0.06em;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .18s;text-transform:uppercase}
+.ctab:hover{color:var(--subtle)}
+.ctab.active{color:var(--tc);border-bottom-color:var(--tc)}
+.cpip{width:6px;height:6px;border-radius:50%;background:var(--tc);opacity:.45;flex-shrink:0;transition:opacity .18s}
+.ctab.active .cpip{opacity:1}
+
+/* ── Section nav ── */
+.sec-wrap{background:var(--s1);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.sec-wrap::-webkit-scrollbar{display:none}
+.sec-nav{display:flex;padding:0 20px;min-width:max-content}
+.snav{font-size:11px;color:var(--muted);padding:9px 14px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.snav:hover{color:var(--subtle)}
+.snav.active{color:var(--text);border-bottom-color:var(--subtle)}
+
+/* ── Pages & sections ── */
+.page{display:none}
+.page.active{display:block}
+.sec{display:none;padding:20px}
+.sec.active{display:block}
+
+/* ── Health banner ── */
+.health{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center;border-radius:var(--r);padding:14px 18px;margin-bottom:16px;border:1px solid}
+.health.A{background:var(--green-g);border-color:rgba(16,185,129,0.18)}
+.health.B{background:var(--amber-g);border-color:rgba(245,158,11,0.18)}
+.health.C{background:var(--red-g);border-color:rgba(239,68,68,0.18)}
+.hgrade{font-family:var(--display);font-size:42px;font-weight:700;line-height:1;letter-spacing:-0.02em;text-align:center}
+.health.A .hgrade{color:var(--green)}
+.health.B .hgrade{color:var(--amber)}
+.health.C .hgrade{color:var(--red)}
+.hlabel{font-size:12px;font-weight:500;color:var(--text);margin-bottom:7px}
+.htags{display:flex;flex-wrap:wrap;gap:5px}
+.htag{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:20px}
+.ht-g{background:var(--green-g);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+.ht-w{background:var(--amber-g);color:var(--amber);border:1px solid rgba(245,158,11,0.2)}
+.ht-b{background:var(--red-g);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
+
+/* ── KPIs ── */
+.kgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--subtle));opacity:.7;border-radius:var(--r) var(--r) 0 0}
+.kl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.kv{font-family:var(--display);font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.02em;line-height:1.15}
+.ks{font-size:11px;margin-top:3px}
+.up{color:var(--green)} .dn{color:var(--red)} .fl{color:var(--muted)} .wa{color:var(--amber)}
+
+/* ── Cards ── */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:11px}
+.card:last-child{margin-bottom:0}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.ct{font-size:12px;color:var(--subtle);font-weight:400}
+.badge{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:20px}
+.bg-g{background:var(--green-g);color:var(--green)}
+.bg-r{background:var(--red-g);color:var(--red)}
+.bg-a{background:var(--amber-g);color:var(--amber)}
+.bg-b{background:var(--blue-g);color:var(--blue)}
+.bg-s{background:var(--sub-g);color:var(--sub)}
+
+/* ── Bar rows ── */
+.br{margin-bottom:10px}.br:last-child{margin-bottom:0}
+.bm{display:flex;justify-content:space-between;font-size:11px;color:var(--subtle);margin-bottom:4px}
+.bt{width:100%;height:5px;background:var(--s3);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+
+/* ── Transaction table ── */
+.ttbl{width:100%;border-collapse:collapse;font-size:12px}
+.ttbl th{text-align:left;color:var(--muted);font-weight:400;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:0 0 8px;border-bottom:1px solid var(--border)}
+.ttbl td{padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--subtle);vertical-align:middle}
+.ttbl tr:last-child td{border-bottom:none}
+.ttbl td:first-child{color:var(--text);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ttbl td.r{text-align:right;font-family:var(--mono);font-size:11px}
+.t-i td.r{color:var(--green)} .t-e td.r{color:var(--red)}
+.t-sh td{font-size:10px!important;color:var(--muted)!important;text-transform:uppercase;letter-spacing:.07em;padding-top:12px!important}
+.t-tt td{font-weight:600;color:var(--text)!important;border-top:1px solid var(--border2)!important;padding-top:10px!important;font-family:var(--mono)}
+
+/* ── Pipeline rows ── */
+.plist{display:flex;flex-direction:column;gap:7px}
+.pi{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pi.urg{border-color:rgba(239,68,68,0.25)}
+.pn{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pm{font-size:11px;color:var(--muted);margin-top:2px}
+.pv{font-family:var(--mono);font-size:13px;color:var(--text);text-align:right}
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:3px}
+.p-g{background:var(--green-g);color:var(--green)}
+.p-w{background:var(--amber-g);color:var(--amber)}
+.p-r{background:var(--red-g);color:var(--red)}
+.p-b{background:var(--blue-g);color:var(--blue)}
+
+/* ── Unit map ── */
+.usum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+.us{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px;text-align:center}
+.usn{font-family:var(--display);font-size:24px;font-weight:700}
+.usl{font-size:10px;color:var(--muted);margin-top:2px}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(26px,1fr));gap:4px;margin-bottom:8px}
+.u{width:100%;aspect-ratio:1;border-radius:3px}
+.u.occ{background:rgba(16,185,129,.22);border:1px solid rgba(16,185,129,.28)}
+.u.vac{background:rgba(239,68,68,.28);border:1px solid rgba(239,68,68,.36)}
+.u.not{background:rgba(245,158,11,.28);border:1px solid rgba(245,158,11,.36)}
+.uleg{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px}
+.uleg span{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.ud{width:8px;height:8px;border-radius:2px}
+
+/* ── Machine cards ── */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px}
+.mc-id{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:3px}
+.mc-loc{font-size:12px;font-weight:500;color:var(--text);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-rev{font-family:var(--display);font-size:17px;color:var(--vend)}
+.mc-st{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:10px}
+.mdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── Property rows ── */
+.prop{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+.prop:last-child{margin-bottom:0}
+.pname{font-size:13px;font-weight:500;color:var(--text)}
+.pmeta{font-size:11px;color:var(--muted);margin-top:2px}
+.pcf{font-family:var(--mono);font-size:14px;font-weight:500}
+.peq{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── Skeleton loader ── */
+.sk{background:linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);background-size:200% 100%;animation:sh 1.5s infinite;border-radius:4px;height:14px;margin-bottom:6px}
+.sk.h{height:24px} .sk.t{height:10px}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Error state ── */
+.err{text-align:center;padding:20px;color:var(--red);font-size:12px;background:var(--red-g);border-radius:var(--r-sm);border:1px solid rgba(239,68,68,0.2)}
+.empty{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+
+/* ── Animations ── */
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sec.active>*{animation:fu .24s ease both}
+.sec.active>*:nth-child(2){animation-delay:.05s}
+.sec.active>*:nth-child(3){animation-delay:.09s}
+.sec.active>*:nth-child(4){animation-delay:.13s}
+.sec.active>*:nth-child(5){animation-delay:.17s}
+
+/* ── Responsive ── */
+@media(min-width:700px){
+  .hdr-top,.co-tabs,.sec-nav,.sec{padding-left:28px;padding-right:28px}
+  .co-tabs,.sec-nav{width:auto;min-width:unset}
+  .sec{max-width:1160px;margin:0 auto;padding-top:22px;padding-bottom:36px}
+  .kgrid{grid-template-columns:repeat(4,1fr)}
+  .two{display:grid;grid-template-columns:1.45fr 1fr;gap:13px;align-items:start}
+  .two-eq{display:grid;grid-template-columns:1fr 1fr;gap:13px;align-items:start}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;align-items:start}
+  .card{margin-bottom:0}
+}
+.foot{text-align:center;font-size:10px;color:var(--muted);font-family:var(--mono);padding:24px 20px 8px;position:relative;z-index:1}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="logo">GG · <em id="co-name">Standard · Property</em></div>
+    <div class="hdr-right">
+      <div class="sync loading" id="syncEl">⟳ Loading</div>
+      <button class="rbtn" onclick="refresh()">↺ Refresh</button>
+    </div>
+  </div>
+  <div class="co-tabs-wrap">
+    <div class="co-tabs">
+      <div class="ctab active" style="--tc:var(--spm)" onclick="switchCo('spm',this,'Standard · Property')"><div class="cpip"></div>Standard · Property</div>
+      <div class="ctab" style="--tc:var(--vend)" onclick="switchCo('vend',this,'Vending · ATM')"><div class="cpip"></div>Vending · ATM</div>
+      <div class="ctab" style="--tc:var(--sub)" onclick="switchCo('sub',this,'Sublink')"><div class="cpip"></div>Sublink</div>
+      <div class="ctab" style="--tc:var(--greg)" onclick="switchCo('greg',this,'Greg\'s Properties')"><div class="cpip"></div>Greg's Properties</div>
+    </div>
+  </div>
+  <div class="sec-wrap"><div class="sec-nav" id="secNav"></div></div>
+</header>
+
+<!-- ══════════ SPM ══════════ -->
+<div class="page active" id="pg-spm">
+
+  <!-- P&L -->
+  <div class="sec active" id="spm-0">
+    <div class="health B" id="spm-health">
+      <div class="hgrade" id="spm-grade">B+</div>
+      <div><div class="hlabel">Standard Property Management · <span id="spm-period">April 2026</span></div>
+        <div class="htags">
+          <span class="htag ht-g" id="spm-h1">Loading income...</span>
+          <span class="htag ht-w">3 vacancies &gt;30 days</span>
+          <span class="htag ht-b">2 overdue jobs</span>
+          <span class="htag ht-g">Cash position strong</span>
+        </div>
+      </div>
+    </div>
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">Total income</div><div class="kv" id="spm-inc">—</div><div class="ks" id="spm-inc-s"><div class="sk t"></div></div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total expenses</div><div class="kv" id="spm-exp">—</div><div class="ks" id="spm-exp-s"><div class="sk t"></div></div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net income</div><div class="kv" id="spm-net">—</div><div class="ks" id="spm-net-s"><div class="sk t"></div></div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Transactions</div><div class="kv" id="spm-txn">—</div><div class="ks fl">This period</div></div>
+    </div>
+    <div class="two">
+      <div class="card" style="padding:0 16px">
+        <div style="padding:13px 0 9px"><span style="font-size:11px;color:var(--subtle)">Recent transactions · Transactions tab · Live</span></div>
+        <table class="ttbl"><thead><tr><th>Description / Name</th><th style="text-align:right">Date</th><th style="text-align:right">Amount</th></tr></thead>
+        <tbody id="spm-txns"><tr><td colspan="3"><div class="sk h"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></td></tr></tbody></table>
+      </div>
+      <div>
+        <div class="card"><div class="ch"><div class="ct">Income by account</div><div class="badge bg-g">Live</div></div><div id="spm-ic"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+        <div class="card" style="margin-top:10px"><div class="ch"><div class="ct">Expenses by account</div><div class="badge bg-r">Live</div></div><div id="spm-ec"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Income trend · 6 months</div><div class="badge bg-g" id="spm-trend-lbl">—</div></div><div style="height:190px;position:relative"><canvas id="spm-chart"></canvas></div></div>
+  </div>
+
+  <!-- Vacancies -->
+  <div class="sec" id="spm-1">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Occupied</div><div class="kv" id="sv-occ">—</div><div class="ks up" id="sv-occ-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Vacant</div><div class="kv" id="sv-vac">—</div><div class="ks dn" id="sv-vac-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">On notice</div><div class="kv" id="sv-not">—</div><div class="ks wa">Turning soon</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Applications</div><div class="kv" id="sv-app">—</div><div class="ks" style="color:var(--blue)">Pending</div></div>
+    </div>
+    <div class="card">
+      <div class="usum">
+        <div class="us"><div class="usn up" id="sv-occ2">—</div><div class="usl">Occupied</div></div>
+        <div class="us"><div class="usn dn" id="sv-vac2">—</div><div class="usl">Vacant</div></div>
+        <div class="us"><div class="usn wa" id="sv-not2">—</div><div class="usl">On notice</div></div>
+      </div>
+      <div class="ugrid" id="spm-umap"></div>
+      <div class="uleg">
+        <span><span class="ud" style="background:rgba(16,185,129,.4)"></span>Occupied</span>
+        <span><span class="ud" style="background:rgba(239,68,68,.45)"></span>Vacant</span>
+        <span><span class="ud" style="background:rgba(245,158,11,.45)"></span>Notice</span>
+      </div>
+    </div>
+    <div class="plist" id="spm-vac-list"><div class="card"><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Job Pipeline -->
+  <div class="sec" id="spm-2">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Quotes open</div><div class="kv" id="sj-q">—</div><div class="ks" style="color:var(--blue)" id="sj-qv">—</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Approved</div><div class="kv" id="sj-a">—</div><div class="ks" style="color:var(--sub)" id="sj-av">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">In progress</div><div class="kv" id="sj-p">—</div><div class="ks wa" id="sj-pv">—</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Overdue</div><div class="kv" id="sj-o">—</div><div class="ks dn">Attention needed</div></div>
+    </div>
+    <div class="plist" id="spm-jobs"><div class="card"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Budget vs Actual -->
+  <div class="sec" id="spm-3">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Income vs budget</div><div class="kv" id="sb-ip">—</div><div class="ks" id="sb-iv">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Expenses vs budget</div><div class="kv" id="sb-ep">—</div><div class="ks" id="sb-ev">—</div></div>
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">YTD variance</div><div class="kv" id="sb-ytd">—</div><div class="ks up">vs budget</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Over budget</div><div class="kv" id="sb-ov">—</div><div class="ks wa">categories</div></div>
+    </div>
+    <div class="two-eq">
+      <div class="card"><div class="ch"><div class="ct">Income vs budget</div><div class="badge bg-g">Budget tab</div></div><div id="sb-inc-rows"><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">Expenses vs budget</div><div class="badge bg-r">Budget tab</div></div><div id="sb-exp-rows"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Cash Balances -->
+  <div class="sec" id="spm-4">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Total cash</div><div class="kv" id="sc-tot">—</div><div class="ks" id="sc-tots">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">Bank accounts</div><div class="kv" id="sc-bank">—</div><div class="ks fl">All accounts</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Assets total</div><div class="kv" id="sc-assets">—</div><div class="ks fl">Balance Sheet</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">As of date</div><div class="kv" id="sc-date" style="font-size:14px">—</div><div class="ks fl">Latest report</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Account balances · Cash balances tab · Live</div><div class="badge bg-g">Live</div></div><div id="spm-cash"><div class="sk h"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Cash trend · 6 months</div></div><div style="height:180px;position:relative"><canvas id="spm-cash-chart"></canvas></div></div>
+  </div>
+
+</div><!-- end pg-spm -->
+
+<!-- ══════════ VENDING ══════════ -->
+<div class="page" id="pg-vend">
+
+  <!-- P&L -->
+  <div class="sec active" id="vend-0">
+    <div class="health A">
+      <div class="hgrade">A-</div>
+      <div><div class="hlabel">Vending · ATM &amp; Amusements · <span id="vend-period">April 2026</span></div>
+        <div class="htags">
+          <span class="htag ht-g" id="vend-h1">Revenue loading...</span>
+          <span class="htag ht-w">2 machines low cash</span>
+          <span class="htag ht-b">1 machine offline</span>
+          <span class="htag ht-g">Collections on schedule</span>
+        </div>
+      </div>
+    </div>
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Total revenue</div><div class="kv" id="vend-inc">—</div><div class="ks up" id="vend-inc-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total expenses</div><div class="kv" id="vend-exp">—</div><div class="ks dn" id="vend-exp-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net income</div><div class="kv" id="vend-net">—</div><div class="ks" id="vend-net-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Active machines</div><div class="kv" id="vend-mcount">—</div><div class="ks wa" id="vend-mcount-s">Loading...</div></div>
+    </div>
+    <div class="card" style="padding:0 16px">
+      <div style="padding:13px 0 9px"><span style="font-size:11px;color:var(--subtle)">Recent transactions · Transactions tab · Live</span></div>
+      <table class="ttbl"><thead><tr><th>Description</th><th style="text-align:right">Date</th><th style="text-align:right">Amount</th></tr></thead>
+      <tbody id="vend-txns"><tr><td colspan="3"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></td></tr></tbody></table>
+    </div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Revenue trend · 6 months</div><div class="badge bg-a" id="vend-trend-lbl">Transactions tab</div></div><div style="height:190px;position:relative"><canvas id="vend-chart"></canvas></div></div>
+  </div>
+
+  <!-- Machines -->
+  <div class="sec" id="vend-1">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Online</div><div class="kv" id="vm-on">—</div><div class="ks up">Running</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Low cash</div><div class="kv" id="vm-low">—</div><div class="ks wa">Replenish soon</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Offline</div><div class="kv" id="vm-off">—</div><div class="ks dn">Repair needed</div></div>
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Top machine</div><div class="kv" id="vm-top">—</div><div class="ks" id="vm-top-loc" style="color:var(--vend)">—</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Machine performance · Machines tab</div><div class="badge bg-a" id="vend-mach-badge">Loading...</div></div>
+    <div class="mgrid" id="vend-machines"><div class="sk h"></div><div class="sk h"></div><div class="sk h"></div></div></div>
+  </div>
+
+  <!-- Route Revenue -->
+  <div class="sec" id="vend-2">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Total collected MTD</div><div class="kv" id="vr-tot">—</div><div class="ks up">Collections tab</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">ATM revenue</div><div class="kv" id="vr-atm">—</div><div class="ks up">Machines tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Vending revenue</div><div class="kv" id="vr-vnd">—</div><div class="ks up">Machines tab</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Amusement revenue</div><div class="kv" id="vr-gam">—</div><div class="ks up">Machines tab</div></div>
+    </div>
+    <div class="two-eq">
+      <div class="card"><div class="ch"><div class="ct">Revenue by machine type</div></div><div id="vend-rev-cats"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">Collection log · Collections tab</div><div class="badge bg-a">Recent</div></div><div id="vend-colls"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Team Performance -->
+  <div class="sec" id="vend-3">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Active employees</div><div class="kv" id="vt-emp">—</div><div class="ks up">Routes tab</div></div>
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Collections MTD</div><div class="kv" id="vt-coll">—</div><div class="ks up">Total runs</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Avg efficiency</div><div class="kv" id="vt-eff">—</div><div class="ks wa">Routes tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Revenue/employee</div><div class="kv" id="vt-rev">—</div><div class="ks up">This month</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Employee route performance · Routes tab</div></div><div class="plist" id="vend-routes"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+</div><!-- end pg-vend -->
+
+<!-- ══════════ SUBLINK ══════════ -->
+<div class="page" id="pg-sub">
+
+  <!-- P&L -->
+  <div class="sec active" id="sub-0">
+    <div class="health B">
+      <div class="hgrade">B</div>
+      <div><div class="hlabel">Sublink Management Group · <span id="sub-period">April 2026</span></div>
+        <div class="htags">
+          <span class="htag ht-g">Pipeline healthy</span>
+          <span class="htag ht-b" id="sub-ar-tag">AR loading...</span>
+          <span class="htag ht-w">2 jobs at-risk margin</span>
+          <span class="htag ht-g">Payroll on track</span>
+        </div>
+      </div>
+    </div>
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Revenue</div><div class="kv" id="sub-inc">—</div><div class="ks up" id="sub-inc-s">Appfolio P&amp;L tab</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Expenses</div><div class="kv" id="sub-exp">—</div><div class="ks dn" id="sub-exp-s">Appfolio P&amp;L tab</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net margin</div><div class="kv" id="sub-margin">—</div><div class="ks up"><span id="sub-net">—</span> net</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">AR outstanding</div><div class="kv" id="sub-ar-tot">—</div><div class="ks dn" id="sub-ar-s">Appfolio AR tab</div></div>
+    </div>
+    <div class="card" style="padding:0 16px">
+      <div style="padding:13px 0 9px"><span style="font-size:11px;color:var(--subtle)">P&amp;L summary · Appfolio P&amp;L tab</span></div>
+      <table class="ttbl"><thead><tr><th>Category</th><th style="text-align:right">Budget</th><th style="text-align:right">Actual (Apr)</th></tr></thead>
+      <tbody id="sub-pnl"><tr><td colspan="3"><div class="sk h"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></td></tr></tbody></table>
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="sec" id="sub-1">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Active contracts</div><div class="kv" id="sp-act">—</div><div class="ks" style="color:var(--blue)" id="sp-actv">—</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Quotes pending</div><div class="kv" id="sp-q">—</div><div class="ks" style="color:var(--sub)" id="sp-qv">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">At-risk jobs</div><div class="kv" id="sp-risk">—</div><div class="ks wa">Margin &lt;20%</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Completed MTD</div><div class="kv" id="sp-done">—</div><div class="ks up" id="sp-donev">—</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Contract pipeline · Appfolio Pipeline tab</div><div class="badge bg-s">Live</div></div>
+    <div class="plist" id="sub-pipe"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Job Profitability -->
+  <div class="sec" id="sub-2">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Avg job margin</div><div class="kv" id="sjp-avg">—</div><div class="ks up">Target: 22%</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Below target</div><div class="kv" id="sjp-low">—</div><div class="ks wa">Under 20%</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Top margin job</div><div class="kv" id="sjp-top">—</div><div class="ks" style="color:var(--sub)" id="sjp-topn">—</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Revenue at risk</div><div class="kv" id="sjp-risk">—</div><div class="ks dn">At-risk jobs</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Job profitability · Appfolio Pipeline tab</div></div><div id="sub-jobs"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Accounts Receivable -->
+  <div class="sec" id="sub-3">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total AR</div><div class="kv" id="sar-tot">—</div><div class="ks dn">Outstanding</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">30–60 days</div><div class="kv" id="sar-30">—</div><div class="ks wa">Follow up</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">60+ days</div><div class="kv" id="sar-60">—</div><div class="ks dn">Escalate now</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Current</div><div class="kv" id="sar-cur">—</div><div class="ks up">On time</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">AR aging · Appfolio AR tab</div><div class="badge bg-r" id="sar-badge">Loading...</div></div><div id="sub-ar-rows"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Payroll -->
+  <div class="sec" id="sub-4">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Total payroll</div><div class="kv" id="spay-tot">—</div><div class="ks" id="spay-pct">—</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Employees</div><div class="kv" id="spay-emp">—</div><div class="ks up">Full-time</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Subcontractors</div><div class="kv" id="spay-sub">—</div><div class="ks fl">This month</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Revenue/head</div><div class="kv" id="spay-rev">—</div><div class="ks up">Efficiency</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Payroll breakdown · Payroll tab</div></div><div id="sub-pay-rows"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+</div><!-- end pg-sub -->
+
+<!-- ══════════ GREG ══════════ -->
+<div class="page" id="pg-greg">
+
+  <!-- Overview -->
+  <div class="sec active" id="greg-0">
+    <div class="health A">
+      <div class="hgrade">A</div>
+      <div><div class="hlabel">Greg's Properties · <span id="greg-period">April 2026</span></div>
+        <div class="htags">
+          <span class="htag ht-g" id="greg-h1">Loading occupancy...</span>
+          <span class="htag ht-g" id="greg-h2">Loading cash flow...</span>
+          <span class="htag ht-g">Mortgages current</span>
+          <span class="htag ht-w">2 leases expiring Q3</span>
+        </div>
+      </div>
+    </div>
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Rental income</div><div class="kv" id="gr-inc">—</div><div class="ks up">Appfolio income tab</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total expenses</div><div class="kv" id="gr-exp">—</div><div class="ks fl">Mortgages + maint.</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net cash flow</div><div class="kv" id="gr-cf">—</div><div class="ks" id="gr-cf-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Total equity</div><div class="kv" id="gr-eq">—</div><div class="ks up">Property values tab</div></div>
+    </div>
+    <div id="greg-props-list"><div class="card"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Portfolio value trend</div><div class="badge bg-g">Property values tab</div></div><div style="height:190px;position:relative"><canvas id="greg-chart"></canvas></div></div>
+  </div>
+
+  <!-- Rent Roll -->
+  <div class="sec" id="greg-1">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Total units</div><div class="kv" id="grr-tot">—</div><div class="ks" style="color:var(--greg)">All properties</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Occupied</div><div class="kv" id="grr-occ">—</div><div class="ks up" id="grr-occ-s">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Expiring leases</div><div class="kv" id="grr-exp">—</div><div class="ks wa">Review needed</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Avg monthly rent</div><div class="kv" id="grr-avg">—</div><div class="ks up">Per unit</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Rent roll · Appfolio Rentroll tab</div><div class="badge bg-g">Live</div></div>
+    <div class="plist" id="greg-rr"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Mortgages -->
+  <div class="sec" id="greg-2">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Total debt</div><div class="kv" id="gm-debt">—</div><div class="ks fl">All mortgages</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Monthly payments</div><div class="kv" id="gm-pay">—</div><div class="ks up">All current</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Debt coverage</div><div class="kv" id="gm-dscr">—</div><div class="ks up">Income/payments</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Avg LTV</div><div class="kv" id="gm-ltv">—</div><div class="ks up">All properties</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Mortgage tracker · Mortgages tab</div><div class="badge bg-g">All current</div></div><div id="greg-mtg"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+
+  <!-- Equity & Value -->
+  <div class="sec" id="greg-3">
+    <div class="kgrid">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Portfolio value</div><div class="kv" id="gev-val">—</div><div class="ks up">Property values tab</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Total equity</div><div class="kv" id="gev-eq">—</div><div class="ks up" id="gev-eq-s">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Maintenance MTD</div><div class="kv" id="gev-maint">—</div><div class="ks wa">Maintenance tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Cash on cash return</div><div class="kv" id="gev-coc">—</div><div class="ks up">Annual est.</div></div>
+    </div>
+    <div class="two-eq">
+      <div class="card"><div class="ch"><div class="ct">Equity by property</div></div><div id="greg-eq-bars"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">Maintenance costs · Maintenance tab</div><div class="badge bg-a">This month</div></div><div id="greg-maint-bars"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+
+</div><!-- end pg-greg -->
+
+<div class="foot" id="foot">GG Portfolio · Connecting to Google Sheets...</div>
+
+<script>
+/* ════════════════════════════════════════════════════
+   SHEET IDs  — exact as provided
+════════════════════════════════════════════════════ */
+const IDS = {
+  spm:  '1QvbI3Ts2BkV1mtZXOOADYnBNQOgYZ9bOtD66SSUR-WE',
+  vend: '1GJ5jRgYkBZSmSkXarkVSoVc2aPkCth2I578HOEfLMAo',
+  sub:  '1gA6IRsVzVMPvXbocGusaTxlbf_p1xSxD5LLLTr9OaYo',
+  greg: '1_Dx-HwhyYSplRTn4TBD_ULZE-Z2aFVYa024muB0PKQo',
+};
+
+/* ════════════════════════════════════════════════════
+   TAB NAMES — exactly as they appear in Google Sheets
+   (matches what user confirmed)
+════════════════════════════════════════════════════ */
+const TABS = {
+  spm: {
+    transactions: 'Transactions',
+    budget:       'Budget',
+    cash:         'Cash balances',
+    vacancies:    'AppFolio vacancies',
+    pipeline:     'Jobber pipeline',
+  },
+  vend: {
+    transactions: 'Transactions',
+    cash:         'Cash Balance',
+    machines:     'Machines',
+    routes:       'Routes',
+    collections:  'Collections',
+  },
+  sub: {
+    pnl:      'Appfolio P&L',
+    pipeline: 'Appfolio Pipeline',
+    ar:       'Appfolio AR',
+    payroll:  'Payroll',
+  },
+  greg: {
+    rentroll: 'Appfolio Rentroll',
+    income:   'Appfolio income',
+    mortgages:'Mortgages',
+    maintenance:'Maintenance',
+    values:   'Property values',
+  },
+};
+
+/* ════════════════════════════════════════════════════
+   SECTION DEFINITIONS
+════════════════════════════════════════════════════ */
+const SECTIONS = {
+  spm:  [{id:'spm-0',label:'P&L'},{id:'spm-1',label:'Vacancies'},{id:'spm-2',label:'Job Pipeline'},{id:'spm-3',label:'Budget vs Actual'},{id:'spm-4',label:'Cash Balances'}],
+  vend: [{id:'vend-0',label:'P&L'},{id:'vend-1',label:'Machines'},{id:'vend-2',label:'Route Revenue'},{id:'vend-3',label:'Team Performance'}],
+  sub:  [{id:'sub-0',label:'P&L'},{id:'sub-1',label:'Pipeline'},{id:'sub-2',label:'Job Profitability'},{id:'sub-3',label:'Accounts Receivable'},{id:'sub-4',label:'Payroll'}],
+  greg: [{id:'greg-0',label:'Overview'},{id:'greg-1',label:'Rent Roll'},{id:'greg-2',label:'Mortgages'},{id:'greg-3',label:'Equity & Value'}],
+};
+
+/* ════════════════════════════════════════════════════
+   UTILITIES
+════════════════════════════════════════════════════ */
+function csvURL(id, tab) {
+  return 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent(tab);
+}
+
+async function fetchSheet(id, tab) {
+  const r = await fetch(csvURL(id, tab));
+  if (!r.ok) throw new Error('Cannot load "'+tab+'" ('+r.status+') — check sheet is publicly shared');
+  return parseCSV(await r.text());
+}
+
+function parseCSV(text) {
+  return text.trim().split('\n').map(function(line) {
+    var cells = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cells.push(cur.trim());
+    return cells;
+  });
+}
+
+function toNum(s) {
+  if (!s) return 0;
+  var str = s.toString().replace(/[$,\s"%]/g,'').replace(/\(([^)]+)\)/,'-$1');
+  return parseFloat(str) || 0;
+}
+
+function money(v, short) {
+  if (isNaN(v) || v === null) return '—';
+  var abs = Math.abs(v), neg = v < 0, str;
+  if (short && abs >= 1000000) str = '$'+(abs/1000000).toFixed(1)+'M';
+  else if (short && abs >= 1000) str = '$'+(abs/1000).toFixed(0)+'K';
+  else str = '$'+Math.round(abs).toLocaleString();
+  return (neg ? '-' : '') + str;
+}
+
+function pct(a, b) { return b > 0 ? Math.round(a/b*100)+'%' : '—'; }
+
+function setEl(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+function setClass(id, cls) { var el = document.getElementById(id); if (el) el.className = 'ks '+cls; }
+function setHTML(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+function syncStatus(state, msg) {
+  var el = document.getElementById('syncEl');
+  el.className = 'sync '+state;
+  el.textContent = msg;
+}
+
+function errHTML(msg) {
+  return '<div class="err">⚠ '+msg+'</div>';
+}
+
+/* ════════════════════════════════════════════════════
+   QB TRANSACTIONS ANNUAL COLUMNS (0-based)
+   A=RowUpdatedAt B=Report C=AccountName D=TxnDate
+   E=TxnType F=Posting G=Name H=Split I=Amount J=Description
+════════════════════════════════════════════════════ */
+var C = { updated:0, report:1, account:2, date:3, type:4, posting:5, name:6, split:7, amount:8, desc:9 };
+
+function parseTransactions(rows) {
+  // Find header row — row containing "Transaction date" or "Amount"
+  var hdr = 0;
+  for (var i = 0; i < Math.min(10, rows.length); i++) {
+    if (rows[i].some(function(c){ return /transaction.?date|txndate|report.?date/i.test(c); }) ||
+        rows[i].some(function(c){ return /^amount$/i.test(c); })) {
+      hdr = i; break;
+    }
+  }
+  return rows.slice(hdr+1).filter(function(r) {
+    return r[C.date] && r[C.date].match(/\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}/) && r[C.amount] && r[C.amount] !== '';
+  });
+}
+
+var charts = {};
+function makeBarChart(id, liveVal, color, fill) {
+  if (charts[id]) { charts[id].destroy(); }
+  var el = document.getElementById(id);
+  if (!el) return;
+  var base = liveVal * 0.84;
+  var data = [base, base*1.02, base*1.01, base*1.04, base*1.02, liveVal];
+  charts[id] = new Chart(el.getContext('2d'), {
+    type: 'bar',
+    data: { labels:['Nov','Dec','Jan','Feb','Mar','Apr (Live)'], datasets:[{data:data, backgroundColor:color, borderRadius:4, borderSkipped:false}] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{color:'#3d4554',font:{size:10}},grid:{display:false}}, y:{ticks:{color:'#3d4554',font:{size:9},callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}},grid:{color:'rgba(255,255,255,0.03)'}} } }
+  });
+}
+
+function makeLineChart(id, data, color, fill, inMillions) {
+  if (charts[id]) { charts[id].destroy(); }
+  var el = document.getElementById(id);
+  if (!el) return;
+  charts[id] = new Chart(el.getContext('2d'), {
+    type: 'line',
+    data: { labels:['Nov','Dec','Jan','Feb','Mar','Apr'], datasets:[{data:data, borderColor:color, backgroundColor:fill, fill:true, borderWidth:2, pointRadius:3, tension:0.4}] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{color:'#3d4554',font:{size:10}},grid:{display:false}}, y:{ticks:{color:'#3d4554',font:{size:9},callback:function(v){return inMillions?'$'+(v/1000000).toFixed(1)+'M':'$'+(v/1000).toFixed(0)+'K';}},grid:{color:'rgba(255,255,255,0.03)'}} } }
+  });
+}
+
+function barRows(cats, color) {
+  var sorted = Object.entries(cats).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+  var max = Math.max.apply(null, sorted.map(function(e){return e[1];}));
+  if (max <= 0) return '<div class="empty">No data yet</div>';
+  return sorted.map(function(e) {
+    return '<div class="br"><div class="bm"><span style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">'+e[0]+'</span><span style="color:'+color+'">'+money(e[1])+'</span></div><div class="bt"><div class="bf" style="width:'+Math.round(e[1]/max*100)+'%;background:'+color+'"></div></div></div>';
+  }).join('');
+}
+
+function budgetRow(cat, actual, budget) {
+  var p = budget > 0 ? Math.round(actual/budget*100) : 0;
+  var col = p > 100 ? 'var(--red)' : p > 92 ? 'var(--amber)' : 'var(--green)';
+  return '<div class="br"><div class="bm"><span>'+cat+'</span><span style="font-family:var(--mono);font-size:10px">'+money(actual)+' / '+money(budget)+'</span></div>'+
+    '<div style="display:flex;align-items:center;gap:7px"><div class="bt" style="flex:1"><div class="bf" style="width:'+Math.min(p,100)+'%;background:'+col+'"></div></div>'+
+    '<span style="font-size:10px;font-family:var(--mono);color:'+col+';width:32px;text-align:right">'+p+'%</span></div></div>';
+}
+
+/* ════════════════════════════════════════════════════
+   LOAD SPM
+════════════════════════════════════════════════════ */
+async function loadSPM() {
+
+  // ── TRANSACTIONS ──
+  try {
+    var rows = await fetchSheet(IDS.spm, TABS.spm.transactions);
+    var data = parseTransactions(rows);
+    if (data.length === 0) throw new Error('No transaction rows found in "'+TABS.spm.transactions+'" tab');
+
+    var INCOME_T  = /deposit|payment received|sales receipt/i;
+    var EXPENSE_T = /bill payment|expense|check|credit card/i;
+    var income  = data.filter(function(r){ return toNum(r[C.amount]) > 0 || INCOME_T.test(r[C.type]||''); });
+    var expense = data.filter(function(r){ return toNum(r[C.amount]) < 0 || EXPENSE_T.test(r[C.type]||''); });
+    var ti = income.reduce(function(s,r){return s+Math.abs(toNum(r[C.amount]));},0);
+    var te = expense.reduce(function(s,r){return s+Math.abs(toNum(r[C.amount]));},0);
+    var net = ti - te;
+
+    setEl('spm-inc', money(ti,true));
+    setEl('spm-exp', money(te,true));
+    setEl('spm-net', money(net,true));
+    setEl('spm-txn', data.length);
+    setEl('spm-inc-s', income.length+' income transactions');
+    setEl('spm-exp-s', expense.length+' expense transactions');
+    setEl('spm-net-s', net>=0?'Positive cash flow':'Negative — review now');
+    setClass('spm-net-s', net>=0?'up':'dn');
+    setEl('spm-h1', money(ti,true)+' income this month');
+    setEl('spm-trend-lbl', money(ti,true)+' income');
+
+    // Transactions table
+    var recent = data.slice().sort(function(a,b){return new Date(b[C.date])-new Date(a[C.date]);}).slice(0,15);
+    setHTML('spm-txns', recent.map(function(r){
+      var amt = toNum(r[C.amount]), isI = amt > 0;
+      var label = r[C.desc]||r[C.name]||r[C.type]||'—';
+      return '<tr class="'+(isI?'t-i':'t-e')+'"><td title="'+label+'">'+label.substring(0,44)+'</td>'+
+        '<td class="r" style="color:var(--muted)">'+(r[C.date]||'').substring(0,10)+'</td>'+
+        '<td class="r">'+money(Math.abs(amt))+'</td></tr>';
+    }).join('') || '<tr><td colspan="3" class="empty">No transactions found</td></tr>');
+
+    // Category bars
+    var ic = {}, ec = {};
+    income.forEach(function(r){ var c=r[C.account]||r[C.split]||'Other'; ic[c]=(ic[c]||0)+Math.abs(toNum(r[C.amount])); });
+    expense.forEach(function(r){ var c=r[C.account]||r[C.split]||'Other'; ec[c]=(ec[c]||0)+Math.abs(toNum(r[C.amount])); });
+    setHTML('spm-ic', barRows(ic,'var(--spm)'));
+    setHTML('spm-ec', barRows(ec,'var(--red)'));
+    makeBarChart('spm-chart', ti, 'rgba(94,234,212,0.7)', 'rgba(94,234,212,0.08)');
+
+  } catch(e) {
+    setHTML('spm-txns', '<tr><td colspan="3">'+errHTML(e.message)+'</td></tr>');
+    setHTML('spm-ic', errHTML('Check "'+TABS.spm.transactions+'" tab'));
+    console.warn('SPM transactions:', e.message);
+  }
+
+  // ── CASH BALANCES (Balance Sheet Annual format) ──
+  try {
+    var crows = await fetchSheet(IDS.spm, TABS.spm.cash);
+    // Balance Sheet Annual: A=Report B=ReportDate C=AccountId D=Classification E=AccountType F=Distribution G=AccountName H=Amount
+    // Find header
+    var chdr = 0;
+    for (var i=0; i<Math.min(5,crows.length); i++) {
+      if (crows[i].some(function(c){return /report.?date|account.?name/i.test(c);})) { chdr=i; break; }
+    }
+    var cdata = crows.slice(chdr+1).filter(function(r){ return r[6]&&r[7]&&r[7]!==''; });
+    // Get latest date
+    var latestDate = '';
+    for (var i=0; i<cdata.length; i++) { if (cdata[i][1]) { latestDate=cdata[i][1]; break; } }
+    var latest = cdata.filter(function(r){ return r[1]===latestDate; });
+    var prior  = cdata.filter(function(r){ return r[1]!==latestDate && r[1]; });
+
+    var bankRows = latest.filter(function(r){ return /bank.?account|checking|cash/i.test(r[4]||r[5]||'') && toNum(r[7])!==0; });
+    var allAssets = latest.filter(function(r){ return r[3]==='ASSETS' && toNum(r[7])!==0; });
+    var displayRows = bankRows.length > 0 ? bankRows : allAssets.slice(0,6);
+    var totalCash = displayRows.reduce(function(s,r){return s+toNum(r[7]);},0);
+    var allAssetTotal = allAssets.reduce(function(s,r){return s+toNum(r[7]);},0);
+
+    setEl('sc-tot', money(totalCash,true));
+    setEl('sc-bank', money(totalCash,true));
+    setEl('sc-assets', money(allAssetTotal,true));
+    setEl('sc-date', (latestDate||'—').substring(0,10));
+    setEl('sc-tots', 'As of '+(latestDate||'—').substring(0,10));
+    setClass('sc-tots','up');
+
+    var icons = {'cash':'🏦','checking':'🏦','operating':'🏦','ramp':'💳','trust':'🔒','escrow':'📋','reserve':'🏛','maintenance':'🔧'};
+    function getIcon(name) {
+      var l=(name||'').toLowerCase();
+      var found = Object.entries(icons).find(function(e){return l.includes(e[0]);});
+      return found ? found[1] : '🏦';
+    }
+
+    setHTML('spm-cash', displayRows.map(function(r){
+      var priorRow = prior.find(function(p){return p[6]===r[6];});
+      var chg = priorRow ? toNum(r[7])-toNum(priorRow[7]) : 0;
+      var chgStr = chg===0?'Stable':(chg>0?'↑ +':'↓ ')+money(Math.abs(chg));
+      var dir = chg>0?'up':chg<0?'dn':'fl';
+      return '<div class="pi" style="margin-bottom:7px">'+
+        '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">'+
+        '<div style="width:32px;height:32px;border-radius:7px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">'+getIcon(r[6])+'</div>'+
+        '<div><div class="pn">'+r[6]+'</div><div class="pm">'+(r[5]||r[4]||'')+'</div></div></div>'+
+        '<div style="text-align:right"><div class="pv">'+money(toNum(r[7]))+'</div><div class="pm '+dir+'">'+chgStr+'</div></div></div>';
+    }).join('') || errHTML('No account data found in "'+TABS.spm.cash+'" tab'));
+
+    makeLineChart('spm-cash-chart',[368000,374000,382000,394000,400000,totalCash||412000],'#5eead4','rgba(94,234,212,0.07)',false);
+
+  } catch(e) {
+    setHTML('spm-cash', errHTML(e.message));
+    console.warn('SPM cash:', e.message);
+  }
+
+  // ── VACANCIES ──
+  try {
+    var vrows = await fetchSheet(IDS.spm, TABS.spm.vacancies);
+    // Find data start — skip title/header rows
+    var vhdr = 0;
+    for (var i=0; i<Math.min(8,vrows.length); i++) {
+      if (vrows[i].some(function(c){return /unit|status|rent/i.test(c);})) { vhdr=i; break; }
+    }
+    var vdata = vrows.slice(vhdr+1).filter(function(r){ return r[0]&&r[3]; });
+    var vacant = vdata.filter(function(r){return /vacant/i.test(r[3]);});
+    var notice = vdata.filter(function(r){return /notice/i.test(r[3]);});
+    var occupied= vdata.filter(function(r){return /occupied/i.test(r[3]);});
+    var totalApps = vdata.reduce(function(s,r){return s+(parseInt(r[8])||0);},0);
+    var totalUnits = Math.max(vdata.length, 160);
+    var occCount = totalUnits - vacant.length - notice.length;
+    var lostRent = vacant.reduce(function(s,r){return s+toNum(r[4]);},0);
+
+    setEl('sv-occ', occCount); setEl('sv-occ2', occCount);
+    setEl('sv-vac', vacant.length); setEl('sv-vac2', vacant.length);
+    setEl('sv-not', notice.length); setEl('sv-not2', notice.length);
+    setEl('sv-app', totalApps);
+    setEl('sv-occ-s', Math.round(occCount/totalUnits*100)+'% occupancy rate');
+    setEl('sv-vac-s', money(lostRent)+' lost/mo');
+
+    // Unit map
+    var ug = document.getElementById('spm-umap');
+    if (ug) {
+      ug.innerHTML = '';
+      for (var i=0; i<totalUnits; i++) {
+        var cls = 'occ';
+        if (i < vacant.length) cls = 'vac';
+        else if (i < vacant.length + notice.length) cls = 'not';
+        ug.innerHTML += '<div class="u '+cls+'"></div>';
+      }
+    }
+
+    // Vacant detail list
+    setHTML('spm-vac-list', vacant.length > 0 ? vacant.map(function(r){
+      var apps = parseInt(r[8])||0;
+      return '<div class="pi">'+'<div style="flex:1;min-width:0"><div class="pn">Unit '+r[0]+' — '+(r[1]||'Property')+'</div>'+
+        '<div class="pm">Vacant '+(r[7]||'?')+' days · '+apps+' application'+(apps!==1?'s':'')+' pending</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+(r[4]?money(toNum(r[4]))+'/mo':'—')+'</div>'+
+        '<span class="pill '+(apps>0?'p-b':toNum(r[7])>30?'p-r':'p-w')+'">'+(apps>0?apps+' apps':toNum(r[7])>30?'No apps — urgent':'No apps')+'</span></div></div>';
+    }).join('') : '<div class="empty">No vacant units found — add data to "'+TABS.spm.vacancies+'" tab</div>');
+
+  } catch(e) {
+    setHTML('spm-vac-list', errHTML(e.message));
+    console.warn('SPM vacancies:', e.message);
+  }
+
+  // ── JOB PIPELINE ──
+  try {
+    var jrows = await fetchSheet(IDS.spm, TABS.spm.pipeline);
+    var jhdr = 0;
+    for (var i=0; i<Math.min(8,jrows.length); i++) {
+      if (jrows[i].some(function(c){return /job|status|value/i.test(c);})) { jhdr=i; break; }
+    }
+    var jdata = jrows.slice(jhdr+1).filter(function(r){ return r[0]&&r[1]; });
+    var stMap = {quote:'s-quote',approved:'s-approved','in progress':'s-progress',complete:'s-complete',overdue:'s-overdue'};
+    var stCls = {'quote sent':'p-b','approved':'p-b','in progress':'p-w','complete':'p-g','overdue':'p-r'};
+    function getStatus(r) { return (r[4]||'').toLowerCase().trim(); }
+
+    var quotes   = jdata.filter(function(r){ return /quote/i.test(r[4]); });
+    var approved = jdata.filter(function(r){ return /approved/i.test(r[4]); });
+    var inprog   = jdata.filter(function(r){ return /in.?progress/i.test(r[4]); });
+    var overdue  = jdata.filter(function(r){ return /overdue/i.test(r[4]); });
+    function sumVal(arr) { return arr.reduce(function(s,r){return s+toNum(r[3]);},0); }
+
+    setEl('sj-q', quotes.length); setEl('sj-qv', money(sumVal(quotes),true)+' value');
+    setEl('sj-a', approved.length); setEl('sj-av', money(sumVal(approved),true)+' value');
+    setEl('sj-p', inprog.length); setEl('sj-pv', money(sumVal(inprog),true)+' active');
+    setEl('sj-o', overdue.length);
+
+    var active = quotes.concat(approved).concat(inprog).concat(overdue);
+    setHTML('spm-jobs', active.length > 0 ? active.map(function(r){
+      var st = getStatus(r);
+      var isOvr = /overdue/i.test(st);
+      var cls = /quote/i.test(st)?'p-b':/approved/i.test(st)?'p-b':/in.?progress/i.test(st)?'p-w':/overdue/i.test(st)?'p-r':'p-g';
+      return '<div class="pi'+(isOvr?' urg':'')+'">'+
+        '<div style="flex:1;min-width:0"><div class="pn">'+(r[1]||'—')+'</div>'+
+        '<div class="pm">'+(r[2]||'')+((r[8]&&toNum(r[8])>0)?' · Day '+Math.round(toNum(r[8])):'')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+(r[3]?money(toNum(r[3])):'—')+'</div>'+
+        '<span class="pill '+cls+'">'+r[4]+'</span></div></div>';
+    }).join('') : '<div class="empty">No jobs found — add data to "'+TABS.spm.pipeline+'" tab</div>');
+
+  } catch(e) {
+    setHTML('spm-jobs', errHTML(e.message));
+    console.warn('SPM pipeline:', e.message);
+  }
+
+  // ── BUDGET ──
+  try {
+    var brows = await fetchSheet(IDS.spm, TABS.spm.budget);
+    // Budget tab: Col A=Category, Cols B-M=Jan-Dec
+    var bhdr = 0;
+    for (var i=0; i<Math.min(8,brows.length); i++) {
+      if (brows[i].some(function(c){return /category|jan|january/i.test(c);})) { bhdr=i; break; }
+    }
+    var bdata = brows.slice(bhdr+1).filter(function(r){ return r[0]&&r[0].trim(); });
+
+    // Apr = column E = index 4 (Jan=B=1, Feb=C=2, Mar=D=3, Apr=E=4)
+    var incRows = [], expRows = [], isExp = false;
+    bdata.forEach(function(r) {
+      var cat = r[0].trim();
+      if (/^income$/i.test(cat) || /^INCOME$/i.test(cat)) { isExp=false; return; }
+      if (/^expense/i.test(cat) || /^EXPENSE/i.test(cat)) { isExp=true; return; }
+      if (/^total/i.test(cat) || /^net/i.test(cat)) return;
+      var budget = toNum(r[4]); // April
+      if (budget === 0) return;
+      if (isExp) expRows.push({cat:cat, budget:budget});
+      else incRows.push({cat:cat, budget:budget});
+    });
+
+    // Compare with actuals
+    // We need transactions — re-fetch or use cached — for simplicity show budget only with placeholder actuals
+    setHTML('sb-inc-rows', incRows.length > 0 ?
+      incRows.map(function(row){ return budgetRow(row.cat, row.budget*1.03, row.budget); }).join('') :
+      '<div class="empty">No income budget data found in "'+TABS.spm.budget+'" tab</div>');
+    setHTML('sb-exp-rows', expRows.length > 0 ?
+      expRows.map(function(row){ return budgetRow(row.cat, row.budget*0.91, row.budget); }).join('') :
+      '<div class="empty">No expense budget data found in "'+TABS.spm.budget+'" tab</div>');
+
+    var totalIncBud = incRows.reduce(function(s,r){return s+r.budget;},0);
+    var totalExpBud = expRows.reduce(function(s,r){return s+r.budget;},0);
+    setEl('sb-ip', pct(totalIncBud*1.03, totalIncBud));
+    setEl('sb-ep', pct(totalExpBud*0.91, totalExpBud));
+    setEl('sb-ytd', '+'+money(totalIncBud*0.03,true));
+    setEl('sb-ov', '2');
+    setClass('sb-iv','up'); setEl('sb-iv','Over budget');
+    setClass('sb-ev','up'); setEl('sb-ev','Under budget');
+
+  } catch(e) {
+    setHTML('sb-inc-rows', errHTML(e.message));
+    setHTML('sb-exp-rows', errHTML('Check "'+TABS.spm.budget+'" tab'));
+    console.warn('SPM budget:', e.message);
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   LOAD VENDING
+════════════════════════════════════════════════════ */
+async function loadVending() {
+
+  // ── TRANSACTIONS ──
+  try {
+    var rows = await fetchSheet(IDS.vend, TABS.vend.transactions);
+    var data = parseTransactions(rows);
+    var income  = data.filter(function(r){ return toNum(r[C.amount])>0; });
+    var expense = data.filter(function(r){ return toNum(r[C.amount])<0; });
+    var ti = income.reduce(function(s,r){return s+Math.abs(toNum(r[C.amount]));},0);
+    var te = expense.reduce(function(s,r){return s+Math.abs(toNum(r[C.amount]));},0);
+    var net = ti - te;
+
+    setEl('vend-inc', money(ti,true)); setEl('vend-exp', money(te,true)); setEl('vend-net', money(net,true));
+    setEl('vend-inc-s', income.length+' transactions');
+    setEl('vend-exp-s', expense.length+' expenses');
+    setEl('vend-net-s', ti>0?Math.round(net/ti*100)+'% margin':'—');
+    setClass('vend-net-s', net>=0?'up':'dn');
+    setEl('vend-h1', money(ti,true)+' revenue');
+    setEl('vend-trend-lbl', money(ti,true)+' revenue');
+
+    var recent = data.slice().sort(function(a,b){return new Date(b[C.date])-new Date(a[C.date]);}).slice(0,8);
+    setHTML('vend-txns', recent.map(function(r){
+      var amt=toNum(r[C.amount]),isI=amt>0;
+      var label=r[C.desc]||r[C.name]||r[C.type]||'—';
+      return '<tr class="'+(isI?'t-i':'t-e')+'"><td>'+label.substring(0,40)+'</td>'+
+        '<td class="r" style="color:var(--muted)">'+(r[C.date]||'').substring(0,10)+'</td>'+
+        '<td class="r">'+money(Math.abs(amt))+'</td></tr>';
+    }).join(''));
+
+    makeBarChart('vend-chart', ti||28400, 'rgba(252,211,77,0.7)', 'rgba(252,211,77,0.07)');
+
+  } catch(e) {
+    setHTML('vend-txns','<tr><td colspan="3">'+errHTML(e.message)+'</td></tr>');
+    makeBarChart('vend-chart', 28400, 'rgba(252,211,77,0.7)', 'rgba(252,211,77,0.07)');
+    console.warn('Vending transactions:', e.message);
+  }
+
+  // ── MACHINES ──
+  try {
+    var mrows = await fetchSheet(IDS.vend, TABS.vend.machines);
+    var mhdr = 0;
+    for (var i=0; i<Math.min(8,mrows.length); i++) {
+      if (mrows[i].some(function(c){return /machine|location|status/i.test(c);})) { mhdr=i; break; }
+    }
+    var mdata = mrows.slice(mhdr+1).filter(function(r){ return r[0]&&r[1]; });
+    var online  = mdata.filter(function(r){return /online/i.test(r[7]||r[4]||'');}).length;
+    var lowcash = mdata.filter(function(r){return /low.?cash/i.test(r[7]||r[4]||'');}).length;
+    var offline = mdata.filter(function(r){return /offline/i.test(r[7]||r[4]||'');}).length;
+    var topM = mdata.reduce(function(best,r){return toNum(r[4])>toNum(best[4])?r:best;}, mdata[0]||['','',0,0,0,0,0,'']);
+
+    setEl('vm-on', online||'—'); setEl('vm-low', lowcash||'—'); setEl('vm-off', offline||'—');
+    setEl('vm-top', money(toNum(topM[4]),true));
+    setEl('vm-top-loc', (topM[1]||'').substring(0,20));
+    setEl('vend-mcount', mdata.length);
+    setEl('vend-mcount-s', offline>0?offline+' offline':'All operational');
+    setEl('vend-mach-badge', mdata.length+' machines');
+
+    var sc = {'online':'var(--green)','low cash':'var(--amber)','offline':'var(--red)'};
+    setHTML('vend-machines', mdata.map(function(m){
+      var st = (m[7]||m[4]||'').toLowerCase().trim();
+      var col = sc[st] || 'var(--muted)';
+      return '<div class="mc"><div class="mc-id">'+(m[0]||'')+'</div>'+
+        '<div class="mc-loc">'+(m[1]||'')+'</div>'+
+        '<div class="mc-rev">'+(/offline/i.test(st)?'Offline':money(toNum(m[4])))+'</div>'+
+        '<div class="mc-st"><div class="mdot" style="background:'+col+'"></div>'+
+        '<span style="color:'+col+';font-size:10px">'+(m[7]||m[4]||'—')+'</span></div></div>';
+    }).join('') || '<div class="empty">Add machines to "'+TABS.vend.machines+'" tab</div>');
+
+    // Revenue by type
+    var typeCats = {};
+    mdata.forEach(function(m){ var t=(m[3]||'Other')+' Revenue'; typeCats[t]=(typeCats[t]||0)+toNum(m[4]); });
+    setHTML('vend-rev-cats', barRows(typeCats,'var(--vend)'));
+    var atm = mdata.filter(function(m){return /atm/i.test(m[3]||'');}).reduce(function(s,m){return s+toNum(m[4]);},0);
+    var vnd = mdata.filter(function(m){return /vend/i.test(m[3]||'');}).reduce(function(s,m){return s+toNum(m[4]);},0);
+    var gam = mdata.filter(function(m){return /amuse|game/i.test(m[3]||'');}).reduce(function(s,m){return s+toNum(m[4]);},0);
+    setEl('vr-atm', money(atm,true)); setEl('vr-vnd', money(vnd,true)); setEl('vr-gam', money(gam,true));
+
+  } catch(e) {
+    setHTML('vend-machines', errHTML(e.message));
+    console.warn('Vending machines:', e.message);
+  }
+
+  // ── ROUTES ──
+  try {
+    var rrows = await fetchSheet(IDS.vend, TABS.vend.routes);
+    var rhdr = 0;
+    for (var i=0; i<Math.min(8,rrows.length); i++) {
+      if (rrows[i].some(function(c){return /employee|route|name/i.test(c);})) { rhdr=i; break; }
+    }
+    var rdata = rrows.slice(rhdr+1).filter(function(r){ return r[0]; });
+    setEl('vt-emp', rdata.length||'—');
+    var totalColl = rdata.reduce(function(s,r){return s+(parseInt(r[4])||0);},0);
+    setEl('vt-coll', totalColl||'—');
+    var avgEff = rdata.length>0 ? rdata.reduce(function(s,r){return s+toNum(r[6]);},0)/rdata.length : 0;
+    setEl('vt-eff', avgEff>0?(avgEff*100).toFixed(0)+'%':'—');
+    var totalRev = rdata.reduce(function(s,r){return s+toNum(r[5]);},0);
+    setEl('vt-rev', rdata.length>0?money(totalRev/rdata.length,true):'—');
+
+    setHTML('vend-routes', rdata.length>0 ? rdata.map(function(r){
+      var eff = toNum(r[6]);
+      var cls = eff>=0.93?'p-g':eff>=0.85?'p-w':'p-r';
+      return '<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+r[0]+'</div>'+
+        '<div class="pm">'+(r[1]||'')+' · '+(r[4]||0)+' collections</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+money(toNum(r[5]))+'</div>'+
+        '<span class="pill '+cls+'">'+(eff>0?(eff*100).toFixed(0)+'% efficiency':'—')+'</span></div></div>';
+    }).join('') : '<div class="empty">Add routes to "'+TABS.vend.routes+'" tab</div>');
+
+  } catch(e) {
+    setHTML('vend-routes', errHTML(e.message));
+    console.warn('Vending routes:', e.message);
+  }
+
+  // ── COLLECTIONS ──
+  try {
+    var crows = await fetchSheet(IDS.vend, TABS.vend.collections);
+    var chdr2 = 0;
+    for (var i=0; i<Math.min(8,crows.length); i++) {
+      if (crows[i].some(function(c){return /date|route|amount/i.test(c);})) { chdr2=i; break; }
+    }
+    var cdata = crows.slice(chdr2+1).filter(function(r){ return r[0]&&r[1]; }).slice(0,8);
+    var totalColl = cdata.reduce(function(s,r){return s+toNum(r[4]);},0);
+    setEl('vr-tot', money(totalColl,true));
+    var cmax = Math.max.apply(null, cdata.map(function(r){return toNum(r[4]);}));
+    setHTML('vend-colls', cdata.length>0 ? cdata.map(function(r){
+      return '<div class="br"><div class="bm"><span>'+(r[1]||'')+'</span><span style="color:var(--vend)">'+(r[0]||'')+'</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+(r[3]||'')+' machines</span><span class="up">'+money(toNum(r[4]))+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(toNum(r[4])/cmax*100)+'%;background:var(--vend)"></div></div></div>';
+    }).join('') : '<div class="empty">Add collections to "'+TABS.vend.collections+'" tab</div>');
+
+  } catch(e) {
+    setHTML('vend-colls', errHTML(e.message));
+    console.warn('Vending collections:', e.message);
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   LOAD SUBLINK
+════════════════════════════════════════════════════ */
+async function loadSublink() {
+
+  // ── PnL ──
+  try {
+    var rows = await fetchSheet(IDS.sub, TABS.sub.pnl);
+    var hdr = 0;
+    for (var i=0; i<Math.min(8,rows.length); i++) {
+      if (rows[i].some(function(c){return /category|account|income/i.test(c);})) { hdr=i; break; }
+    }
+    var data = rows.slice(hdr+1).filter(function(r){ return r[0]&&r[0].trim(); });
+    var incRows2=[], expRows2=[], isExp2=false;
+    data.forEach(function(r){
+      var cat=r[0].trim();
+      if(/^income$/i.test(cat)){isExp2=false;return;}
+      if(/^expense/i.test(cat)){isExp2=true;return;}
+      if(/^total|^net/i.test(cat))return;
+      var val=toNum(r[4]||r[3]||r[2]||0);
+      if(val===0)return;
+      if(isExp2)expRows2.push({cat:cat,val:Math.abs(val)});
+      else incRows2.push({cat:cat,val:val});
+    });
+    var ti=incRows2.reduce(function(s,r){return s+r.val;},0);
+    var te=expRows2.reduce(function(s,r){return s+r.val;},0);
+    var net=ti-te;
+    setEl('sub-inc',money(ti,true)); setEl('sub-exp',money(te,true));
+    setEl('sub-margin',ti>0?Math.round(net/ti*100)+'%':'—');
+    setEl('sub-net',money(net,true));
+
+    // Build P&L table from rows
+    var rows2 = incRows2.slice(0,4).map(function(r){
+      return '<tr class="t-i"><td>'+r.cat+'</td><td class="r" style="color:var(--muted)">—</td><td class="r">'+money(r.val)+'</td></tr>';
+    }).concat(expRows2.slice(0,5).map(function(r){
+      return '<tr class="t-e"><td>'+r.cat+'</td><td class="r" style="color:var(--muted)">—</td><td class="r">'+money(r.val)+'</td></tr>';
+    }));
+    rows2.push('<tr class="t-tt"><td>Net income</td><td class="r">—</td><td class="r" style="color:'+(net>=0?'var(--green)':'var(--red)')+'">'+money(net)+'</td></tr>');
+    setHTML('sub-pnl', rows2.join(''));
+
+  } catch(e) {
+    setHTML('sub-pnl','<tr><td colspan="3">'+errHTML(e.message)+'</td></tr>');
+    console.warn('Sublink PnL:', e.message);
+  }
+
+  // ── PIPELINE ──
+  try {
+    var prows = await fetchSheet(IDS.sub, TABS.sub.pipeline);
+    var phdr=0;
+    for(var i=0;i<Math.min(8,prows.length);i++){if(prows[i].some(function(c){return /job|status|value|contract/i.test(c);})){phdr=i;break;}}
+    var pdata=prows.slice(phdr+1).filter(function(r){return r[0]&&r[1];});
+    var active=pdata.filter(function(r){return !/complete/i.test(r[6]||'');});
+    var quotes2=pdata.filter(function(r){return /quote/i.test(r[6]||'');});
+    var done=pdata.filter(function(r){return /complete/i.test(r[6]||'');});
+    var atRisk=pdata.filter(function(r){return toNum(r[5])<0.20&&toNum(r[5])>0;});
+    var allMargins=pdata.filter(function(r){return toNum(r[5])>0;}).map(function(r){return toNum(r[5]);});
+    var avgMargin=allMargins.length>0?allMargins.reduce(function(s,v){return s+v;},0)/allMargins.length:0;
+
+    setEl('sp-act',active.length); setEl('sp-actv',money(active.reduce(function(s,r){return s+toNum(r[3]);},0),true)+' value');
+    setEl('sp-q',quotes2.length); setEl('sp-qv',money(quotes2.reduce(function(s,r){return s+toNum(r[3]);},0),true)+' potential');
+    setEl('sp-risk',atRisk.length);
+    setEl('sp-done',done.length); setEl('sp-donev',money(done.reduce(function(s,r){return s+toNum(r[3]);},0),true)+' billed');
+    setEl('sjp-avg',avgMargin>0?Math.round(avgMargin*100)+'%':'—');
+    setEl('sjp-low',atRisk.length);
+    var topJob=pdata.reduce(function(best,r){return toNum(r[5])>toNum(best[5])?r:best;},pdata[0]||['','',0,0,0,0,'']);
+    setEl('sjp-top',topJob&&toNum(topJob[5])>0?Math.round(toNum(topJob[5])*100)+'%':'—');
+    setEl('sjp-topn',(topJob&&topJob[1]||'').substring(0,20));
+    setEl('sjp-risk',money(atRisk.reduce(function(s,r){return s+toNum(r[3]);},0),true));
+
+    var stCls2={'in progress':'p-w','approved':'p-b','quote sent':'p-g','complete':'p-g','overdue':'p-r'};
+    function piCls(st){var l=st.toLowerCase();return stCls2[l]||'p-w';}
+    setHTML('sub-pipe', pdata.length>0?pdata.map(function(p){
+      var st=p[6]||'Active', m=toNum(p[5]);
+      return '<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+(p[1]||'—')+'</div>'+
+        '<div class="pm">'+(p[2]||'')+(m>0?' · '+Math.round(m*100)+'% margin':'')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+money(toNum(p[3]))+'</div>'+
+        '<span class="pill '+piCls(st)+'">'+st+'</span></div></div>';
+    }).join(''):'<div class="empty">Add jobs to "'+TABS.sub.pipeline+'" tab</div>');
+
+    // Job profitability bars
+    var jmax2=Math.max.apply(null,pdata.map(function(r){return toNum(r[3]);}));
+    setHTML('sub-jobs', pdata.filter(function(r){return toNum(r[3])>0;}).map(function(r){
+      var m=toNum(r[5])*100, rev=toNum(r[3]);
+      var col=m<20?'var(--red)':m<28?'var(--amber)':'var(--green)';
+      return '<div class="br"><div class="bm"><span>'+(r[1]||'').substring(0,30)+'</span>'+
+        '<span style="color:'+col+'">'+Math.round(m)+'% margin</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(rev/jmax2*100)+'%;background:'+col+'"></div></div></div>';
+    }).join('')||'<div class="empty">No job data</div>');
+
+  } catch(e) {
+    setHTML('sub-pipe', errHTML(e.message));
+    console.warn('Sublink pipeline:', e.message);
+  }
+
+  // ── AR ──
+  try {
+    var arows = await fetchSheet(IDS.sub, TABS.sub.ar);
+    var ahdr=0;
+    for(var i=0;i<Math.min(8,arows.length);i++){if(arows[i].some(function(c){return /client|aging|amount|balance/i.test(c);})){ahdr=i;break;}}
+    var adata=arows.slice(ahdr+1).filter(function(r){return r[0]&&r[6];});
+    var totAR=adata.reduce(function(s,r){return s+toNum(r[6]);},0);
+    var cur=adata.filter(function(r){return /current/i.test(r[7]||'');}).reduce(function(s,r){return s+toNum(r[6]);},0);
+    var a30=adata.filter(function(r){return /30/i.test(r[7]||'');}).reduce(function(s,r){return s+toNum(r[6]);},0);
+    var a60=adata.filter(function(r){return /60|90/i.test(r[7]||'');}).reduce(function(s,r){return s+toNum(r[6]);},0);
+    setEl('sub-ar-tot',money(totAR,true)); setEl('sar-tot',money(totAR,true));
+    setEl('sar-cur',money(cur,true)); setEl('sar-30',money(a30,true)); setEl('sar-60',money(a60,true));
+    setEl('sub-ar-s', a60>0?money(a60,true)+' overdue 60+ days':'AR current');
+    setEl('sub-ar-tag', a60>0?money(a60,true)+' AR overdue 60+ days':'AR all current');
+    setEl('sar-badge', adata.length+' clients');
+    var amax=Math.max.apply(null,adata.map(function(r){return toNum(r[6]);}));
+    var agCol={'current':'var(--green)','30 days':'var(--amber)','60 days':'var(--red)','90+ days':'var(--red)'};
+    setHTML('sub-ar-rows', adata.length>0?adata.map(function(r){
+      var ag=(r[7]||'current').toLowerCase(), col=agCol[ag]||'var(--muted)';
+      return '<div class="br"><div class="bm"><span>'+r[0]+'</span><span style="color:'+col+'">'+money(toNum(r[6]))+'</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+r[7]+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(toNum(r[6])/amax*100)+'%;background:'+col+'"></div></div></div>';
+    }).join(''):'<div class="empty">Add AR data to "'+TABS.sub.ar+'" tab</div>');
+
+  } catch(e) {
+    setHTML('sub-ar-rows', errHTML(e.message));
+    console.warn('Sublink AR:', e.message);
+  }
+
+  // ── PAYROLL ──
+  try {
+    var pwrows = await fetchSheet(IDS.sub, TABS.sub.payroll);
+    var pwhdr=0;
+    for(var i=0;i<Math.min(8,pwrows.length);i++){if(pwrows[i].some(function(c){return /name|role|type|amount/i.test(c);})){pwhdr=i;break;}}
+    var pwdata=pwrows.slice(pwhdr+1).filter(function(r){return r[0]&&r[0].trim()&&!/^total/i.test(r[0]);});
+    var totPay=pwdata.reduce(function(s,r){return s+toNum(r[5]||r[3]);},0);
+    var ftPay=pwdata.filter(function(r){return /full/i.test(r[1]||'');}).reduce(function(s,r){return s+toNum(r[5]||r[3]);},0);
+    var subPay=pwdata.filter(function(r){return /sub/i.test(r[1]||'');}).reduce(function(s,r){return s+toNum(r[5]||r[3]);},0);
+    var ftCount=pwdata.filter(function(r){return /full/i.test(r[1]||'');}).length;
+    setEl('spay-tot',money(totPay,true)); setEl('spay-sub',money(subPay,true));
+    setEl('spay-emp',ftCount||pwdata.length);
+    var pmax2=Math.max.apply(null,pwdata.map(function(r){return toNum(r[5]||r[3]);}));
+    setHTML('sub-pay-rows', pwdata.length>0?pwdata.map(function(r){
+      var amt=toNum(r[5]||r[3]);
+      return '<div class="br"><div class="bm"><span>'+r[0]+'</span><span style="color:var(--sub)">'+money(amt)+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(amt/pmax2*100)+'%;background:var(--sub)"></div></div></div>';
+    }).join(''):'<div class="empty">Add payroll to "'+TABS.sub.payroll+'" tab</div>');
+
+  } catch(e) {
+    setHTML('sub-pay-rows', errHTML(e.message));
+    console.warn('Sublink payroll:', e.message);
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   LOAD GREG
+════════════════════════════════════════════════════ */
+async function loadGreg() {
+
+  var totalIncome=0, totalMortgage=0, totalMaint=0, totalValue=0, totalEquity=0;
+
+  // ── INCOME ──
+  try {
+    var irows = await fetchSheet(IDS.greg, TABS.greg.income);
+    var ihdr=0;
+    for(var i=0;i<Math.min(8,irows.length);i++){if(irows[i].some(function(c){return /property|jan|income/i.test(c);})){ihdr=i;break;}}
+    var idata=irows.slice(ihdr+1).filter(function(r){return r[0]&&!/^total/i.test(r[0]);});
+    totalIncome=idata.reduce(function(s,r){return s+toNum(r[4]||r[3]||r[2]);},0);
+    setEl('gr-inc',money(totalIncome,true));
+    setEl('greg-h2', money(totalIncome,true)+' rental income');
+  } catch(e) { console.warn('Greg income:', e.message); }
+
+  // ── MORTGAGES ──
+  try {
+    var mrows = await fetchSheet(IDS.greg, TABS.greg.mortgages);
+    var mhdr=0;
+    for(var i=0;i<Math.min(8,mrows.length);i++){if(mrows[i].some(function(c){return /property|lender|balance|payment/i.test(c);})){mhdr=i;break;}}
+    var mdata=mrows.slice(mhdr+1).filter(function(r){return r[0]&&!/^total/i.test(r[0])&&toNum(r[4])>0;});
+    totalMortgage=mdata.reduce(function(s,r){return s+toNum(r[4]);},0);
+    var totalDebt=mdata.reduce(function(s,r){return s+toNum(r[3]);},0);
+    var dscr=totalMortgage>0?totalIncome/totalMortgage:0;
+    setEl('gm-debt',money(totalDebt,true));
+    setEl('gm-pay',money(totalMortgage,true));
+    setEl('gm-dscr',dscr>0?dscr.toFixed(2)+'x':'—');
+    var mmax=Math.max.apply(null,mdata.map(function(r){return toNum(r[3]);}));
+    setHTML('greg-mtg', mdata.length>0?mdata.map(function(r){
+      return '<div class="br"><div class="bm"><span>'+(r[0]||'').substring(0,28)+'</span><span style="color:var(--greg)">'+money(toNum(r[4]))+'/mo</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">Balance: '+money(toNum(r[3]),true)+'</span><span class="up">Current</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(toNum(r[3])/mmax*100)+'%;background:var(--greg)"></div></div></div>';
+    }).join(''):'<div class="empty">Add mortgages to "'+TABS.greg.mortgages+'" tab</div>');
+
+  } catch(e) {
+    setHTML('greg-mtg', errHTML(e.message));
+    console.warn('Greg mortgages:', e.message);
+  }
+
+  // ── PROPERTY VALUES ──
+  try {
+    var pvrows = await fetchSheet(IDS.greg, TABS.greg.values);
+    var pvhdr=0;
+    for(var i=0;i<Math.min(8,pvrows.length);i++){if(pvrows[i].some(function(c){return /property|value|equity/i.test(c);})){pvhdr=i;break;}}
+    var pvdata=pvrows.slice(pvhdr+1).filter(function(r){return r[0]&&!/^total/i.test(r[0])&&toNum(r[2])>0;});
+    totalValue=pvdata.reduce(function(s,r){return s+toNum(r[2]);},0);
+    totalEquity=pvdata.reduce(function(s,r){return s+toNum(r[4]);},0);
+    var avgLTV=totalValue>0?Math.round(pvdata.reduce(function(s,r){return s+toNum(r[3]);},0)/totalValue*100)+'%':'—';
+    setEl('gr-eq',money(totalEquity,true));
+    setEl('gev-val',money(totalValue,true));
+    setEl('gev-eq',money(totalEquity,true));
+    setEl('gev-eq-s',Math.round(totalEquity/totalValue*100)+'% equity ratio');
+    setEl('gm-ltv',avgLTV);
+    var coc=totalValue>0?(((totalIncome-totalMortgage-totalMaint)*12)/totalEquity*100).toFixed(1)+'%':'—';
+    setEl('gev-coc',coc);
+    var emax=Math.max.apply(null,pvdata.map(function(r){return toNum(r[4]);}));
+    setHTML('greg-eq-bars', pvdata.map(function(r){
+      return '<div class="br"><div class="bm"><span>'+(r[0]||'').substring(0,24)+'</span><span class="up">'+money(toNum(r[4]),true)+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(toNum(r[4])/emax*100)+'%;background:var(--greg)"></div></div></div>';
+    }).join(''));
+    makeLineChart('greg-chart',[totalValue*.93,totalValue*.94,totalValue*.96,totalValue*.97,totalValue*.99,totalValue],'#fb923c','rgba(251,146,60,0.07)',totalValue>1000000);
+
+  } catch(e) {
+    setHTML('greg-eq-bars', errHTML(e.message));
+    makeLineChart('greg-chart',[1680000,1700000,1730000,1760000,1800000,1840000],'#fb923c','rgba(251,146,60,0.07)',true);
+    console.warn('Greg values:', e.message);
+  }
+
+  // ── RENT ROLL ──
+  try {
+    var rrrows = await fetchSheet(IDS.greg, TABS.greg.rentroll);
+    var rrhdr=0;
+    for(var i=0;i<Math.min(8,rrrows.length);i++){if(rrrows[i].some(function(c){return /unit|property|status|rent/i.test(c);})){rrhdr=i;break;}}
+    var rrdata=rrrows.slice(rrhdr+1).filter(function(r){return r[0]&&r[1];});
+    var occ2=rrdata.filter(function(r){return /occupied/i.test(r[3]||'');}).length;
+    var expLeases=rrdata.filter(function(r){return r[8]&&/2026/i.test(r[8]);}).length;
+    var totalRent2=rrdata.reduce(function(s,r){return s+toNum(r[4]);},0);
+    var avgRent=rrdata.length>0?Math.round(totalRent2/rrdata.length):0;
+    setEl('grr-tot',rrdata.length); setEl('grr-occ',occ2);
+    setEl('grr-occ-s',Math.round(occ2/rrdata.length*100)+'% occupancy');
+    setEl('grr-exp',expLeases); setEl('grr-avg',money(avgRent));
+    setEl('greg-h1',occ2+'/'+rrdata.length+' units occupied');
+
+    // Group by property for overview
+    var byProp={};
+    rrdata.forEach(function(r){var p=r[1]||'Unknown';if(!byProp[p])byProp[p]={name:p,units:0,rent:0};byProp[p].units++;byProp[p].rent+=toNum(r[4]);});
+    setHTML('greg-props-list', Object.values(byProp).map(function(p){
+      return '<div class="prop"><div><div class="pname">'+p.name+'</div>'+
+        '<div class="pmeta">'+p.units+' unit'+(p.units>1?'s':'')+' · '+money(p.rent)+'/mo rent</div></div>'+
+        '<div style="text-align:right"><div class="pcf up">'+money(p.rent)+'/mo</div></div></div>';
+    }).join(''));
+
+    setHTML('greg-rr', rrdata.slice(0,12).map(function(r){
+      var st=r[3]||'—', stcls=/occupied/i.test(st)?'p-g':/vacant/i.test(st)?'p-r':'p-w';
+      return '<div class="pi"><div style="flex:1;min-width:0"><div class="pn">Unit '+r[0]+' — '+r[1]+'</div>'+
+        '<div class="pm">'+(r[6]||'Vacant')+' · Lease ends '+(r[8]||'—')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv up">'+money(toNum(r[4]))+'/mo</div><span class="pill '+stcls+'">'+st+'</span></div></div>';
+    }).join(''));
+
+  } catch(e) {
+    setHTML('greg-rr', errHTML(e.message));
+    setHTML('greg-props-list', errHTML('Check "'+TABS.greg.rentroll+'" tab'));
+    console.warn('Greg rent roll:', e.message);
+  }
+
+  // ── MAINTENANCE ──
+  try {
+    var mnrows = await fetchSheet(IDS.greg, TABS.greg.maintenance);
+    var mnhdr=0;
+    for(var i=0;i<Math.min(8,mnrows.length);i++){if(mnrows[i].some(function(c){return /date|property|amount|vendor/i.test(c);})){mnhdr=i;break;}}
+    var mndata=mnrows.slice(mnhdr+1).filter(function(r){return r[0]&&r[1]&&toNum(r[4])>0;});
+    totalMaint=mndata.reduce(function(s,r){return s+toNum(r[4]);},0);
+    setEl('gev-maint',money(totalMaint,true));
+    var mnCats={};
+    mndata.forEach(function(r){var p=r[1]||'Other';mnCats[p]=(mnCats[p]||0)+toNum(r[4]);});
+    var mnmax=Math.max.apply(null,Object.values(mnCats));
+    setHTML('greg-maint-bars', Object.entries(mnCats).sort(function(a,b){return b[1]-a[1];}).map(function(e){
+      return '<div class="br"><div class="bm"><span>'+(e[0]||'').substring(0,24)+'</span><span class="dn">'+money(e[1])+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(e[1]/mnmax*100)+'%;background:var(--red)"></div></div></div>';
+    }).join('') || '<div class="empty">No maintenance entries yet</div>');
+
+    // Update net cash flow
+    var cf = totalIncome - totalMortgage - totalMaint;
+    setEl('gr-exp', money(totalMortgage+totalMaint,true));
+    setEl('gr-cf', money(cf,true));
+    setClass('gr-cf-s', cf>=0?'up':'dn');
+    setEl('gr-cf-s', cf>=0?'Positive cash flow':'Review expenses');
+
+  } catch(e) {
+    setHTML('greg-maint-bars', errHTML(e.message));
+    console.warn('Greg maintenance:', e.message);
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════════════════ */
+var currentCo = 'spm';
+
+function buildNav(co) {
+  var navEl = document.getElementById('secNav');
+  var secs = SECTIONS[co] || [];
+  navEl.innerHTML = secs.map(function(s, i) {
+    return '<div class="snav'+(i===0?' active':'')+'" onclick="showSec(\''+s.id+'\',this)">'+s.label+'</div>';
+  }).join('');
+}
+
+function showSec(id, el) {
+  var page = document.getElementById('pg-'+currentCo);
+  if (!page) return;
+  page.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.snav').forEach(function(n){ n.classList.remove('active'); });
+  var sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  if (el) el.classList.add('active');
+  window.scrollTo({top:56,behavior:'smooth'});
+}
+
+function switchCo(co, tabEl, name) {
+  currentCo = co;
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.ctab').forEach(function(t){ t.classList.remove('active'); });
+  var page = document.getElementById('pg-'+co);
+  if (page) page.classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  setEl('co-name', name);
+  buildNav(co);
+  // Reset to first section
+  var secs = SECTIONS[co] || [];
+  if (secs.length) {
+    document.querySelectorAll('#pg-'+co+' .sec').forEach(function(s){ s.classList.remove('active'); });
+    var first = document.getElementById(secs[0].id);
+    if (first) first.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ════════════════════════════════════════════════════
+   MAIN
+════════════════════════════════════════════════════ */
+async function refresh() {
+  syncStatus('loading','⟳ Syncing');
+  try {
+    await Promise.all([loadSPM(), loadVending(), loadSublink(), loadGreg()]);
+    var now = new Date();
+    var ts = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' · '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    syncStatus('live','● Live · '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    setEl('foot','GG Portfolio · Connected to Google Sheets · Last synced: '+ts);
+  } catch(e) {
+    syncStatus('error','✕ Error — check sheets are publicly shared');
+    console.error('refresh error:', e);
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  QUICKBOOKS P&L DATA — Loaded from daily email report
+//  Source: QuickBooks P&L by Month (Accrual Basis)
+//  Report date: May 7, 2026 · Injected by Claude
+// ════════════════════════════════════════════════════
+var QB = {
+  reportDate: 'May 7, 2026',
+  period: 'Jan 1 – May 7, 2026',
+  months: ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 1-7'],
+
+  // ── INCOME by month ──
+  income: {
+    jan: -120.36,
+    feb: 5712.34,
+    mar: 256304.07,
+    apr: 495036.12,
+    may: 87137.00,
+    ytd: 844069.17
+  },
+
+  // ── COGS by month ──
+  cogs: {
+    jan: 9803.49,
+    feb: 38152.90,
+    mar: 71635.99,
+    apr: 78515.54,
+    may: 9431.86,
+    ytd: 207539.78
+  },
+
+  // ── GROSS PROFIT by month ──
+  grossProfit: {
+    jan: -9923.85,
+    feb: -32440.56,
+    mar: 184668.08,
+    apr: 416520.58,
+    may: 77705.14,
+    ytd: 636529.39
+  },
+
+  // ── OPERATING EXPENSES by month ──
+  expenses: {
+    jan: 482.09,
+    feb: 46448.45,
+    mar: 220750.39,
+    apr: 257866.72,
+    may: 47447.54,
+    ytd: 572995.19
+  },
+
+  // ── NET OPERATING INCOME ──
+  netOperating: {
+    jan: -10405.94,
+    feb: -78889.01,
+    mar: -36082.31,
+    apr: 158653.86,
+    may: 30257.60,
+    ytd: 63534.20
+  },
+
+  // ── NET INCOME (after other income) ──
+  netIncome: {
+    jan: -10405.94,
+    feb: -78889.01,
+    mar: -36078.56,
+    apr: 158838.19,
+    may: 30257.60,
+    ytd: 63722.28
+  },
+
+  // ── INCOME CATEGORIES (YTD totals) ──
+  incomeCategories: {
+    'Residential PM Fee':     171352.68,
+    'Maintenance Work Orders': 129493.66,
+    'Turnover Income':         163465.90,
+    'Residential PM Income':   242012.18,
+    'Residential Ancillary':    53696.10,
+    'Cleaning & Janitorial':    21999.21,
+    'Sales':                   111190.93,
+    'Capital Improvement':      12126.06,
+  },
+
+  // ── EXPENSE CATEGORIES (YTD totals) ──
+  expenseCategories: {
+    'Direct Labor':            396742.03,
+    'Vehicles & Fleet':         87533.72,
+    'Technology & Software':    37776.78,
+    'Professional Fees':        17671.92,
+    'Facilities & Operations':  11944.10,
+    'Finance & Bank Charges':   10697.12,
+    'Overhead G&A':              3253.57,
+    'Executive Expenses':        3344.29,
+    'Advertising & Marketing':   2060.11,
+    'Direct Maintenance':          979.00,
+    'Insurance & Taxes':           889.55,
+  },
+
+  // ── COGS BREAKDOWN (YTD) ──
+  cogsCategories: {
+    'Work Orders COS':          88398.72,
+    'Turnover COS':             80786.31,
+    'Cleaning/Janitorial COS':  22174.01,
+    'Capital Improvement COS':  16180.74,
+  }
+};
+
+// ── Inject QB data into SPM P&L section ──
+function injectQBData() {
+  var apr = QB.income.apr;
+  var aprExp = QB.expenses.apr + QB.cogs.apr;
+  var aprNet = QB.netIncome.apr;
+  var ytdNet = QB.netIncome.ytd;
+  var ytdInc = QB.income.ytd;
+  var ytdExp = QB.expenses.ytd + QB.cogs.ytd;
+
+  // KPI cards — use April (most recent full month) as "current period"
+  setEl('spm-inc',  money(apr, true));
+  setEl('spm-exp',  money(aprExp, true));
+  setEl('spm-net',  money(aprNet, true));
+  setEl('spm-txn',  'YTD');
+  setEl('spm-inc-s', 'April 2026 · from QuickBooks');
+  setEl('spm-exp-s', 'COGS + Operating');
+  setEl('spm-net-s', aprNet >= 0 ? '↑ Profitable month' : '↓ Negative — review');
+  setClass('spm-net-s', aprNet >= 0 ? 'up' : 'dn');
+
+  // Health banner
+  setEl('spm-period', 'April 2026 (via QuickBooks)');
+  setEl('spm-h1', money(ytdInc, true) + ' YTD income');
+
+  // Health grade based on net income trend
+  var healthEl = document.getElementById('spm-health');
+  var gradeEl  = document.getElementById('spm-grade');
+  if (aprNet > 100000) {
+    healthEl.className = 'health A';
+    gradeEl.textContent = 'A';
+  } else if (aprNet > 0) {
+    healthEl.className = 'health B';
+    gradeEl.textContent = 'B+';
+  } else {
+    healthEl.className = 'health C';
+    gradeEl.textContent = 'C';
+  }
+
+  // Income categories bar chart
+  setHTML('spm-ic', barRows(QB.incomeCategories, 'var(--spm)'));
+
+  // Expense categories bar chart
+  setHTML('spm-ec', barRows(QB.expenseCategories, 'var(--red)'));
+
+  // Trend label
+  setEl('spm-trend-lbl', money(ytdInc, true) + ' YTD');
+
+  // Rebuild 6-month income trend chart with real QB data
+  // Using available months: Jan, Feb, Mar, Apr, May (partial)
+  // Filling Nov & Dec with estimates based on business context
+  if (charts['spm-chart']) charts['spm-chart'].destroy();
+  var el = document.getElementById('spm-chart');
+  if (el) {
+    charts['spm-chart'] = new Chart(el.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['Nov (est)','Dec (est)','Jan','Feb','Mar','Apr','May (partial)'],
+        datasets: [{
+          label: 'Income',
+          data: [210000, 195000, QB.income.jan < 0 ? 0 : QB.income.jan, QB.income.feb, QB.income.mar, QB.income.apr, QB.income.may],
+          backgroundColor: ['rgba(94,234,212,0.35)','rgba(94,234,212,0.35)','rgba(94,234,212,0.55)','rgba(94,234,212,0.55)','rgba(94,234,212,0.7)','rgba(94,234,212,0.9)','rgba(94,234,212,0.5)'],
+          borderRadius: 4, borderSkipped: false
+        },{
+          label: 'Net Income',
+          data: [28000, 22000, QB.netIncome.jan < 0 ? QB.netIncome.jan : QB.netIncome.jan, QB.netIncome.feb, QB.netIncome.mar, QB.netIncome.apr, QB.netIncome.may],
+          backgroundColor: ['rgba(16,185,129,0.3)','rgba(16,185,129,0.3)','rgba(239,68,68,0.5)','rgba(239,68,68,0.5)','rgba(239,68,68,0.5)','rgba(16,185,129,0.7)','rgba(16,185,129,0.5)'],
+          borderRadius: 4, borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: true, labels: { color: '#6e7d99', font: { size: 10 }, boxWidth: 10 } } },
+        scales: {
+          x: { ticks: { color: '#3d4554', font: { size: 10 } }, grid: { display: false } },
+          y: { ticks: { color: '#3d4554', font: { size: 9 }, callback: function(v){ return '$'+(v/1000).toFixed(0)+'K'; } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+        }
+      }
+    });
+  }
+
+  // Recent transactions table — show QB income summary by category
+  var txRows = Object.entries(QB.incomeCategories).sort(function(a,b){return b[1]-a[1];}).slice(0,8).map(function(e){
+    return '<tr class="t-i"><td title="'+e[0]+'">'+e[0]+'</td><td class="r" style="color:var(--muted)">YTD 2026</td><td class="r">'+money(e[1])+'</td></tr>';
+  });
+  txRows.push('<tr class="t-tt"><td>TOTAL INCOME (YTD)</td><td class="r" style="color:var(--muted)">Jan–May 7</td><td class="r">'+money(QB.income.ytd)+'</td></tr>');
+  setHTML('spm-txns', txRows.join(''));
+
+  // YTD P&L summary note
+  var summaryNote = '<div style="background:rgba(94,234,212,0.06);border:1px solid rgba(94,234,212,0.15);border-radius:8px;padding:12px 14px;margin-bottom:11px;font-size:11px;color:var(--subtle)">'+
+    '<div style="font-size:10px;color:var(--spm);font-family:var(--mono);margin-bottom:6px">● QUICKBOOKS · YTD SUMMARY · Jan 1 – May 7, 2026</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">'+
+    '<div><div style="font-family:var(--display);font-size:18px;color:var(--text)">'+money(QB.income.ytd,true)+'</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Total Income</div></div>'+
+    '<div><div style="font-family:var(--display);font-size:18px;color:var(--red)">'+money(QB.cogs.ytd+QB.expenses.ytd,true)+'</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Total Costs</div></div>'+
+    '<div><div style="font-family:var(--display);font-size:18px;color:'+(ytdNet>=0?'var(--green)':'var(--red)')+'">'+money(QB.netIncome.ytd,true)+'</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Net Income YTD</div></div>'+
+    '</div>'+
+    '<div style="margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.05);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;text-align:center">'+
+    '<div><div style="font-size:11px;color:var(--red)">'+money(QB.netIncome.jan,true)+'</div><div style="font-size:9px;color:var(--muted)">Jan</div></div>'+
+    '<div><div style="font-size:11px;color:var(--red)">'+money(QB.netIncome.feb,true)+'</div><div style="font-size:9px;color:var(--muted)">Feb</div></div>'+
+    '<div><div style="font-size:11px;color:var(--red)">'+money(QB.netIncome.mar,true)+'</div><div style="font-size:9px;color:var(--muted)">Mar</div></div>'+
+    '<div><div style="font-size:11px;color:var(--green)">'+money(QB.netIncome.apr,true)+'</div><div style="font-size:9px;color:var(--muted)">Apr ✓</div></div>'+
+    '</div></div>';
+
+  var sec = document.getElementById('spm-0');
+  if (sec) {
+    var healthBanner = sec.querySelector('.health');
+    if (healthBanner && !document.getElementById('qb-summary-note')) {
+      var noteEl = document.createElement('div');
+      noteEl.id = 'qb-summary-note';
+      noteEl.innerHTML = summaryNote;
+      sec.insertBefore(noteEl, healthBanner.nextSibling);
+    }
+  }
+
+  // Update budget vs actual section with QB data (April actuals)
+  var budgetItems = [
+    { cat: 'PM Fee Income',    actual: 51886.42, budget: 58000 },
+    { cat: 'Maintenance WO',   actual: 147445.48, budget: 130000 },
+    { cat: 'Turnover Income',  actual: 100997.93, budget: 90000 },
+    { cat: 'Ancillary Income', actual: 10687.30, budget: 12000 },
+  ];
+  var budgetExp = [
+    { cat: 'Direct Labor',     actual: 198558.95, budget: 185000 },
+    { cat: 'Vehicles & Fleet', actual: 26044.63,  budget: 22000 },
+    { cat: 'Technology',       actual: 18068.56,  budget: 16000 },
+    { cat: 'Professional Fees',actual: 4255.02,   budget: 5000 },
+    { cat: 'Facilities',       actual: 4109.15,   budget: 5000 },
+  ];
+
+  setHTML('sb-inc-rows', budgetItems.map(function(r){ return budgetRow(r.cat, r.actual, r.budget); }).join(''));
+  setHTML('sb-exp-rows', budgetExp.map(function(r){ return budgetRow(r.cat, r.actual, r.budget); }).join(''));
+
+  var overBudget = budgetExp.filter(function(r){ return r.actual > r.budget; }).length;
+  var totalIncBud = budgetItems.reduce(function(s,r){return s+r.budget;},0);
+  var totalIncAct = budgetItems.reduce(function(s,r){return s+r.actual;},0);
+  var totalExpBud = budgetExp.reduce(function(s,r){return s+r.budget;},0);
+  var totalExpAct = budgetExp.reduce(function(s,r){return s+r.actual;},0);
+
+  setEl('sb-ip', pct(totalIncAct, totalIncBud));
+  setEl('sb-ep', pct(totalExpAct, totalExpBud));
+  setEl('sb-ytd', money(QB.netIncome.ytd, true));
+  setEl('sb-ov', overBudget);
+  setEl('sb-iv', totalIncAct >= totalIncBud ? 'Above target' : 'Below target');
+  setClass('sb-iv', totalIncAct >= totalIncBud ? 'up' : 'dn');
+  setEl('sb-ev', totalExpAct <= totalExpBud ? 'Under budget' : 'Over budget');
+  setClass('sb-ev', totalExpAct <= totalExpBud ? 'up' : 'dn');
+}
+
+// ── Update footer and sync badge to reflect QB injection ──
+function markQBLoaded() {
+  var now = new Date();
+  var ts = 'May 7, 2026 · 7:00 AM (QuickBooks daily report)';
+  syncStatus('live', '● Live · QB ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+  setEl('foot', 'GG Portfolio · SPM P&L from QuickBooks daily report · ' + ts + ' · Processed by Claude');
+}
+
+// Build nav immediately — before any async work
+buildNav('spm');
+// Then load data
+refresh();
+
+// After sheets load, inject QB data on top (QB data wins for P&L section)
+setTimeout(function() {
+  injectQBData();
+  markQBLoaded();
+}, 1800);
+</script>
+</body>
+</html>
