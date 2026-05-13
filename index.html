@@ -275,6 +275,1085 @@ body{background:var(--bg);color:var(--text);font-family:var(--db);font-size:14px
   <div class="sec active" id="vend-0">
     <div class="health HA"><div class="hg">A-</div>
       <div><div class="hl">Vending · ATM &amp; Amusements · 2026</div>
+        <div class="ht"><span class="htag htg" id="vend-h1">Revenue loading...</span><span class="htag htw" id="vend-h2">Machines loading...</span><span class="htag htb" id="vend-h3">Routes loading...</span></div>
+      </div>
+    </div>
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Total revenue</div><div class="kv" id="vi">—</div><div class="ks up" id="vi-s">Transactions tab</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total expenses</div><div class="kv" id="ve">—</div><div class="ks dn">Transactions tab</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net income</div><div class="kv" id="vn">—</div><div class="ks" id="vn-s">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Active machines</div><div class="kv" id="vmc">—</div><div class="ks wa">Machines tab</div></div>
+    </div>
+    <div class="card" style="padding:0 16px">
+      <div style="padding:13px 0 9px"><span style="font-size:11px;color:var(--subtle)">Recent transactions · Transactions tab</span></div>
+      <table class="tbl"><thead><tr><th>Description</th><th class="r">Date</th><th class="r">Amount</th></tr></thead>
+      <tbody id="vend-txns"><tr><td colspan="3"><div class="sk h"></div><div class="sk"></div></td></tr></tbody></table>
+    </div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Revenue trend</div><div class="badge ba">Transactions tab</div></div><div style="height:190px;position:relative"><canvas id="chart-vend"></canvas></div></div>
+  </div>
+  <div class="sec" id="vend-1">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Online</div><div class="kv" id="vm-on">—</div><div class="ks up">Running</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Low cash</div><div class="kv" id="vm-lc">—</div><div class="ks wa">Replenish</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Offline</div><div class="kv" id="vm-off">—</div><div class="ks dn">Repair needed</div></div>
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Top machine</div><div class="kv" id="vm-top">—</div><div class="ks" id="vm-top-l" style="color:var(--vend)">—</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Machine performance · Machines tab</div><div class="badge ba" id="vend-mbadge">Loading...</div></div><div class="mgrid" id="vend-machines"><div class="sk h"></div><div class="sk h"></div><div class="sk h"></div></div></div>
+  </div>
+  <div class="sec" id="vend-2">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Collected MTD</div><div class="kv" id="vr-tot">—</div><div class="ks up">Collections tab</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">ATM revenue</div><div class="kv" id="vr-atm">—</div><div class="ks up">Machines tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Vending revenue</div><div class="kv" id="vr-vnd">—</div><div class="ks up">Machines tab</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Amusement rev</div><div class="kv" id="vr-gam">—</div><div class="ks up">Machines tab</div></div>
+    </div>
+    <div class="twoeq">
+      <div class="card"><div class="ch"><div class="ct">Revenue by machine type</div></div><div id="vend-rev-cats"><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">Collection log</div><div class="badge ba">Recent</div></div><div id="vend-colls"><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+  <div class="sec" id="vend-3">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Active employees</div><div class="kv" id="vt-emp">—</div><div class="ks up">Routes tab</div></div>
+      <div class="kpi" style="--kc:var(--vend)"><div class="kl">Collections MTD</div><div class="kv" id="vt-col">—</div><div class="ks up">Total runs</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Avg efficiency</div><div class="kv" id="vt-eff">—</div><div class="ks wa">Routes tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Rev/employee</div><div class="kv" id="vt-rev">—</div><div class="ks up">This month</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Employee route performance · Routes tab</div></div><div class="pl" id="vend-routes"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+</div>
+
+<!-- ═══ SUBLINK ═══ -->
+<div class="page" id="pg-sub">
+  <div class="sec active" id="sub-0">
+    <div class="health HB"><div class="hg">B</div>
+      <div><div class="hl">Sublink Management Group · 2026</div>
+        <div class="ht"><span class="htag htg">Pipeline healthy</span><span class="htag htb" id="sub-ar-tag">AR loading...</span><span class="htag htw">Review margins</span></div>
+      </div>
+    </div>
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Revenue</div><div class="kv" id="si">—</div><div class="ks up">Appfolio P&amp;L</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Expenses</div><div class="kv" id="se">—</div><div class="ks dn">Appfolio P&amp;L</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net margin</div><div class="kv" id="sm">—</div><div class="ks up"><span id="sn">—</span> net</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">AR outstanding</div><div class="kv" id="sar">—</div><div class="ks dn" id="sar-s">Appfolio AR</div></div>
+    </div>
+    <div class="card" style="padding:0 16px">
+      <div style="padding:13px 0 9px"><span style="font-size:11px;color:var(--subtle)">P&amp;L summary · Appfolio P&amp;L tab</span></div>
+      <table class="tbl"><thead><tr><th>Category</th><th class="r">Budget</th><th class="r">Actual</th></tr></thead>
+      <tbody id="sub-pnl"><tr><td colspan="3"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></td></tr></tbody></table>
+    </div>
+  </div>
+  <div class="sec" id="sub-1">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Active contracts</div><div class="kv" id="sp-act">—</div><div class="ks" style="color:var(--blue)" id="sp-actv">—</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Quotes pending</div><div class="kv" id="sp-q">—</div><div class="ks" style="color:var(--sub)" id="sp-qv">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">At-risk jobs</div><div class="kv" id="sp-risk">—</div><div class="ks wa">Margin &lt;20%</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Completed MTD</div><div class="kv" id="sp-done">—</div><div class="ks up" id="sp-donev">—</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Contract pipeline · Appfolio Pipeline</div><div class="badge" style="background:var(--sub-g,rgba(167,139,250,0.1));color:var(--sub)">Live</div></div>
+    <div class="pl" id="sub-pipe"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <div class="sec" id="sub-2">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Avg job margin</div><div class="kv" id="sjp-avg">—</div><div class="ks up">Target: 22%</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Below target</div><div class="kv" id="sjp-low">—</div><div class="ks wa">Under 20%</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Top margin</div><div class="kv" id="sjp-top">—</div><div class="ks" style="color:var(--sub)" id="sjp-topn">—</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Revenue at risk</div><div class="kv" id="sjp-risk">—</div><div class="ks dn">At-risk jobs</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Job profitability</div></div><div id="sub-jobs"><div class="sk"></div><div class="sk"></div></div></div>
+  </div>
+  <div class="sec" id="sub-3">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total AR</div><div class="kv" id="ar-tot">—</div><div class="ks dn">Outstanding</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">30–60 days</div><div class="kv" id="ar-30">—</div><div class="ks wa">Follow up</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">60+ days</div><div class="kv" id="ar-60">—</div><div class="ks dn">Escalate now</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Current</div><div class="kv" id="ar-cur">—</div><div class="ks up">On time</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">AR aging · Appfolio AR</div><div class="badge br" id="ar-badge">Loading...</div></div><div id="sub-ar-rows"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <div class="sec" id="sub-4">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Total payroll</div><div class="kv" id="pay-tot">—</div><div class="ks" id="pay-pct">—</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Employees</div><div class="kv" id="pay-emp">—</div><div class="ks up">Full-time</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Subcontractors</div><div class="kv" id="pay-sub">—</div><div class="ks fl">This month</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Rev/head</div><div class="kv" id="pay-rev">—</div><div class="ks up">Efficiency</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Payroll breakdown · Payroll tab</div></div><div id="pay-rows"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+</div>
+
+<!-- ═══ GREG ═══ -->
+<div class="page" id="pg-greg">
+  <div class="sec active" id="greg-0">
+    <div class="health HA"><div class="hg">A</div>
+      <div><div class="hl">Greg's Properties · 2026</div>
+        <div class="ht"><span class="htag htg" id="greg-h1">Loading occupancy...</span><span class="htag htg" id="greg-h2">Loading cash flow...</span><span class="htag htg" id="greg-h3">Mortgages loading...</span><span class="htag htw" id="greg-h4">Leases loading...</span></div>
+      </div>
+    </div>
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Rental income</div><div class="kv" id="gr-inc">—</div><div class="ks up">Appfolio income</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Total expenses</div><div class="kv" id="gr-exp">—</div><div class="ks fl">Mortgages + maint.</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Net cash flow</div><div class="kv" id="gr-cf">—</div><div class="ks" id="gr-cf-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Total equity</div><div class="kv" id="gr-eq">—</div><div class="ks up">Property values</div></div>
+    </div>
+    <div id="greg-props"><div class="card"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Portfolio value trend</div><div class="badge bg">Property values</div></div><div style="height:190px;position:relative"><canvas id="chart-greg"></canvas></div></div>
+  </div>
+  <div class="sec" id="greg-1">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Total units</div><div class="kv" id="grr-tot">—</div><div class="ks" style="color:var(--greg)">All properties</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Occupied</div><div class="kv" id="grr-occ">—</div><div class="ks up" id="grr-occ-s">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Expiring leases</div><div class="kv" id="grr-exp">—</div><div class="ks wa">Review needed</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Avg monthly rent</div><div class="kv" id="grr-avg">—</div><div class="ks up">Per unit</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Rent roll · Appfolio Rentroll</div><div class="badge bg">Live</div></div>
+    <div class="pl" id="greg-rr"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <div class="sec" id="greg-2">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Total debt</div><div class="kv" id="gm-debt">—</div><div class="ks fl">All mortgages</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Monthly payments</div><div class="kv" id="gm-pay">—</div><div class="ks up">All current</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Debt coverage</div><div class="kv" id="gm-dscr">—</div><div class="ks up">Income/payments</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Avg LTV</div><div class="kv" id="gm-ltv">—</div><div class="ks up">All properties</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Mortgage tracker · Mortgages tab</div><div class="badge bg">All current</div></div><div id="greg-mtg"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <div class="sec" id="greg-3">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--greg)"><div class="kl">Portfolio value</div><div class="kv" id="gev-val">—</div><div class="ks up">Property values</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Total equity</div><div class="kv" id="gev-eq">—</div><div class="ks up" id="gev-eq-s">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Maintenance MTD</div><div class="kv" id="gev-maint">—</div><div class="ks wa">Maintenance tab</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Cash on cash</div><div class="kv" id="gev-coc">—</div><div class="ks up">Annual est.</div></div>
+    </div>
+    <div class="twoeq">
+      <div class="card"><div class="ch"><div class="ct">Equity by property</div></div><div id="greg-eq-bars"><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">Maintenance · Maintenance tab</div><div class="badge ba">This month</div></div><div id="greg-maint-bars"><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot" id="foot">GG Portfolio · Connecting to Google Sheets...</div>
+
+<script>
+/* ══════════════════════════════════════════
+   SHEET IDS — 6 connected sources
+══════════════════════════════════════════ */
+var IDS = {
+  // PRIMARY P&L SOURCE — Greg's Budget Review (manually maintained + QB actuals)
+  budget: '1MZ2nhLhC73LdzDivBl1OCqNndefvIbcuhY1l2Rki2SM',
+  // PORTFOLIO MASTER DATA HUB — single source for all operational data
+  // AppFolio, QuickBooks, Jobber, and manual tabs all live here
+  hub:    '1C774kNOFisVOaAy1eSSb7ZYezc5m5yOWsUvcO-lmOQo',
+};
+// Alias — all operational data reads from the Master Hub
+var H = IDS.hub;
+
+/* Budget Review tabs */
+var BT = { spm:'SPM', gpm:'GPM', combined:'SPM & GPM' };
+
+/* Master Data Hub tab names — all operational data in ONE sheet */
+var TABS = {
+  // Standard / Gallagher
+  cash:        'Cash balances',
+  vacancies:   'AF Vacancies',
+  pipeline:    'Jobber Pipeline',
+  // Vending
+  txn:         'Transactions',
+  machines:    'Machines',
+  routes:      'Routes',
+  collections: 'Collections',
+  // Sublink
+  ar:          'AF AR',
+  jobber:      'Jobber Pipeline',
+  payroll:     'Payroll',
+  // Greg's Properties
+  rentroll:    'AF Rent Roll',
+  income:      'AF Income',
+  mortgages:   'Mortgages',
+  maintenance: 'Maintenance',
+  propvalues:  'Property values',
+};
+
+/* Budget Review structure — CONFIRMED from file read:
+   Row 0: title
+   Row 1: headers [null, January, February, March, April, May, June, Monthly Target]
+   Columns: 0=Category, 1=Jan, 2=Feb, 3=Mar, 4=Apr, 5=May, 6=Jun, 7=Monthly Target
+   Income rows 2-10 (section header "Income" at row 2)
+   COGS rows 12-18 (section header "Cost of Goods Sold" at row 12)
+   Expenses rows 22-34 (section header "Expenses" at row 22)
+   Skip rows starting with Total, Gross Profit, Net Income
+*/
+
+var SECTIONS = {
+  spm:  [{id:'spm-0',l:'P&L'},{id:'spm-1',l:'Budget vs Actual'},{id:'spm-2',l:'Vacancies'},{id:'spm-3',l:'Job Pipeline'},{id:'spm-4',l:'Cash Balances'}],
+  vend: [{id:'vend-0',l:'P&L'},{id:'vend-1',l:'Machines'},{id:'vend-2',l:'Route Revenue'},{id:'vend-3',l:'Team Performance'}],
+  sub:  [{id:'sub-0',l:'P&L'},{id:'sub-1',l:'Pipeline'},{id:'sub-2',l:'Job Profitability'},{id:'sub-3',l:'Accounts Receivable'},{id:'sub-4',l:'Payroll'}],
+  greg: [{id:'greg-0',l:'Overview'},{id:'greg-1',l:'Rent Roll'},{id:'greg-2',l:'Mortgages'},{id:'greg-3',l:'Equity & Value'}]
+};
+
+var MONTHS = ['January','February','March','April','May','June'];
+var MS = ['Jan','Feb','Mar','Apr','May','Jun'];
+var budSPM = null, budGPM = null;
+var activeMo = 3; // April = index 3
+var charts = {};
+var co = 'spm';
+
+/* ── utils ── */
+function csvURL(id,tab){ return 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent(tab); }
+async function get(id,tab){ var r=await fetch(csvURL(id,tab)); if(!r.ok) throw new Error('"'+tab+'" ('+r.status+') — check sheet is set to "Anyone with link can view"'); return csv(await r.text()); }
+function csv(t){ return t.trim().split('\n').map(function(line){var c=[],s='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){c.push(s.trim());s='';}else s+=ch;}c.push(s.trim());return c;}); }
+function n(s){ if(!s)return 0; return parseFloat(String(s).replace(/[$,\s"%]/g,'').replace(/\(([^)]+)\)/,'-$1'))||0; }
+function $$(v,sh){ if(isNaN(v)||v===null)return'—'; var a=Math.abs(v),neg=v<0,r; if(sh&&a>=1000000)r='$'+(a/1000000).toFixed(1)+'M'; else if(sh&&a>=1000)r='$'+(a/1000).toFixed(0)+'K'; else r='$'+Math.round(a).toLocaleString(); return(neg?'-':'')+r; }
+function pct(a,b){ return b>0?Math.round(a/b*100)+'%':'—'; }
+function E(id){ return document.getElementById(id); }
+function el(id,v){ var e=E(id);if(e)e.textContent=v; }
+function html(id,h){ var e=E(id);if(e)e.innerHTML=h; }
+function cls(id,c){ var e=E(id);if(e)e.className='ks '+c; }
+function syncSt(s,m){ var e=E('syncEl');e.className='sync '+s;e.textContent=m; }
+function errBlk(m){ return '<div class="err">⚠ '+m+'</div>'; }
+
+function mkChart(id,type,labels,datasets,yFmt){
+  if(charts[id])charts[id].destroy();
+  var e=E(id);if(!e)return;
+  charts[id]=new Chart(e.getContext('2d'),{type:type,data:{labels:labels,datasets:datasets},options:{
+    responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:'#3d4554',font:{size:10}},grid:{display:false}},
+      y:{ticks:{color:'#3d4554',font:{size:9},callback:yFmt||function(v){return'$'+(v>=1000?(v/1000).toFixed(0)+'K':v);}},grid:{color:'rgba(255,255,255,0.03)'}}}
+  }});
+}
+
+/* ── BUDGET REVIEW PARSER ──
+   Reads SPM or GPM tab from Budget Review Google Sheet
+   Structure confirmed from file:
+   Row 2+ = section headers and data rows
+   Cols: 0=Category, 1-6=Jan-Jun, 7=Monthly Target
+*/
+function parseBudget(rows){
+  var out={income:[],cogs:[],expenses:[]};
+  var sec=null;
+  for(var i=2;i<rows.length;i++){
+    var r=rows[i]; var cat=(r[0]||'').trim();
+    if(!cat) continue;
+    if(/^Income$/i.test(cat)){sec='income';continue;}
+    if(/^Cost of Goods/i.test(cat)){sec='cogs';continue;}
+    if(/^Expenses$/i.test(cat)){sec='expenses';continue;}
+    if(/^Total|^Gross Profit|^Net Income/i.test(cat)) continue;
+    if(!sec) continue;
+    // vals: cols 1-6 = Jan-Jun, col 7 = monthly target
+    var vals=[n(r[1]),n(r[2]),n(r[3]),n(r[4]),n(r[5]),n(r[6])];
+    var target=n(r[7]);
+    out[sec].push({cat:cat,vals:vals,target:target});
+  }
+  return out;
+}
+
+/* ── BUDGET vs ACTUAL ROW — traffic light ── */
+function bvaRow(cat,actual,target){
+  var p=target>0?Math.round(actual/target*100):(actual>0?100:0);
+  var col=p>=95?'var(--green)':p>=80?'var(--amber)':'var(--red)';
+  var dot=p>=95?'🟢':p>=80?'🟡':'🔴';
+  return '<div class="bva"><div class="bva-t"><div class="bva-cat">'+dot+' '+cat+'</div>'+
+    '<div class="bva-nums"><b>'+$$(actual)+'</b> / '+$$(target)+'</div></div>'+
+    '<div class="bva-row"><div class="bva-track"><div class="bva-fill" style="width:'+Math.min(p,100)+'%;background:'+col+'"></div></div>'+
+    '<div class="bva-pct" style="color:'+col+'">'+p+'%</div></div></div>';
+}
+
+function barRow(cat,amt,maxAmt,color){
+  return '<div class="bar"><div class="bm"><span style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">'+cat+'</span>'+
+    '<span style="color:'+color+'">'+$$(amt)+'</span></div>'+
+    '<div class="bt"><div class="bf" style="width:'+Math.round(maxAmt>0?amt/maxAmt*100:0)+'%;background:'+color+'"></div></div></div>';
+}
+
+/* ════════════════════════════════════════════
+   PRIORITY 1: LOAD BUDGET REVIEW
+   Greg's Budget Review is the PRIMARY P&L source.
+   Tabs: SPM and GPM — both loaded and shown separately
+   AND combined for the main P&L view.
+════════════════════════════════════════════ */
+async function loadBudgetReview(){
+  var spmRows = await get(IDS.budget, BT.spm);
+  var gpmRows = await get(IDS.budget, BT.gpm);
+  budSPM = parseBudget(spmRows);
+  budGPM = parseBudget(gpmRows);
+
+  // Auto-detect most recent month with data
+  for(var m=5;m>=0;m--){
+    var hasData=budSPM.income.some(function(r){return r.vals[m]>0;})||budGPM.income.some(function(r){return r.vals[m]>0;});
+    if(hasData){activeMo=m;break;}
+  }
+
+  // Build month selector — only show months with data
+  var months=[];
+  for(var m=0;m<6;m++){
+    if(budSPM.income.some(function(r){return r.vals[m]>0;})||budGPM.income.some(function(r){return r.vals[m]>0;})) months.push(m);
+  }
+  html('spm-mtabs',months.map(function(m){
+    return '<div class="mt'+(m===activeMo?' active':'')+'" onclick="selectMonth('+m+',this)">'+MS[m]+'</div>';
+  }).join(''));
+
+  renderPnL(activeMo);
+}
+
+function selectMonth(m,el2){
+  activeMo=m;
+  document.querySelectorAll('.mt').forEach(function(e){e.classList.remove('active');});
+  if(el2)el2.classList.add('active');
+  renderPnL(m);
+}
+
+function renderPnL(mo){
+  if(!budSPM||!budGPM)return;
+
+  // Sum across SPM + GPM for combined view
+  function tot(sec,m){ return budSPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0)+budGPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0); }
+  function totT(sec){ return budSPM[sec].reduce(function(s,r){return s+r.target;},0)+budGPM[sec].reduce(function(s,r){return s+r.target;},0); }
+
+  var ti=tot('income',mo), tc=tot('cogs',mo), te=tot('expenses',mo);
+  var gp=ti-tc, net=gp-te;
+  var tiT=totT('income'), tcT=totT('cogs'), teT=totT('expenses');
+
+  // KPIs
+  el('k-inc',$$(ti,true)); el('k-cogs',$$(tc,true)); el('k-gp',$$(gp,true)); el('k-exp',$$(te,true));
+  el('k-inc-s',MONTHS[mo]+' · '+pct(ti,tiT)+' of target');
+  cls('k-inc-s',ti>=tiT?'up':'wa');
+  el('k-gp-s',ti>0?Math.round(gp/ti*100)+'% gross margin':'—');
+  cls('k-gp-s',gp>0?'up':'dn');
+  el('k-exp-s',pct(te,teT)+' of target');
+  cls('k-exp-s',te<=teT?'up':'dn');
+  el('spm-period',MONTHS[mo]+' 2026');
+
+  // Health grade based on income % of target
+  var ip=tiT>0?ti/tiT*100:100;
+  var grade=ip>=97?'A+':ip>=93?'A':ip>=88?'A−':ip>=83?'B+':ip>=78?'B':ip>=73?'B−':'C';
+  el('spm-grade',grade);
+  var hEl=E('spm-health');
+  if(hEl){var g=grade[0];hEl.className='health '+(g==='A'?'HA':g==='B'?'HB':'HC');}
+
+  // Health tags
+  var t1=ti>=tiT?{c:'htg',t:$$(ti,true)+' income ✓'}:{c:'htw',t:$$(ti,true)+' income ('+pct(ti,tiT)+')'};
+  var t2=tc<=tcT?{c:'htg',t:'COGS under target ✓'}:{c:'htb',t:'COGS over target'};
+  var t3=net>0?{c:'htg',t:$$(net,true)+' net income'}:{c:'htb',t:'Net loss: '+$$(net,true)};
+  html('spm-tags','<span class="htag '+t1.c+'">'+t1.t+'</span><span class="htag '+t2.c+'">'+t2.t+'</span><span class="htag '+t3.c+'">'+t3.t+'</span>');
+
+  // Merge categories across SPM+GPM for P&L table
+  function merge(spmSec,gpmSec){
+    var map={};
+    function add(arr){arr.forEach(function(r){var k=r.cat;if(!map[k])map[k]={cat:k,actual:0,target:r.target};map[k].actual+=r.vals[mo]||0;});}
+    add(spmSec);add(gpmSec);return Object.values(map);
+  }
+  var incM=merge(budSPM.income,budGPM.income);
+  var cogM=merge(budSPM.cogs,budGPM.cogs);
+  var expM=merge(budSPM.expenses,budGPM.expenses);
+
+  function clean(cat){ return cat.replace(/^\d+-\d+\s*/,'').replace(/ - .*/,'').trim(); }
+
+  function trow(r,isInc){
+    if(r.actual===0&&r.target===0)return'';
+    var diff=r.actual-r.target;
+    var diffStr=r.target>0?(diff>=0?'<span class="up">+'+$$(diff,true)+'</span>':'<span class="dn">'+$$(diff,true)+'</span>'):'—';
+    return'<tr class="'+(isInc?'ti':'te')+'"><td>'+clean(r.cat)+'</td><td class="r" style="color:var(--muted)">'+$$(r.target)+'</td><td class="r">'+$$(r.actual)+'</td><td class="r">'+diffStr+'</td></tr>';
+  }
+
+  var tbody='';
+  tbody+='<tr class="tsec"><td colspan="4">Income</td></tr>';
+  tbody+=incM.map(function(r){return trow(r,true);}).join('');
+  tbody+='<tr class="ttt"><td>Total Income</td><td class="r" style="color:var(--muted)">'+$$(tiT)+'</td><td class="r">'+$$(ti)+'</td><td class="r"><span class="'+(ti>=tiT?'up':'dn')+'">'+pct(ti,tiT)+'</span></td></tr>';
+  tbody+='<tr class="tsec"><td colspan="4">Cost of Goods Sold</td></tr>';
+  tbody+=cogM.map(function(r){return trow(r,false);}).join('');
+  tbody+='<tr class="ttt"><td>Gross Profit</td><td class="r" style="color:var(--muted)">'+$$(tiT-tcT)+'</td><td class="r"><span class="'+(gp>0?'up':'dn')+'">'+$$(gp)+'</span></td><td class="r"><span class="'+(gp>0?'up':'dn')+'">'+Math.round(gp/Math.max(ti,1)*100)+'%</span></td></tr>';
+  tbody+='<tr class="tsec"><td colspan="4">Operating Expenses</td></tr>';
+  tbody+=expM.map(function(r){return trow(r,false);}).join('');
+  tbody+='<tr class="ttt"><td>Net Income</td><td class="r" style="color:var(--muted)">'+$$(tiT-tcT-teT)+'</td><td class="r"><span class="'+(net>0?'up':'dn')+'">'+$$(net)+'</span></td><td class="r">—</td></tr>';
+  html('pnl-body',tbody);
+
+  // Income bars
+  var incFilt=incM.filter(function(r){return r.actual>0;});
+  var incMax=Math.max.apply(null,incFilt.map(function(r){return r.actual;}).concat([1]));
+  html('inc-bars',incFilt.map(function(r){return barRow(clean(r.cat),r.actual,incMax,'var(--spm)');}).join('')||'<div class="empty">No income data</div>');
+
+  // Expense bars (COGS + Expenses)
+  var expAll=cogM.concat(expM).filter(function(r){return r.actual>0;});
+  var expMax=Math.max.apply(null,expAll.map(function(r){return r.actual;}).concat([1]));
+  html('exp-bars',expAll.map(function(r){return barRow(clean(r.cat),r.actual,expMax,'var(--red)');}).join('')||'<div class="empty">No expense data</div>');
+
+  // 6-month trend chart
+  var tLabels=[],tIncome=[],tNet=[];
+  for(var m=0;m<6;m++){
+    var hasDat=budSPM.income.some(function(r){return r.vals[m]>0;})||budGPM.income.some(function(r){return r.vals[m]>0;});
+    if(hasDat){
+      tLabels.push(MS[m]);
+      var tI=tot('income',m),tC=tot('cogs',m),tE=tot('expenses',m);
+      tIncome.push(tI);tNet.push(tI-tC-tE);
+    }
+  }
+  mkChart('chart-trend','bar',tLabels,[
+    {label:'Income',data:tIncome,backgroundColor:tIncome.map(function(_,i){return tLabels[i]===MS[activeMo]?'rgba(94,234,212,0.85)':'rgba(94,234,212,0.3)';}),borderRadius:4,borderSkipped:false},
+    {label:'Net',data:tNet,backgroundColor:tNet.map(function(v){return v>=0?'rgba(16,185,129,0.55)':'rgba(239,68,68,0.55)';}),borderRadius:4,borderSkipped:false}
+  ]);
+
+  renderBudgetVsActual(mo);
+}
+
+function renderBudgetVsActual(mo){
+  if(!budSPM||!budGPM)return;
+  function mkBVA(bud,sec,cid){
+    var rows=bud[sec].filter(function(r){return r.target>0||r.vals[mo]>0;});
+    if(!rows.length){html(cid,'<div class="empty">No data — add to Budget Review sheet</div>');return;}
+    var tA=rows.reduce(function(s,r){return s+(r.vals[mo]||0);},0);
+    var tT=rows.reduce(function(s,r){return s+r.target;},0);
+    var clean=function(c){return c.replace(/^\d+-\d+\s*/,'').replace(/ - .*/,'').trim();};
+    html(cid,rows.map(function(r){return bvaRow(clean(r.cat),r.vals[mo]||0,r.target);}).join('')+
+      '<div class="bva-divider">'+bvaRow('TOTAL',tA,tT)+'</div>');
+  }
+  mkBVA(budSPM,'income','bva-spm-inc'); mkBVA(budGPM,'income','bva-gpm-inc');
+  mkBVA(budSPM,'expenses','bva-spm-exp'); mkBVA(budGPM,'expenses','bva-gpm-exp');
+
+  function tot(sec,m){return budSPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0)+budGPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0);}
+  function totT(sec){return budSPM[sec].reduce(function(s,r){return s+r.target;},0)+budGPM[sec].reduce(function(s,r){return s+r.target;},0);}
+  var ti=tot('income',mo),tiT=totT('income');
+  var tc=tot('cogs',mo),tcT=totT('cogs');
+  var te=tot('expenses',mo),teT=totT('expenses');
+  el('bk-ip',pct(ti,tiT));el('bk-iv',ti>=tiT?'↑ Over target':'↓ Under target');cls('bk-iv',ti>=tiT?'up':'dn');
+  el('bk-cp',pct(tc,tcT));el('bk-cv',tc<=tcT?'↓ Under budget':'↑ Over budget');cls('bk-cv',tc<=tcT?'up':'dn');
+  el('bk-gm',ti>0?Math.round((ti-tc)/ti*100)+'%':'—');
+  el('bk-ep',pct(te,teT));el('bk-ev',te<=teT?'↓ Under budget':'↑ Over budget');cls('bk-ev',te<=teT?'up':'dn');
+}
+
+/* ════════════════════════════════════════════
+   SPM OPERATIONAL — Cash balances, Vacancies, Pipeline
+════════════════════════════════════════════ */
+var QBCOLS={date:3,type:4,account:2,name:6,split:7,amount:8,desc:9};
+function parseTxns(rows){
+  var h=0;
+  for(var i=0;i<Math.min(10,rows.length);i++){if(rows[i].some(function(c){return/transaction.?date|txndate/i.test(c);})||rows[i].some(function(c){return/^amount$/i.test(c);})){h=i;break;}}
+  return rows.slice(h+1).filter(function(r){return r[QBCOLS.date]&&r[QBCOLS.date].match(/\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}/)&&r[QBCOLS.amount]&&r[QBCOLS.amount]!=='';});
+}
+
+async function loadSPMOps(){
+  // Cash balances (QB Balance Sheet Annual format)
+  try{
+    var cr=await get(H,TABS.cash);
+    var ch=0;for(var i=0;i<Math.min(5,cr.length);i++){if(cr[i].some(function(c){return/report.?date|account.?name/i.test(c);})){ch=i;break;}}
+    var cd=cr.slice(ch+1).filter(function(r){return r[6]&&r[7]&&r[7]!=='';});
+    var ld='';for(var i=0;i<cd.length;i++){if(cd[i][1]){ld=cd[i][1];break;}}
+    var lat=cd.filter(function(r){return r[1]===ld;}), pri=cd.filter(function(r){return r[1]!==ld&&r[1];});
+    var bk=lat.filter(function(r){return/bank|checking|cash/i.test(r[4]||r[5]||'')&&n(r[7])!==0;});
+    var allA=lat.filter(function(r){return r[3]==='ASSETS'&&n(r[7])!==0;});
+    var disp=bk.length>0?bk:allA.slice(0,6);
+    var tot=disp.reduce(function(s,r){return s+n(r[7]);},0), aT=allA.reduce(function(s,r){return s+n(r[7]);},0);
+    el('sc-tot',$$(tot,true));el('sc-bank',$$(tot,true));el('sc-assets',$$(aT,true));
+    el('sc-date',ld.substring(0,10));el('sc-s','As of '+ld.substring(0,10));
+    var ic={'cash':'🏦','checking':'🏦','operating':'🏦','ramp':'💳','trust':'🔒','escrow':'📋','reserve':'🏛','maintenance':'🔧'};
+    function gi(nm){var l=(nm||'').toLowerCase();var f=Object.entries(ic).find(function(e){return l.includes(e[0]);});return f?f[1]:'🏦';}
+    html('cash-list',disp.map(function(r){
+      var pr=pri.find(function(p){return p[6]===r[6];});var chg=pr?n(r[7])-n(pr[7]):0;var d=chg>0?'up':chg<0?'dn':'fl';
+      return'<div class="pi" style="margin-bottom:7px"><div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">'+
+        '<div style="width:32px;height:32px;border-radius:7px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">'+gi(r[6])+'</div>'+
+        '<div><div class="pn">'+r[6]+'</div><div class="pm">'+(r[5]||r[4]||'')+'</div></div></div>'+
+        '<div style="text-align:right"><div class="pv">'+$$(n(r[7]))+'</div><div class="pm '+d+'">'+(chg===0?'Stable':(chg>0?'↑ +':'↓ ')+$$(Math.abs(chg)))+'</div></div></div>';
+    }).join('')||errBlk('No cash data in "'+TABS.spm.cash+'" tab'));
+    mkChart('chart-cash','line',MS.slice(0,6),[{data:[tot*.88,tot*.90,tot*.93,tot*.96,tot*.98,tot],borderColor:'#5eead4',backgroundColor:'rgba(94,234,212,0.07)',fill:true,borderWidth:2,pointRadius:3,tension:.4}]);
+  }catch(e){html('cash-list',errBlk(e.message));console.warn('SPM cash:',e.message);}
+
+  // AppFolio Vacancies
+  try{
+    var vr=await get(H,TABS.vacancies);
+    var vh=0;for(var i=0;i<Math.min(8,vr.length);i++){if(vr[i].some(function(c){return/unit|status|rent/i.test(c);})){vh=i;break;}}
+    var vd=vr.slice(vh+1).filter(function(r){return r[0]&&r[3];});
+    var vac=vd.filter(function(r){return/vacant/i.test(r[3]);}), not=vd.filter(function(r){return/notice/i.test(r[3]);});
+    var apps=vd.reduce(function(s,r){return s+(parseInt(r[8])||0);},0);
+    var tU=Math.max(vd.length,160), occ=tU-vac.length-not.length, lr=vac.reduce(function(s,r){return s+n(r[4]);},0);
+    el('sv-occ',occ);el('sv-o2',occ);el('sv-vac',vac.length);el('sv-v2',vac.length);
+    el('sv-not',not.length);el('sv-n2',not.length);el('sv-app',apps);
+    el('sv-occ-s',Math.round(occ/tU*100)+'% occupancy');el('sv-vac-s',$$(lr)+' lost/mo');
+    var ug=E('umap');
+    if(ug){ug.innerHTML='';for(var i=0;i<tU;i++){var c='occ';if(i<vac.length)c='vac';else if(i<vac.length+not.length)c='not';ug.innerHTML+='<div class="u '+c+'"></div>';}}
+    html('vac-list',vac.length>0?vac.map(function(r){
+      var ap=parseInt(r[8])||0;
+      return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">Unit '+r[0]+' — '+(r[1]||'')+'</div>'+
+        '<div class="pm">Vacant '+(r[7]||'?')+' days · '+ap+' app'+(ap!==1?'s':'')+' pending</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+(r[4]?$$(n(r[4]))+'/mo':'—')+'</div>'+
+        '<span class="pill '+(ap>0?'pb':n(r[7])>30?'pr':'pw')+'">'+(ap>0?ap+' apps':n(r[7])>30?'No apps — urgent':'No apps')+'</span></div></div>';
+    }).join(''):'<div class="empty">Add data to "'+TABS.spm.vac+'" tab</div>');
+  }catch(e){html('vac-list',errBlk(e.message));console.warn('SPM vac:',e.message);}
+
+  // Jobber Pipeline
+  try{
+    var jr=await get(H,TABS.pipeline);
+    var jh=0;for(var i=0;i<Math.min(8,jr.length);i++){if(jr[i].some(function(c){return/job|status|value/i.test(c);})){jh=i;break;}}
+    var jd=jr.slice(jh+1).filter(function(r){return r[0]&&r[1];});
+    var q=jd.filter(function(r){return/quote/i.test(r[4]||'');}), ap=jd.filter(function(r){return/approved/i.test(r[4]||'');});
+    var ip=jd.filter(function(r){return/in.?progress/i.test(r[4]||'');}), ov=jd.filter(function(r){return/overdue/i.test(r[4]||'');});
+    function sv(a){return a.reduce(function(s,r){return s+n(r[3]);},0);}
+    el('jq',q.length);el('jqv',$$(sv(q),true)+' value');el('ja',ap.length);el('jav',$$(sv(ap),true)+' value');
+    el('jp',ip.length);el('jpv',$$(sv(ip),true)+' active');el('jo',ov.length);
+    var all=q.concat(ap).concat(ip).concat(ov);
+    html('job-list',all.length>0?all.map(function(r){
+      var st=r[4]||'—', isO=/overdue/i.test(st);
+      var pc=/quote/i.test(st)?'pb':/approved/i.test(st)?'pb':/in.?progress/i.test(st)?'pw':/overdue/i.test(st)?'pr':'pg';
+      return'<div class="pi'+(isO?' urg':'')+'"><div style="flex:1;min-width:0"><div class="pn">'+(r[1]||'—')+'</div>'+
+        '<div class="pm">'+(r[2]||'')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+(r[3]?$$(n(r[3])):'—')+'</div><span class="pill '+pc+'">'+st+'</span></div></div>';
+    }).join(''):'<div class="empty">Add data to "'+TABS.spm.pipe+'" tab</div>');
+  }catch(e){html('job-list',errBlk(e.message));console.warn('SPM pipeline:',e.message);}
+}
+
+/* ════════════════════════════════════════════
+   VENDING
+════════════════════════════════════════════ */
+async function loadVending(){
+  try{
+    var rows=await get(H,TABS.txn), data=parseTxns(rows);
+    var inc=data.filter(function(r){return n(r[QBCOLS.amount])>0;}), exp=data.filter(function(r){return n(r[QBCOLS.amount])<0;});
+    var ti=inc.reduce(function(s,r){return s+Math.abs(n(r[QBCOLS.amount]));},0), te=exp.reduce(function(s,r){return s+Math.abs(n(r[QBCOLS.amount]));},0), net=ti-te;
+    el('vi',$$(ti,true));el('ve',$$(te,true));el('vn',$$(net,true));
+    el('vi-s',inc.length+' transactions');el('vn-s',ti>0?Math.round(net/ti*100)+'% margin':'—');cls('vn-s',net>=0?'up':'dn');
+    el('vend-h1',$$(ti,true)+' revenue');
+    var recent=data.slice().sort(function(a,b){return new Date(b[QBCOLS.date])-new Date(a[QBCOLS.date]);}).slice(0,6);
+    html('vend-txns',recent.map(function(r){var a=n(r[QBCOLS.amount]),isI=a>0;
+      return'<tr class="'+(isI?'ti':'te')+'"><td>'+(r[QBCOLS.desc]||r[QBCOLS.name]||r[QBCOLS.type]||'—').substring(0,40)+'</td>'+
+        '<td class="r" style="color:var(--muted)">'+(r[QBCOLS.date]||'').substring(0,10)+'</td><td class="r">'+$$(Math.abs(a))+'</td></tr>';
+    }).join(''));
+    mkChart('chart-vend','bar',MS.slice(0,6),[{data:[ti*.82,ti*.85,ti*.88,ti*.92,ti*.96,ti],backgroundColor:'rgba(252,211,77,0.7)',borderRadius:4,borderSkipped:false}]);
+  }catch(e){html('vend-txns','<tr><td colspan="3">'+errBlk(e.message)+'</td></tr>');mkChart('chart-vend','bar',MS.slice(0,6),[{data:[0,0,0,0,0,0],backgroundColor:'rgba(252,211,77,0.3)',borderRadius:4,borderSkipped:false}]);console.warn('Vending txns:',e.message);}
+  try{
+    var mr=await get(H,TABS.machines);
+    var mh=0;for(var i=0;i<Math.min(8,mr.length);i++){if(mr[i].some(function(c){return/machine|location|status/i.test(c);})){mh=i;break;}}
+    var md=mr.slice(mh+1).filter(function(r){return r[0]&&r[1];});
+    var on=md.filter(function(r){return/online/i.test(r[7]||r[4]||'');}).length;
+    var lc=md.filter(function(r){return/low.?cash/i.test(r[7]||r[4]||'');}).length;
+    var off=md.filter(function(r){return/offline/i.test(r[7]||r[4]||'');}).length;
+    var top=md.length>0?md.reduce(function(b,r){return n(r[4])>n(b[4])?r:b;},md[0]):null;
+    el('vm-on',on||'—');el('vm-lc',lc||'—');el('vm-off',off||'—');
+    el('vm-top',top?$$(n(top[4]),true):'—');el('vm-top-l',top?(top[1]||'').substring(0,20):'—');
+    el('vmc',md.length);el('vend-mbadge',md.length+' machines');
+    var sc={'online':'var(--green)','low cash':'var(--amber)','offline':'var(--red)'};
+    html('vend-machines',md.map(function(m){var st=(m[7]||m[4]||'').toLowerCase().trim(),col=sc[st]||'var(--muted)';
+      return'<div class="mc"><div class="mc-id">'+(m[0]||'')+'</div><div class="mc-loc">'+(m[1]||'')+'</div>'+
+        '<div class="mc-rev">'+(/offline/i.test(st)?'Offline':$$(n(m[4])))+'</div>'+
+        '<div class="mc-st"><div class="mdot" style="background:'+col+'"></div><span style="color:'+col+';font-size:10px">'+(m[7]||m[4]||'—')+'</span></div></div>';
+    }).join('')||'<div class="empty">Add machines to "'+TABS.vend.machines+'" tab</div>');
+    var tc2={};md.forEach(function(m){var t=(m[3]||'Other')+' Rev';tc2[t]=(tc2[t]||0)+n(m[4]);});
+    var tm=Math.max.apply(null,Object.values(tc2).concat([1]));
+    html('vend-rev-cats',Object.entries(tc2).map(function(e){return barRow(e[0],e[1],tm,'var(--vend)');}).join(''));
+    el('vr-atm',$$(md.filter(function(m){return/atm/i.test(m[3]||'');}).reduce(function(s,m){return s+n(m[4]);},0),true));
+    el('vr-vnd',$$(md.filter(function(m){return/vend/i.test(m[3]||'');}).reduce(function(s,m){return s+n(m[4]);},0),true));
+    el('vr-gam',$$(md.filter(function(m){return/amuse|game/i.test(m[3]||'');}).reduce(function(s,m){return s+n(m[4]);},0),true));
+  }catch(e){html('vend-machines',errBlk(e.message));console.warn('Vending machines:',e.message);}
+  try{
+    var rr=await get(H,TABS.routes);
+    var rh=0;for(var i=0;i<Math.min(8,rr.length);i++){if(rr[i].some(function(c){return/employee|route|name/i.test(c);})){rh=i;break;}}
+    var rd=rr.slice(rh+1).filter(function(r){return r[0];});
+    el('vt-emp',rd.length||'—');el('vt-col',rd.reduce(function(s,r){return s+(parseInt(r[4])||0);},0)||'—');
+    var ae=rd.length>0?rd.reduce(function(s,r){return s+n(r[6]);},0)/rd.length:0;
+    el('vt-eff',ae>0?(ae*100).toFixed(0)+'%':'—');
+    el('vt-rev',rd.length>0?$$(rd.reduce(function(s,r){return s+n(r[5]);},0)/rd.length,true):'—');
+    html('vend-routes',rd.length>0?rd.map(function(r){var ef=n(r[6]),pc=ef>=0.93?'pg':ef>=0.85?'pw':'pr';
+      return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+r[0]+'</div><div class="pm">'+(r[1]||'')+' · '+(r[4]||0)+' collections</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+$$(n(r[5]))+'</div><span class="pill '+pc+'">'+(ef>0?(ef*100).toFixed(0)+'% efficiency':'—')+'</span></div></div>';
+    }).join(''):'<div class="empty">Add routes to "'+TABS.vend.routes+'" tab</div>');
+  }catch(e){html('vend-routes',errBlk(e.message));console.warn('Vending routes:',e.message);}
+  try{
+    var cl=await get(H,TABS.collections);
+    var clh=0;for(var i=0;i<Math.min(8,cl.length);i++){if(cl[i].some(function(c){return/date|route|amount/i.test(c);})){clh=i;break;}}
+    var cld=cl.slice(clh+1).filter(function(r){return r[0]&&r[1];}).slice(0,8);
+    var tC=cld.reduce(function(s,r){return s+n(r[4]);},0);el('vr-tot',$$(tC,true));
+    var cM=Math.max.apply(null,cld.map(function(r){return n(r[4]);}).concat([1]));
+    html('vend-colls',cld.length>0?cld.map(function(r){
+      return'<div class="bar"><div class="bm"><span>'+(r[1]||'')+'</span><span style="color:var(--vend)">'+(r[0]||'')+'</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+(r[3]||'')+' machines</span><span class="up">'+$$(n(r[4]))+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[4])/cM*100)+'%;background:var(--vend)"></div></div></div>';
+    }).join(''):'<div class="empty">Add collections to "'+TABS.vend.collections+'" tab</div>');
+  }catch(e){console.warn('Vending collections:',e.message);}
+}
+
+/* ════════════════════════════════════════════
+   SUBLINK
+════════════════════════════════════════════ */
+async function loadSublink(){
+  try{
+    var pr=await get(H,TABS.ar);
+    var ph=0;for(var i=0;i<Math.min(8,pr.length);i++){if(pr[i].some(function(c){return/category|account|income/i.test(c);})){ph=i;break;}}
+    var pd=pr.slice(ph+1).filter(function(r){return r[0]&&r[0].trim();});
+    var incR=[],expR=[],isE=false;
+    pd.forEach(function(r){var c=r[0].trim();if(/^income$/i.test(c)){isE=false;return;}if(/^expense/i.test(c)){isE=true;return;}if(/^total|^net/i.test(c))return;
+      var v=n(r[4]||r[3]||r[2]||0);if(v===0)return;if(isE)expR.push({cat:c,val:Math.abs(v)});else incR.push({cat:c,val:v});});
+    var ti=incR.reduce(function(s,r){return s+r.val;},0),te=expR.reduce(function(s,r){return s+r.val;},0),net=ti-te;
+    el('si',$$(ti,true));el('se',$$(te,true));el('sm',ti>0?Math.round(net/ti*100)+'%':'—');el('sn',$$(net,true));
+    var rows=incR.slice(0,4).map(function(r){return'<tr class="ti"><td>'+r.cat+'</td><td class="r" style="color:var(--muted)">—</td><td class="r">'+$$(r.val)+'</td></tr>';})
+      .concat(expR.slice(0,5).map(function(r){return'<tr class="te"><td>'+r.cat+'</td><td class="r" style="color:var(--muted)">—</td><td class="r">'+$$(r.val)+'</td></tr>';}));
+    rows.push('<tr class="ttt"><td>Net income</td><td class="r">—</td><td class="r" style="color:'+(net>=0?'var(--green)':'var(--red)')+'">'+$$(net)+'</td></tr>');
+    html('sub-pnl',rows.join(''));
+  }catch(e){html('sub-pnl','<tr><td colspan="3">'+errBlk(e.message)+'</td></tr>');console.warn('Sub PnL:',e.message);}
+  try{
+    var pp=await get(H,TABS.jobber);
+    var pph=0;for(var i=0;i<Math.min(8,pp.length);i++){if(pp[i].some(function(c){return/job|status|value|contract/i.test(c);})){pph=i;break;}}
+    var ppd=pp.slice(pph+1).filter(function(r){return r[0]&&r[1];});
+    var act=ppd.filter(function(r){return!/complete/i.test(r[6]||'');});
+    var qt=ppd.filter(function(r){return/quote/i.test(r[6]||'');});
+    var dn=ppd.filter(function(r){return/complete/i.test(r[6]||'');});
+    var ar2=ppd.filter(function(r){return n(r[5])<0.20&&n(r[5])>0;});
+    var mg=ppd.filter(function(r){return n(r[5])>0;}).map(function(r){return n(r[5]);});
+    var avgM=mg.length>0?mg.reduce(function(s,v){return s+v;},0)/mg.length:0;
+    el('sp-act',act.length);el('sp-actv',$$(act.reduce(function(s,r){return s+n(r[3]);},0),true)+' value');
+    el('sp-q',qt.length);el('sp-qv',$$(qt.reduce(function(s,r){return s+n(r[3]);},0),true)+' potential');
+    el('sp-risk',ar2.length);el('sp-done',dn.length);el('sp-donev',$$(dn.reduce(function(s,r){return s+n(r[3]);},0),true)+' billed');
+    el('sjp-avg',avgM>0?Math.round(avgM*100)+'%':'—');el('sjp-low',ar2.length);
+    var topJ=ppd.length>0?ppd.reduce(function(b,r){return n(r[5])>n(b[5])?r:b;},ppd[0]):null;
+    el('sjp-top',topJ&&n(topJ[5])>0?Math.round(n(topJ[5])*100)+'%':'—');el('sjp-topn',(topJ&&topJ[1]||'').substring(0,20));
+    el('sjp-risk',$$(ar2.reduce(function(s,r){return s+n(r[3]);},0),true));
+    var stc={'in progress':'pw','approved':'pb','quote sent':'pg','complete':'pg','overdue':'pr'};
+    html('sub-pipe',ppd.length>0?ppd.map(function(p){var st=p[6]||'Active',m=n(p[5]),pc=stc[st.toLowerCase()]||'pw';
+      return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+(p[1]||'—')+'</div>'+
+        '<div class="pm">'+(p[2]||'')+(m>0?' · '+Math.round(m*100)+'% margin':'')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv">'+$$(n(p[3]))+'</div><span class="pill '+pc+'">'+st+'</span></div></div>';
+    }).join(''):'<div class="empty">Add jobs to "'+TABS.sub.pipe+'" tab</div>');
+    var jm=Math.max.apply(null,ppd.map(function(r){return n(r[3]);}).concat([1]));
+    html('sub-jobs',ppd.filter(function(r){return n(r[3])>0;}).map(function(r){var m=n(r[5])*100,rev=n(r[3]);var c=m<20?'var(--red)':m<28?'var(--amber)':'var(--green)';
+      return'<div class="bar"><div class="bm"><span>'+(r[1]||'').substring(0,32)+'</span><span style="color:'+c+'">'+Math.round(m)+'%</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(rev/jm*100)+'%;background:'+c+'"></div></div></div>';
+    }).join('')||'<div class="empty">No job data</div>');
+  }catch(e){html('sub-pipe',errBlk(e.message));console.warn('Sub pipeline:',e.message);}
+  try{
+    var ar=await get(H,TABS.ar);
+    var arh=0;for(var i=0;i<Math.min(8,ar.length);i++){if(ar[i].some(function(c){return/client|aging|balance/i.test(c);})){arh=i;break;}}
+    var ard=ar.slice(arh+1).filter(function(r){return r[0]&&r[6];});
+    var tAR=ard.reduce(function(s,r){return s+n(r[6]);},0);
+    var cur=ard.filter(function(r){return/current/i.test(r[7]||'');}).reduce(function(s,r){return s+n(r[6]);},0);
+    var a30=ard.filter(function(r){return/30/i.test(r[7]||'');}).reduce(function(s,r){return s+n(r[6]);},0);
+    var a60=ard.filter(function(r){return/60|90/i.test(r[7]||'');}).reduce(function(s,r){return s+n(r[6]);},0);
+    el('sar',$$(tAR,true));el('ar-tot',$$(tAR,true));el('ar-cur',$$(cur,true));el('ar-30',$$(a30,true));el('ar-60',$$(a60,true));
+    el('sar-s',a60>0?$$(a60,true)+' overdue 60+ days':'AR current');el('sub-ar-tag',a60>0?$$(a60,true)+' AR overdue 60+ days':'AR all current');
+    el('ar-badge',ard.length+' clients');
+    var aM=Math.max.apply(null,ard.map(function(r){return n(r[6]);}).concat([1]));
+    var agc={'current':'var(--green)','30 days':'var(--amber)','60 days':'var(--red)','90+ days':'var(--red)'};
+    html('sub-ar-rows',ard.length>0?ard.map(function(r){var ag=(r[7]||'current').toLowerCase(),col=agc[ag]||'var(--muted)';
+      return'<div class="bar"><div class="bm"><span>'+r[0]+'</span><span style="color:'+col+'">'+$$(n(r[6]))+'</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+r[7]+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[6])/aM*100)+'%;background:'+col+'"></div></div></div>';
+    }).join(''):'<div class="empty">Add AR data to "'+TABS.sub.ar+'" tab</div>');
+  }catch(e){html('sub-ar-rows',errBlk(e.message));console.warn('Sub AR:',e.message);}
+  try{
+    var pw=await get(H,TABS.payroll);
+    var pwh=0;for(var i=0;i<Math.min(8,pw.length);i++){if(pw[i].some(function(c){return/name|role|type/i.test(c);})){pwh=i;break;}}
+    var pwd=pw.slice(pwh+1).filter(function(r){return r[0]&&r[0].trim()&&!/^total/i.test(r[0]);});
+    var tP=pwd.reduce(function(s,r){return s+n(r[5]||r[3]);},0);
+    var sP=pwd.filter(function(r){return/sub/i.test(r[1]||'');}).reduce(function(s,r){return s+n(r[5]||r[3]);},0);
+    el('pay-tot',$$(tP,true));el('pay-sub',$$(sP,true));
+    el('pay-emp',pwd.filter(function(r){return/full/i.test(r[1]||'');}).length||pwd.length);
+    var pM=Math.max.apply(null,pwd.map(function(r){return n(r[5]||r[3]);}).concat([1]));
+    html('pay-rows',pwd.length>0?pwd.map(function(r){var a=n(r[5]||r[3]);
+      return'<div class="bar"><div class="bm"><span>'+r[0]+'</span><span style="color:var(--sub)">'+$$(a)+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(a/pM*100)+'%;background:var(--sub)"></div></div></div>';
+    }).join(''):'<div class="empty">Add payroll to "'+TABS.sub.pay+'" tab</div>');
+  }catch(e){html('pay-rows',errBlk(e.message));console.warn('Sub payroll:',e.message);}
+}
+
+/* ════════════════════════════════════════════
+   GREG'S PROPERTIES
+════════════════════════════════════════════ */
+async function loadGreg(){
+  var totInc=0,totMtg=0,totMaint=0,totVal=0,totEq=0;
+  try{
+    var ir=await get(H,TABS.income);
+    var ih=0;for(var i=0;i<Math.min(8,ir.length);i++){if(ir[i].some(function(c){return/property|jan|income/i.test(c);})){ih=i;break;}}
+    var id=ir.slice(ih+1).filter(function(r){return r[0]&&!/^total/i.test(r[0]);});
+    totInc=id.reduce(function(s,r){return s+n(r[4]||r[3]||r[2]);},0);
+    el('gr-inc',$$(totInc,true));el('greg-h2',$$(totInc,true)+' rental income');
+  }catch(e){console.warn('Greg income:',e.message);}
+  try{
+    var mr=await get(H,TABS.mortgages);
+    var mh=0;for(var i=0;i<Math.min(8,mr.length);i++){if(mr[i].some(function(c){return/property|lender|balance|payment/i.test(c);})){mh=i;break;}}
+    var md=mr.slice(mh+1).filter(function(r){return r[0]&&!/^total/i.test(r[0])&&n(r[4])>0;});
+    totMtg=md.reduce(function(s,r){return s+n(r[4]);},0);var totDebt=md.reduce(function(s,r){return s+n(r[3]);},0);
+    var dscr=totMtg>0?totInc/totMtg:0;
+    el('gm-debt',$$(totDebt,true));el('gm-pay',$$(totMtg,true));el('gm-dscr',dscr>0?dscr.toFixed(2)+'x':'—');
+    var mM=Math.max.apply(null,md.map(function(r){return n(r[3]);}).concat([1]));
+    html('greg-mtg',md.length>0?md.map(function(r){
+      return'<div class="bar"><div class="bm"><span>'+(r[0]||'').substring(0,28)+'</span><span style="color:var(--greg)">'+$$(n(r[4]))+'/mo</span></div>'+
+        '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">Balance: '+$$(n(r[3]),true)+'</span><span class="up">Current</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[3])/mM*100)+'%;background:var(--greg)"></div></div></div>';
+    }).join(''):'<div class="empty">Add mortgages to "'+TABS.greg.mtg+'" tab</div>');
+  }catch(e){html('greg-mtg',errBlk(e.message));console.warn('Greg mortgages:',e.message);}
+  try{
+    var pv=await get(H,TABS.propvalues);
+    var pvh=0;for(var i=0;i<Math.min(8,pv.length);i++){if(pv[i].some(function(c){return/property|value|equity/i.test(c);})){pvh=i;break;}}
+    var pvd=pv.slice(pvh+1).filter(function(r){return r[0]&&!/^total/i.test(r[0])&&n(r[2])>0;});
+    totVal=pvd.reduce(function(s,r){return s+n(r[2]);},0);totEq=pvd.reduce(function(s,r){return s+n(r[4]);},0);
+    var avgLTV=totVal>0?Math.round(pvd.reduce(function(s,r){return s+n(r[3]);},0)/totVal*100)+'%':'—';
+    el('gr-eq',$$(totEq,true));el('gev-val',$$(totVal,true));el('gev-eq',$$(totEq,true));
+    el('gev-eq-s',totVal>0?Math.round(totEq/totVal*100)+'% equity ratio':'—');el('gm-ltv',avgLTV);
+    var coc=totVal>0&&totEq>0?(((totInc-totMtg-totMaint)*12)/totEq*100).toFixed(1)+'%':'—';el('gev-coc',coc);
+    var eM=Math.max.apply(null,pvd.map(function(r){return n(r[4]);}).concat([1]));
+    html('greg-eq-bars',pvd.map(function(r){
+      return'<div class="bar"><div class="bm"><span>'+(r[0]||'').substring(0,24)+'</span><span class="up">'+$$(n(r[4]),true)+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[4])/eM*100)+'%;background:var(--greg)"></div></div></div>';
+    }).join(''));
+    mkChart('chart-greg','line',MS.slice(0,6),[{data:[totVal*.93,totVal*.94,totVal*.96,totVal*.97,totVal*.99,totVal],borderColor:'#fb923c',backgroundColor:'rgba(251,146,60,0.07)',fill:true,borderWidth:2,pointRadius:3,tension:.4}],function(v){return'$'+(v/1000000).toFixed(1)+'M';});
+  }catch(e){html('greg-eq-bars',errBlk(e.message));mkChart('chart-greg','line',MS.slice(0,6),[{data:[0,0,0,0,0,0],borderColor:'#fb923c',backgroundColor:'rgba(251,146,60,0.07)',fill:true,borderWidth:2}]);console.warn('Greg values:',e.message);}
+  try{
+    var rr=await get(H,TABS.rentroll);
+    var rrh=0;for(var i=0;i<Math.min(8,rr.length);i++){if(rr[i].some(function(c){return/unit|property|status/i.test(c);})){rrh=i;break;}}
+    var rrd=rr.slice(rrh+1).filter(function(r){return r[0]&&r[1];});
+    var occ=rrd.filter(function(r){return/occupied/i.test(r[3]||'');}).length;
+    var expL=rrd.filter(function(r){return r[8]&&/2026/i.test(r[8]);}).length;
+    var totRent=rrd.reduce(function(s,r){return s+n(r[4]);},0);
+    el('grr-tot',rrd.length);el('grr-occ',occ);el('grr-occ-s',rrd.length>0?Math.round(occ/rrd.length*100)+'% occupancy':'—');
+    el('grr-exp',expL);el('grr-avg',$$(rrd.length>0?Math.round(totRent/rrd.length):0));
+    el('greg-h1',occ+'/'+rrd.length+' units occupied');
+    var byP={};rrd.forEach(function(r){var p=r[1]||'Unknown';if(!byP[p])byP[p]={name:p,units:0,rent:0};byP[p].units++;byP[p].rent+=n(r[4]);});
+    html('greg-props',Object.values(byP).map(function(p){
+      return'<div class="prop"><div><div class="pn">'+p.name+'</div><div class="pm">'+p.units+' unit'+(p.units>1?'s':'')+' · '+$$(p.rent)+'/mo rent</div></div>'+
+        '<div style="text-align:right"><div class="pv up">'+$$(p.rent)+'/mo</div></div></div>';
+    }).join('')||errBlk('Add data to "'+TABS.greg.rr+'" tab'));
+    html('greg-rr',rrd.slice(0,12).map(function(r){var st=r[3]||'—';var pc=/occupied/i.test(st)?'pg':/vacant/i.test(st)?'pr':'pw';
+      return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">Unit '+r[0]+' — '+r[1]+'</div><div class="pm">'+(r[6]||'Vacant')+' · Lease ends '+(r[8]||'—')+'</div></div>'+
+        '<div style="text-align:right"><div class="pv up">'+$$(n(r[4]))+'/mo</div><span class="pill '+pc+'">'+st+'</span></div></div>';
+    }).join(''));
+  }catch(e){html('greg-rr',errBlk(e.message));html('greg-props',errBlk('Check "'+TABS.greg.rr+'" tab'));console.warn('Greg rent roll:',e.message);}
+  try{
+    var mn=await get(H,TABS.maintenance);
+    var mnh=0;for(var i=0;i<Math.min(8,mn.length);i++){if(mn[i].some(function(c){return/date|property|amount/i.test(c);})){mnh=i;break;}}
+    var mnd=mn.slice(mnh+1).filter(function(r){return r[0]&&r[1]&&n(r[4])>0;});
+    totMaint=mnd.reduce(function(s,r){return s+n(r[4]);},0);el('gev-maint',$$(totMaint,true));
+    var cf=totInc-totMtg-totMaint;el('gr-exp',$$(totMtg+totMaint,true));el('gr-cf',$$(cf,true));cls('gr-cf-s',cf>=0?'up':'dn');el('gr-cf-s',cf>=0?'Positive cash flow':'Review expenses');
+    var mnC={};mnd.forEach(function(r){var p=r[1]||'Other';mnC[p]=(mnC[p]||0)+n(r[4]);});
+    var mnM=Math.max.apply(null,Object.values(mnC).concat([1]));
+    html('greg-maint-bars',Object.entries(mnC).sort(function(a,b){return b[1]-a[1];}).map(function(e){
+      return'<div class="bar"><div class="bm"><span>'+(e[0]||'').substring(0,24)+'</span><span class="dn">'+$$(e[1])+'</span></div>'+
+        '<div class="bt"><div class="bf" style="width:'+Math.round(e[1]/mnM*100)+'%;background:var(--red)"></div></div></div>';
+    }).join('')||'<div class="empty">No maintenance entries yet</div>');
+  }catch(e){html('greg-maint-bars',errBlk(e.message));console.warn('Greg maintenance:',e.message);}
+}
+
+/* ════════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════════ */
+function buildNav(c){
+  var navEl=E('secNav'),secs=SECTIONS[c]||[];
+  navEl.innerHTML=secs.map(function(s,i){return'<div class="sn'+(i===0?' active':'')+'" onclick="showSec(\''+s.id+'\',this)">'+s.l+'</div>';}).join('');
+}
+function showSec(id,elRef){
+  var page=E('pg-'+co);if(!page)return;
+  page.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.sn').forEach(function(s){s.classList.remove('active');});
+  var sec=E(id);if(sec)sec.classList.add('active');if(elRef)elRef.classList.add('active');
+  window.scrollTo({top:56,behavior:'smooth'});
+}
+function switchCo(c,tab,name){
+  co=c;
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.ctab').forEach(function(t){t.classList.remove('active');});
+  var page=E('pg-'+c);if(page)page.classList.add('active');if(tab)tab.classList.add('active');
+  el('coname',name);buildNav(c);
+  var secs=SECTIONS[c]||[];
+  if(secs.length){document.querySelectorAll('#pg-'+c+' .sec').forEach(function(s){s.classList.remove('active');});var first=E(secs[0].id);if(first)first.classList.add('active');}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ════════════════════════════════════════════
+   MAIN REFRESH
+════════════════════════════════════════════ */
+async function refresh(){
+  syncSt('loading','⟳ Syncing');
+  try{
+    // PRIORITY 1: Budget Review (Greg's sheet) — loads P&L and Budget vs Actual
+    await loadBudgetReview();
+    // Everything else in parallel
+    await Promise.all([loadSPMOps(), loadVending(), loadSublink(), loadGreg()]);
+    var now=new Date();
+    var ts=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' · '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    syncSt('live','● Live · '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    el('foot','GG Portfolio · P&L from Budget Review (Greg\'s Sheet) · Operational from company sheets · Last synced: '+ts);
+  }catch(e){
+    syncSt('err','✕ Error — check sheets are set to "Anyone with link can view"');
+    console.error('Refresh error:',e);
+  }
+}
+
+// Build nav immediately, then load data
+buildNav('spm');
+refresh();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GG Portfolio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#07080a;--s1:#0d0f14;--s2:#131720;--s3:#1a1f2b;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --text:#e8ecf4;--muted:#3d4554;--subtle:#6e7d99;
+  --df:'Syne',sans-serif;--db:'DM Sans',sans-serif;--dm:'DM Mono',monospace;
+  --spm:#5eead4;--vend:#fcd34d;--sub:#a78bfa;--greg:#fb923c;
+  --green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#38bdf8;
+  --gg:rgba(16,185,129,0.12);--rg:rgba(239,68,68,0.12);
+  --ag:rgba(245,158,11,0.12);--bg2:rgba(56,189,248,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--db);font-size:14px;min-height:100vh;overflow-x:hidden}
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(7,8,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px}
+.logo{font-family:var(--df);font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+.logo em{font-style:normal;color:var(--spm)}
+.sync{font-size:10px;font-family:var(--dm);padding:4px 10px;border-radius:20px}
+.sync.live{background:var(--gg);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+.sync.loading{background:var(--ag);color:var(--amber);border:1px solid rgba(245,158,11,0.2);animation:pulse 1.4s infinite}
+.sync.err{background:var(--rg);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.rbtn{font-size:11px;padding:5px 12px;border-radius:7px;background:var(--s2);border:1px solid var(--border2);color:var(--subtle);cursor:pointer}
+.rbtn:hover{color:var(--text)}
+/* CO TABS */
+.co-wrap{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.co-wrap::-webkit-scrollbar{display:none}
+.co-tabs{display:flex;padding:0 20px;min-width:max-content}
+.ctab{display:flex;align-items:center;gap:6px;padding:10px 16px;font-size:11px;font-weight:500;font-family:var(--df);letter-spacing:0.06em;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .18s;text-transform:uppercase}
+.ctab.active{color:var(--tc);border-bottom-color:var(--tc)}
+.pip{width:6px;height:6px;border-radius:50%;background:var(--tc);opacity:.4;flex-shrink:0;transition:opacity .18s}
+.ctab.active .pip{opacity:1}
+/* SECTION NAV */
+.sec-wrap{background:var(--s1);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.sec-wrap::-webkit-scrollbar{display:none}
+.sec-nav{display:flex;padding:0 20px;min-width:max-content}
+.sn{font-size:11px;color:var(--muted);padding:9px 14px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.sn.active{color:var(--text);border-bottom-color:var(--subtle)}
+/* PAGES */
+.page{display:none}.page.active{display:block}
+.sec{display:none;padding:20px}.sec.active{display:block}
+/* HEALTH */
+.health{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center;border-radius:12px;padding:14px 18px;margin-bottom:16px;border:1px solid}
+.HA{background:var(--gg);border-color:rgba(16,185,129,0.18)}
+.HB{background:var(--ag);border-color:rgba(245,158,11,0.18)}
+.HC{background:var(--rg);border-color:rgba(239,68,68,0.18)}
+.hg{font-family:var(--df);font-size:42px;font-weight:700;line-height:1;text-align:center}
+.HA .hg{color:var(--green)}.HB .hg{color:var(--amber)}.HC .hg{color:var(--red)}
+.hl{font-size:12px;font-weight:500;color:var(--text);margin-bottom:7px}
+.ht{display:flex;flex-wrap:wrap;gap:5px}
+.htag{font-size:10px;font-family:var(--dm);padding:2px 8px;border-radius:20px}
+.htg{background:var(--gg);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+.htw{background:var(--ag);color:var(--amber);border:1px solid rgba(245,158,11,0.2)}
+.htb{background:var(--rg);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
+/* MONTH TABS */
+.mtabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.mt{font-size:11px;font-family:var(--dm);padding:5px 12px;border-radius:20px;border:.5px solid var(--border2);background:var(--s2);color:var(--muted);cursor:pointer;transition:all .15s}
+.mt.active{background:var(--s3);color:var(--text);border-color:var(--subtle)}
+/* KPI */
+.kg{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 15px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--subtle));opacity:.7}
+.kl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.kv{font-family:var(--df);font-size:22px;font-weight:600;color:var(--text);line-height:1.15}
+.ks{font-size:11px;margin-top:3px}
+.up{color:var(--green)}.dn{color:var(--red)}.fl{color:var(--muted)}.wa{color:var(--amber)}
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:11px}
+.card:last-child{margin-bottom:0}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.ct{font-size:12px;color:var(--subtle)}
+.badge{font-size:10px;font-family:var(--dm);padding:2px 8px;border-radius:20px}
+.bg{background:var(--gg);color:var(--green)}.br{background:var(--rg);color:var(--red)}
+.ba{background:var(--ag);color:var(--amber)}.bb{background:var(--bg2);color:var(--blue)}
+/* BUDGET VS ACTUAL ROWS — traffic light */
+.bva{margin-bottom:11px}.bva:last-child{margin-bottom:0}
+.bva-t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.bva-cat{font-size:12px;color:var(--text)}
+.bva-nums{font-size:11px;font-family:var(--dm);color:var(--muted)}
+.bva-nums b{color:var(--text);font-weight:400}
+.bva-row{display:flex;align-items:center;gap:7px}
+.bva-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;position:relative}
+.bva-fill{height:100%;border-radius:3px;position:absolute;top:0;left:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.bva-pct{font-size:10px;font-family:var(--dm);width:36px;text-align:right;font-weight:500}
+.bva-divider{border-top:.5px solid var(--border);margin:10px 0;padding-top:10px}
+/* BAR ROWS */
+.bar{margin-bottom:10px}.bar:last-child{margin-bottom:0}
+.bm{display:flex;justify-content:space-between;font-size:11px;color:var(--subtle);margin-bottom:3px}
+.bt{width:100%;height:5px;background:var(--s3);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;color:var(--muted);font-weight:400;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:0 0 8px;border-bottom:1px solid var(--border)}
+.tbl td{padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--subtle);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{color:var(--text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl td.r{text-align:right;font-family:var(--dm);font-size:11px}
+.ti td.r{color:var(--green)}.te td.r{color:var(--red)}
+.tsec td{color:var(--muted)!important;font-size:10px!important;text-transform:uppercase;letter-spacing:.07em;padding-top:12px!important}
+.ttt td{font-weight:600;color:var(--text)!important;border-top:1px solid var(--border2)!important;padding-top:10px!important;font-family:var(--dm)}
+/* PIPELINES */
+.pl{display:flex;flex-direction:column;gap:7px}
+.pi{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pi.urg{border-color:rgba(239,68,68,.25)}
+.pn{font-size:13px;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm{font-size:11px;color:var(--muted);margin-top:2px}
+.pv{font-family:var(--dm);font-size:13px;color:var(--text);text-align:right}
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:3px}
+.pg{background:var(--gg);color:var(--green)}.pw{background:var(--ag);color:var(--amber)}
+.pr{background:var(--rg);color:var(--red)}.pb{background:var(--bg2);color:var(--blue)}
+/* VACANCY MAP */
+.usum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+.us{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:11px;text-align:center}
+.un{font-family:var(--df);font-size:24px;font-weight:700}
+.ul{font-size:10px;color:var(--muted);margin-top:2px}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(26px,1fr));gap:4px;margin-bottom:8px}
+.u{width:100%;aspect-ratio:1;border-radius:3px}
+.u.occ{background:rgba(16,185,129,.22);border:1px solid rgba(16,185,129,.28)}
+.u.vac{background:rgba(239,68,68,.28);border:1px solid rgba(239,68,68,.36)}
+.u.not{background:rgba(245,158,11,.28);border:1px solid rgba(245,158,11,.36)}
+.uleg{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px}
+.uleg span{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.ud{width:8px;height:8px;border-radius:2px}
+/* MACHINES */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mc{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:11px}
+.mc-id{font-family:var(--dm);font-size:9px;color:var(--muted);margin-bottom:3px}
+.mc-loc{font-size:12px;font-weight:500;color:var(--text);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-rev{font-family:var(--df);font-size:17px;color:var(--vend)}
+.mc-st{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:10px}
+.mdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* PROPERTY */
+.prop{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+.prop:last-child{margin-bottom:0}
+/* SKELETON */
+.sk{background:linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);background-size:200% 100%;animation:sh 1.5s infinite;border-radius:4px;height:14px;margin-bottom:6px}
+.sk.h{height:24px}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.err{padding:14px;color:var(--red);font-size:12px;background:var(--rg);border-radius:7px;border:1px solid rgba(239,68,68,0.2);text-align:center}
+.empty{padding:14px;color:var(--muted);font-size:12px;text-align:center}
+/* RESPONSIVE */
+@media(min-width:700px){
+  .hdr-top,.co-tabs,.sec-nav,.sec{padding-left:28px;padding-right:28px}
+  .sec{max-width:1160px;margin:0 auto;padding-top:22px;padding-bottom:36px}
+  .kg{grid-template-columns:repeat(4,1fr)}
+  .two{display:grid;grid-template-columns:1.4fr 1fr;gap:13px;align-items:start}
+  .twoeq{display:grid;grid-template-columns:1fr 1fr;gap:13px;align-items:start}
+  .card{margin-bottom:0}
+}
+/* ANIM */
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sec.active>*{animation:fadeup .22s ease both}
+.sec.active>*:nth-child(2){animation-delay:.05s}
+.sec.active>*:nth-child(3){animation-delay:.09s}
+.sec.active>*:nth-child(4){animation-delay:.13s}
+.foot{text-align:center;font-size:10px;color:var(--muted);font-family:var(--dm);padding:24px 20px 8px}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="logo">GG · <em id="coname">Standard · Property</em></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sync loading" id="syncEl">⟳ Loading</div>
+      <button class="rbtn" onclick="refresh()">↺ Refresh</button>
+    </div>
+  </div>
+  <div class="co-wrap"><div class="co-tabs">
+    <div class="ctab active" style="--tc:var(--spm)" onclick="switchCo('spm',this,'Standard · Property')"><div class="pip"></div>Standard · Property</div>
+    <div class="ctab" style="--tc:var(--vend)" onclick="switchCo('vend',this,'Vending · ATM')"><div class="pip"></div>Vending · ATM</div>
+    <div class="ctab" style="--tc:var(--sub)" onclick="switchCo('sub',this,'Sublink')"><div class="pip"></div>Sublink</div>
+    <div class="ctab" style="--tc:var(--greg)" onclick="switchCo('greg',this,'Greg\'s Properties')"><div class="pip"></div>Greg's Properties</div>
+  </div></div>
+  <div class="sec-wrap"><div class="sec-nav" id="secNav"></div></div>
+</header>
+
+<!-- ═══ SPM ═══ -->
+<div class="page active" id="pg-spm">
+  <!-- P&L -->
+  <div class="sec active" id="spm-0">
+    <div class="health HB" id="spm-health"><div class="hg" id="spm-grade">—</div>
+      <div><div class="hl">Standard / Gallagher PM · <span id="spm-period">2026</span></div>
+        <div class="ht" id="spm-tags"><span class="htag htw">Loading...</span></div>
+      </div>
+    </div>
+    <div class="mtabs" id="spm-mtabs"></div>
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">Total income</div><div class="kv" id="k-inc">—</div><div class="ks" id="k-inc-s"><div class="sk"></div></div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Cost of goods</div><div class="kv" id="k-cogs">—</div><div class="ks fl">COGS</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Gross profit</div><div class="kv" id="k-gp">—</div><div class="ks" id="k-gp-s"><div class="sk"></div></div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">Total expenses</div><div class="kv" id="k-exp">—</div><div class="ks" id="k-exp-s"><div class="sk"></div></div></div>
+    </div>
+    <div class="two">
+      <div class="card" style="padding:0 16px">
+        <div style="padding:13px 0 9px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:var(--subtle)">P&amp;L detail · Budget Review Sheet · Live</span>
+          <span class="badge bg">Greg's Sheet</span>
+        </div>
+        <table class="tbl"><thead><tr><th>Category</th><th class="r">Target/mo</th><th class="r">Actual</th><th class="r">vs Target</th></tr></thead>
+        <tbody id="pnl-body"><tr><td colspan="4"><div class="sk h"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></td></tr></tbody></table>
+      </div>
+      <div>
+        <div class="card"><div class="ch"><div class="ct">Income breakdown</div><div class="badge bg">Live</div></div><div id="inc-bars"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+        <div class="card" style="margin-top:10px"><div class="ch"><div class="ct">Expense breakdown</div><div class="badge br">Live</div></div><div id="exp-bars"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Income trend · SPM + GPM · Jan–Apr 2026</div><div class="badge bg">Budget Review</div></div><div style="height:190px;position:relative"><canvas id="chart-trend"></canvas></div></div>
+  </div>
+  <!-- Budget vs Actual -->
+  <div class="sec" id="spm-1">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Income vs target</div><div class="kv" id="bk-ip">—</div><div class="ks" id="bk-iv">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">COGS vs target</div><div class="kv" id="bk-cp">—</div><div class="ks" id="bk-cv">—</div></div>
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">Gross margin</div><div class="kv" id="bk-gm">—</div><div class="ks up">vs income</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Expenses vs target</div><div class="kv" id="bk-ep">—</div><div class="ks" id="bk-ev">—</div></div>
+    </div>
+    <div class="twoeq" style="margin-bottom:11px">
+      <div class="card"><div class="ch"><div class="ct">SPM — Income vs target</div><div class="badge bg">Budget Review · SPM tab</div></div><div id="bva-spm-inc"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">GPM — Income vs target</div><div class="badge bg">Budget Review · GPM tab</div></div><div id="bva-gpm-inc"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+    <div class="twoeq">
+      <div class="card"><div class="ch"><div class="ct">SPM — Expenses vs target</div><div class="badge br">Operating expenses</div></div><div id="bva-spm-exp"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+      <div class="card"><div class="ch"><div class="ct">GPM — Expenses vs target</div><div class="badge br">Operating expenses</div></div><div id="bva-gpm-exp"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </div>
+  </div>
+  <!-- Vacancies -->
+  <div class="sec" id="spm-2">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Occupied</div><div class="kv" id="sv-occ">—</div><div class="ks up" id="sv-occ-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Vacant</div><div class="kv" id="sv-vac">—</div><div class="ks dn" id="sv-vac-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">On notice</div><div class="kv" id="sv-not">—</div><div class="ks wa">Turning soon</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Applications</div><div class="kv" id="sv-app">—</div><div class="ks" style="color:var(--blue)">Pending</div></div>
+    </div>
+    <div class="card">
+      <div class="usum"><div class="us"><div class="un up" id="sv-o2">—</div><div class="ul">Occupied</div></div><div class="us"><div class="un dn" id="sv-v2">—</div><div class="ul">Vacant</div></div><div class="us"><div class="un wa" id="sv-n2">—</div><div class="ul">On notice</div></div></div>
+      <div class="ugrid" id="umap"></div>
+      <div class="uleg"><span><span class="ud" style="background:rgba(16,185,129,.4)"></span>Occupied</span><span><span class="ud" style="background:rgba(239,68,68,.45)"></span>Vacant</span><span><span class="ud" style="background:rgba(245,158,11,.45)"></span>Notice</span></div>
+    </div>
+    <div class="pl" id="vac-list"><div class="card"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <!-- Job Pipeline -->
+  <div class="sec" id="spm-3">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Quotes open</div><div class="kv" id="jq">—</div><div class="ks" style="color:var(--blue)" id="jqv">—</div></div>
+      <div class="kpi" style="--kc:var(--sub)"><div class="kl">Approved</div><div class="kv" id="ja">—</div><div class="ks" style="color:var(--sub)" id="jav">—</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">In progress</div><div class="kv" id="jp">—</div><div class="ks wa" id="jpv">—</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kl">Overdue</div><div class="kv" id="jo">—</div><div class="ks dn">Needs attention</div></div>
+    </div>
+    <div class="pl" id="job-list"><div class="card"><div class="sk h"></div><div class="sk"></div></div></div>
+  </div>
+  <!-- Cash Balances -->
+  <div class="sec" id="spm-4">
+    <div class="kg">
+      <div class="kpi" style="--kc:var(--green)"><div class="kl">Total cash</div><div class="kv" id="sc-tot">—</div><div class="ks" id="sc-s">Loading...</div></div>
+      <div class="kpi" style="--kc:var(--spm)"><div class="kl">Bank accounts</div><div class="kv" id="sc-bank">—</div><div class="ks fl">All accounts</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kl">Total assets</div><div class="kv" id="sc-assets">—</div><div class="ks fl">Balance Sheet</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kl">As of</div><div class="kv" id="sc-date" style="font-size:14px">—</div><div class="ks fl">Latest report</div></div>
+    </div>
+    <div class="card"><div class="ch"><div class="ct">Account balances · Cash balances tab</div><div class="badge bg">Live</div></div><div id="cash-list"><div class="sk h"></div><div class="sk"></div><div class="sk"></div></div></div>
+    <div class="card" style="margin-top:11px"><div class="ch"><div class="ct">Cash trend</div></div><div style="height:180px;position:relative"><canvas id="chart-cash"></canvas></div></div>
+  </div>
+</div>
+
+<!-- ═══ VENDING ═══ -->
+<div class="page" id="pg-vend">
+  <div class="sec active" id="vend-0">
+    <div class="health HA"><div class="hg">A-</div>
+      <div><div class="hl">Vending · ATM &amp; Amusements · 2026</div>
         <div class="ht"><span class="htag htg" id="vend-h1">Revenue loading...</span><span class="htag htw">2 machines low cash</span><span class="htag htb">1 machine offline</span></div>
       </div>
     </div>
