@@ -275,7 +275,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--db);font-size:14px
   <div class="sec active" id="vend-0">
     <div class="health HA"><div class="hg">A-</div>
       <div><div class="hl">Vending · ATM &amp; Amusements · 2026</div>
-        <div class="ht"><span class="htag htg" id="vend-h1">Revenue loading...</span><span class="htag htw" id="vend-h2">Machines loading...</span><span class="htag htb" id="vend-h3">Routes loading...</span></div>
+        <div class="ht"><span class="htag htg" id="vend-h1">Revenue loading...</span><span class="htag htw">2 machines low cash</span><span class="htag htb">1 machine offline</span></div>
       </div>
     </div>
     <div class="kg">
@@ -387,7 +387,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--db);font-size:14px
   <div class="sec active" id="greg-0">
     <div class="health HA"><div class="hg">A</div>
       <div><div class="hl">Greg's Properties · 2026</div>
-        <div class="ht"><span class="htag htg" id="greg-h1">Loading occupancy...</span><span class="htag htg" id="greg-h2">Loading cash flow...</span><span class="htag htg" id="greg-h3">Mortgages loading...</span><span class="htag htw" id="greg-h4">Leases loading...</span></div>
+        <div class="ht"><span class="htag htg" id="greg-h1">Loading occupancy...</span><span class="htag htg" id="greg-h2">Loading cash flow...</span><span class="htag htg">Mortgages current</span><span class="htag htw">2 leases expiring Q3</span></div>
       </div>
     </div>
     <div class="kg">
@@ -722,11 +722,25 @@ function renderBudgetVsActual(mo){
 /* ════════════════════════════════════════════
    SPM OPERATIONAL — Cash balances, Vacancies, Pipeline
 ════════════════════════════════════════════ */
-var QBCOLS={date:3,type:4,account:2,name:6,split:7,amount:8,desc:9};
+var QBCOLS={date:0,type:1,account:6,name:4,split:7,amount:8,desc:5};
 function parseTxns(rows){
+  // Find header row and map column names dynamically
   var h=0;
-  for(var i=0;i<Math.min(10,rows.length);i++){if(rows[i].some(function(c){return/transaction.?date|txndate/i.test(c);})||rows[i].some(function(c){return/^amount$/i.test(c);})){h=i;break;}}
-  return rows.slice(h+1).filter(function(r){return r[QBCOLS.date]&&r[QBCOLS.date].match(/\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}/)&&r[QBCOLS.amount]&&r[QBCOLS.amount]!=='';});
+  for(var i=0;i<Math.min(10,rows.length);i++){
+    if(rows[i].some(function(c){return/^date$/i.test((c||'').trim());})){h=i;break;}
+  }
+  var headers=rows[h].map(function(c){return(c||'').trim().toLowerCase();});
+  // Map column names to indices
+  QBCOLS.date   = Math.max(0, headers.indexOf('date'));
+  QBCOLS.type   = Math.max(1, headers.findIndex(function(h){return/^type$/i.test(h);}));
+  QBCOLS.name   = Math.max(4, headers.findIndex(function(h){return/^name$|^payee$/i.test(h);}));
+  QBCOLS.amount = Math.max(0, headers.findIndex(function(h){return/^amount$/i.test(h);}));
+  QBCOLS.desc   = Math.max(5, headers.findIndex(function(h){return/^memo|^description|^note/i.test(h);}));
+  QBCOLS.account= Math.max(6, headers.findIndex(function(h){return/^account/i.test(h);}));
+  return rows.slice(h+1).filter(function(r){
+    return r[QBCOLS.date]&&r[QBCOLS.date].toString().match(/\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}/)&&
+           r[QBCOLS.amount]&&r[QBCOLS.amount].toString()!=='';
+  });
 }
 
 async function loadSPMOps(){
