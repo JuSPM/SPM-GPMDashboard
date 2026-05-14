@@ -765,7 +765,7 @@ async function loadSPMOps(){
         '<div style="width:32px;height:32px;border-radius:7px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">'+gi(r[6])+'</div>'+
         '<div><div class="pn">'+r[6]+'</div><div class="pm">'+(r[5]||r[4]||'')+'</div></div></div>'+
         '<div style="text-align:right"><div class="pv">'+$$(n(r[7]))+'</div><div class="pm '+d+'">'+(chg===0?'Stable':(chg>0?'↑ +':'↓ ')+$$(Math.abs(chg)))+'</div></div></div>';
-    }).join('')||errBlk('No cash data in "'+TABS.spm.cash+'" tab'));
+    }).join('')||errBlk('No cash data in "'+TABS.cash+'" tab'));
     mkChart('chart-cash','line',MS.slice(0,6),[{data:[tot*.88,tot*.90,tot*.93,tot*.96,tot*.98,tot],borderColor:'#5eead4',backgroundColor:'rgba(94,234,212,0.07)',fill:true,borderWidth:2,pointRadius:3,tension:.4}]);
   }catch(e){html('cash-list',errBlk(e.message));console.warn('SPM cash:',e.message);}
 
@@ -788,7 +788,7 @@ async function loadSPMOps(){
         '<div class="pm">Vacant '+(r[7]||'?')+' days · '+ap+' app'+(ap!==1?'s':'')+' pending</div></div>'+
         '<div style="text-align:right"><div class="pv">'+(r[4]?$$(n(r[4]))+'/mo':'—')+'</div>'+
         '<span class="pill '+(ap>0?'pb':n(r[7])>30?'pr':'pw')+'">'+(ap>0?ap+' apps':n(r[7])>30?'No apps — urgent':'No apps')+'</span></div></div>';
-    }).join(''):'<div class="empty">Add data to "'+TABS.spm.vac+'" tab</div>');
+    }).join(''):'<div class="empty">Add data to "'+TABS.vacancies+'" tab</div>');
   }catch(e){html('vac-list',errBlk(e.message));console.warn('SPM vac:',e.message);}
 
   // Jobber Pipeline
@@ -808,7 +808,7 @@ async function loadSPMOps(){
       return'<div class="pi'+(isO?' urg':'')+'"><div style="flex:1;min-width:0"><div class="pn">'+(r[1]||'—')+'</div>'+
         '<div class="pm">'+(r[2]||'')+'</div></div>'+
         '<div style="text-align:right"><div class="pv">'+(r[3]?$$(n(r[3])):'—')+'</div><span class="pill '+pc+'">'+st+'</span></div></div>';
-    }).join(''):'<div class="empty">Add data to "'+TABS.spm.pipe+'" tab</div>');
+    }).join(''):'<div class="empty">Add data to "'+TABS.pipeline+'" tab</div>');
   }catch(e){html('job-list',errBlk(e.message));console.warn('SPM pipeline:',e.message);}
 }
 
@@ -846,7 +846,7 @@ async function loadVending(){
       return'<div class="mc"><div class="mc-id">'+(m[0]||'')+'</div><div class="mc-loc">'+(m[1]||'')+'</div>'+
         '<div class="mc-rev">'+(/offline/i.test(st)?'Offline':$$(n(m[4])))+'</div>'+
         '<div class="mc-st"><div class="mdot" style="background:'+col+'"></div><span style="color:'+col+';font-size:10px">'+(m[7]||m[4]||'—')+'</span></div></div>';
-    }).join('')||'<div class="empty">Add machines to "'+TABS.vend.machines+'" tab</div>');
+    }).join('')||'<div class="empty">Add machines to "'+TABS.machines+'" tab</div>');
     var tc2={};md.forEach(function(m){var t=(m[3]||'Other')+' Rev';tc2[t]=(tc2[t]||0)+n(m[4]);});
     var tm=Math.max.apply(null,Object.values(tc2).concat([1]));
     html('vend-rev-cats',Object.entries(tc2).map(function(e){return barRow(e[0],e[1],tm,'var(--vend)');}).join(''));
@@ -865,7 +865,7 @@ async function loadVending(){
     html('vend-routes',rd.length>0?rd.map(function(r){var ef=n(r[6]),pc=ef>=0.93?'pg':ef>=0.85?'pw':'pr';
       return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+r[0]+'</div><div class="pm">'+(r[1]||'')+' · '+(r[4]||0)+' collections</div></div>'+
         '<div style="text-align:right"><div class="pv">'+$$(n(r[5]))+'</div><span class="pill '+pc+'">'+(ef>0?(ef*100).toFixed(0)+'% efficiency':'—')+'</span></div></div>';
-    }).join(''):'<div class="empty">Add routes to "'+TABS.vend.routes+'" tab</div>');
+    }).join(''):'<div class="empty">Add routes to "'+TABS.routes+'" tab</div>');
   }catch(e){html('vend-routes',errBlk(e.message));console.warn('Vending routes:',e.message);}
   try{
     var cl=await get(H,TABS.collections);
@@ -877,7 +877,7 @@ async function loadVending(){
       return'<div class="bar"><div class="bm"><span>'+(r[1]||'')+'</span><span style="color:var(--vend)">'+(r[0]||'')+'</span></div>'+
         '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+(r[3]||'')+' machines</span><span class="up">'+$$(n(r[4]))+'</span></div>'+
         '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[4])/cM*100)+'%;background:var(--vend)"></div></div></div>';
-    }).join(''):'<div class="empty">Add collections to "'+TABS.vend.collections+'" tab</div>');
+    }).join(''):'<div class="empty">Add collections to "'+TABS.collections+'" tab</div>');
   }catch(e){console.warn('Vending collections:',e.message);}
 }
 
@@ -921,7 +921,7 @@ async function loadSublink(){
       return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">'+(p[1]||'—')+'</div>'+
         '<div class="pm">'+(p[2]||'')+(m>0?' · '+Math.round(m*100)+'% margin':'')+'</div></div>'+
         '<div style="text-align:right"><div class="pv">'+$$(n(p[3]))+'</div><span class="pill '+pc+'">'+st+'</span></div></div>';
-    }).join(''):'<div class="empty">Add jobs to "'+TABS.sub.pipe+'" tab</div>');
+    }).join(''):'<div class="empty">Add jobs to "'+TABS.jobber+'" tab</div>');
     var jm=Math.max.apply(null,ppd.map(function(r){return n(r[3]);}).concat([1]));
     html('sub-jobs',ppd.filter(function(r){return n(r[3])>0;}).map(function(r){var m=n(r[5])*100,rev=n(r[3]);var c=m<20?'var(--red)':m<28?'var(--amber)':'var(--green)';
       return'<div class="bar"><div class="bm"><span>'+(r[1]||'').substring(0,32)+'</span><span style="color:'+c+'">'+Math.round(m)+'%</span></div>'+
@@ -945,7 +945,7 @@ async function loadSublink(){
       return'<div class="bar"><div class="bm"><span>'+r[0]+'</span><span style="color:'+col+'">'+$$(n(r[6]))+'</span></div>'+
         '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">'+r[7]+'</span></div>'+
         '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[6])/aM*100)+'%;background:'+col+'"></div></div></div>';
-    }).join(''):'<div class="empty">Add AR data to "'+TABS.sub.ar+'" tab</div>');
+    }).join(''):'<div class="empty">Add AR data to "'+TABS.ar+'" tab</div>');
   }catch(e){html('sub-ar-rows',errBlk(e.message));console.warn('Sub AR:',e.message);}
   try{
     var pw=await get(H,TABS.payroll);
@@ -959,7 +959,7 @@ async function loadSublink(){
     html('pay-rows',pwd.length>0?pwd.map(function(r){var a=n(r[5]||r[3]);
       return'<div class="bar"><div class="bm"><span>'+r[0]+'</span><span style="color:var(--sub)">'+$$(a)+'</span></div>'+
         '<div class="bt"><div class="bf" style="width:'+Math.round(a/pM*100)+'%;background:var(--sub)"></div></div></div>';
-    }).join(''):'<div class="empty">Add payroll to "'+TABS.sub.pay+'" tab</div>');
+    }).join(''):'<div class="empty">Add payroll to "'+TABS.payroll+'" tab</div>');
   }catch(e){html('pay-rows',errBlk(e.message));console.warn('Sub payroll:',e.message);}
 }
 
@@ -987,7 +987,7 @@ async function loadGreg(){
       return'<div class="bar"><div class="bm"><span>'+(r[0]||'').substring(0,28)+'</span><span style="color:var(--greg)">'+$$(n(r[4]))+'/mo</span></div>'+
         '<div class="bm" style="margin-top:-3px"><span style="font-size:10px;color:var(--muted)">Balance: '+$$(n(r[3]),true)+'</span><span class="up">Current</span></div>'+
         '<div class="bt"><div class="bf" style="width:'+Math.round(n(r[3])/mM*100)+'%;background:var(--greg)"></div></div></div>';
-    }).join(''):'<div class="empty">Add mortgages to "'+TABS.greg.mtg+'" tab</div>');
+    }).join(''):'<div class="empty">Add mortgages to "'+TABS.mortgages+'" tab</div>');
   }catch(e){html('greg-mtg',errBlk(e.message));console.warn('Greg mortgages:',e.message);}
   try{
     var pv=await get(H,TABS.propvalues);
@@ -1019,12 +1019,12 @@ async function loadGreg(){
     html('greg-props',Object.values(byP).map(function(p){
       return'<div class="prop"><div><div class="pn">'+p.name+'</div><div class="pm">'+p.units+' unit'+(p.units>1?'s':'')+' · '+$$(p.rent)+'/mo rent</div></div>'+
         '<div style="text-align:right"><div class="pv up">'+$$(p.rent)+'/mo</div></div></div>';
-    }).join('')||errBlk('Add data to "'+TABS.greg.rr+'" tab'));
+    }).join('')||errBlk('Add data to "'+TABS.rentroll+'" tab'));
     html('greg-rr',rrd.slice(0,12).map(function(r){var st=r[3]||'—';var pc=/occupied/i.test(st)?'pg':/vacant/i.test(st)?'pr':'pw';
       return'<div class="pi"><div style="flex:1;min-width:0"><div class="pn">Unit '+r[0]+' — '+r[1]+'</div><div class="pm">'+(r[6]||'Vacant')+' · Lease ends '+(r[8]||'—')+'</div></div>'+
         '<div style="text-align:right"><div class="pv up">'+$$(n(r[4]))+'/mo</div><span class="pill '+pc+'">'+st+'</span></div></div>';
     }).join(''));
-  }catch(e){html('greg-rr',errBlk(e.message));html('greg-props',errBlk('Check "'+TABS.greg.rr+'" tab'));console.warn('Greg rent roll:',e.message);}
+  }catch(e){html('greg-rr',errBlk(e.message));html('greg-props',errBlk('Check "'+TABS.rentroll+'" tab'));console.warn('Greg rent roll:',e.message);}
   try{
     var mn=await get(H,TABS.maintenance);
     var mnh=0;for(var i=0;i<Math.min(8,mn.length);i++){if(mn[i].some(function(c){return/date|property|amount/i.test(c);})){mnh=i;break;}}
