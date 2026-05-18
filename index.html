@@ -773,11 +773,11 @@ function mkChart(id, type, labels, datasets, yFmt) {
 function parseBudget(rows) {
   var out = {income: [], cogs: [], expenses: []};
   var sec = null;
-  for (var i = 1; i < rows.length; i++) { // skip header row (row 0 = "SPM/GPM, January, February...")
+  for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
-    if (/^Income$/i.test(cat))        { sec = 'income';   continue; }
+    if (/^Income$|Income$/i.test(cat)) { sec = 'income';   continue; }
     if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
@@ -793,11 +793,11 @@ function parseBudget(rows) {
 function parseTargets(rows) {
   var targets = {};
   var sec = null;
-  for (var i = 1; i < rows.length; i++) { // skip header row
+  for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
-    if (/^Income$/i.test(cat))        { sec = 'income';   continue; }
+    if (/^Income$|Income$/i.test(cat)) { sec = 'income';   continue; }
     if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
@@ -1021,8 +1021,9 @@ function renderPnL(mo) {
 ═══════════════════════════════════════ */
 function bvaRow(cat, actual, target, isExpense) {
   var p = target > 0 ? Math.round(actual/target*100) : (actual > 0 ? 100 : 0);
+  // Expenses: <=69% green, 70-89% amber, >=90% red. Income: >=95% green, 80-94% amber, <80% red
   var col = isExpense
-    ? (p <= 80 ? 'var(--green)' : p <= 95 ? 'var(--amber)' : 'var(--red)')
+    ? (p <= 69 ? 'var(--green)' : p <= 89 ? 'var(--amber)' : 'var(--red)')
     : (p >= 95 ? 'var(--green)' : p >= 80 ? 'var(--amber)' : 'var(--red)');
   var dot = p >= 95 ? '●' : p >= 80 ? '●' : '●';
   return '<div class="bva">' +
