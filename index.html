@@ -773,7 +773,7 @@ function mkChart(id, type, labels, datasets, yFmt) {
 function parseBudget(rows) {
   var out = {income: [], cogs: [], expenses: []};
   var sec = null;
-  for (var i = 0; i < rows.length; i++) {
+  for (var i = 1; i < rows.length; i++) { // skip header row (row 0 = "SPM/GPM, January, February...")
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
@@ -793,7 +793,7 @@ function parseBudget(rows) {
 function parseTargets(rows) {
   var targets = {};
   var sec = null;
-  for (var i = 0; i < rows.length; i++) {
+  for (var i = 1; i < rows.length; i++) { // skip header row
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
@@ -802,7 +802,7 @@ function parseTargets(rows) {
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
     if (!sec) continue;
-    var t = n(r[8] || '0'); // Column I = Monthly Target (col 8 — Average column shifts it)
+    var t = n(r[8] || '0'); // Column I = Monthly Target
     if (t > 0) targets[cat] = t;
   }
   return targets;
