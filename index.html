@@ -594,9 +594,44 @@ body {
     </div>
   </div>
   <div class="sec" id="greg-1">
+    <!-- Unit visual map -->
+    <div class="kgrid" style="margin-bottom:12px">
+      <div class="kcard" style="--kc:var(--green)">
+        <div class="klabel">Occupied</div>
+        <div class="kval up" id="gr2-occ">—</div>
+        <div class="ksub" id="gr2-occ-pct">—</div>
+      </div>
+      <div class="kcard" style="--kc:var(--red)">
+        <div class="klabel">Vacant</div>
+        <div class="kval dn" id="gr2-vac">—</div>
+        <div class="ksub fl" id="gr2-vac-rent">—</div>
+      </div>
+      <div class="kcard" style="--kc:var(--amber)">
+        <div class="klabel">Total Units</div>
+        <div class="kval" id="gr2-tot">—</div>
+        <div class="ksub fl">Greg's portfolio</div>
+      </div>
+      <div class="kcard" style="--kc:var(--c-greg)">
+        <div class="klabel">Monthly Rent</div>
+        <div class="kval" id="gr2-rent">—</div>
+        <div class="ksub up">Collected</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-hdr">
+        <div class="card-title">Unit map</div>
+        <div style="display:flex;gap:12px;font-size:10px;color:var(--text3)">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(40,167,69,0.3);border:1px solid rgba(40,167,69,0.5);display:inline-block"></span>Occupied</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(220,53,69,0.3);border:1px solid rgba(220,53,69,0.5);display:inline-block"></span>Vacant</span>
+        </div>
+      </div>
+      <div id="gr2-umap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(22px,1fr));gap:4px">
+        <div class="sk" style="height:22px"></div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-hdr">
-        <div class="card-title">Rent Roll · Greg's Properties Only</div>
+        <div class="card-title">Rent Roll · Greg's Properties</div>
         <span class="badge badge-g">Live</span>
       </div>
       <div id="greg-rr"><div class="sk tall"></div><div class="sk"></div><div class="sk"></div></div>
@@ -734,44 +769,67 @@ function mkChart(id, type, labels, datasets, yFmt) {
    Row 37: "Net Income"
    Columns: A=Category, B=Jan, C=Feb, D=Mar, E=Apr, F=May, G=Jun, H=Monthly Target, I=Annual Target
 ═══════════════════════════════════════ */
+// Parse actuals from SPM or GPM tab (no targets in these tabs)
 function parseBudget(rows) {
   var out = {income: [], cogs: [], expenses: []};
   var sec = null;
-
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
-
-    // Section headers
-    if (/^Income$/i.test(cat))            { sec = 'income';   continue; }
-    if (/^Cost of Goods/i.test(cat))      { sec = 'cogs';     continue; }
-    if (/^Expenses?$/i.test(cat))         { sec = 'expenses'; continue; }
-
-    // Skip totals, gross profit, net income, title row
-    if (/^Total|^Gross Profit|^Net Income|^SPM/i.test(cat)) continue;
+    if (/^Income$/i.test(cat))        { sec = 'income';   continue; }
+    if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
+    if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
+    if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
     if (!sec) continue;
-
-    // Columns: B=Jan(1), C=Feb(2), D=Mar(3), E=Apr(4), F=May(5), G=Jun(6), H=Monthly Target(7)
     var vals = [];
-    for (var m = 1; m <= 12; m++) {
-      vals.push(n(r[m] || '0'));
-    }
-    var target = n(r[7] || '0'); // Column H = Monthly Target (index 7 in 0-based)
-
-    out[sec].push({cat: cat, vals: vals, target: target});
+    for (var m = 1; m <= 6; m++) { vals.push(n(r[m] || '0')); }
+    out[sec].push({cat: cat, vals: vals, target: 0});
   }
   return out;
+}
+
+// Parse targets from combined SPM & GPM tab (col 7 = Monthly Target)
+function parseTargets(rows) {
+  var targets = {};
+  var sec = null;
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    var cat = (r[0] || '').trim();
+    if (!cat) continue;
+    if (/^Income$/i.test(cat))        { sec = 'income';   continue; }
+    if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
+    if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
+    if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
+    if (!sec) continue;
+    var t = n(r[7] || '0'); // Column H = Monthly Target
+    if (t > 0) targets[cat] = t;
+  }
+  return targets;
+}
+
+// Apply targets to a parsed budget object
+function applyTargets(bud, targets) {
+  ['income','cogs','expenses'].forEach(function(sec) {
+    bud[sec].forEach(function(row) {
+      if (targets[row.cat]) row.target = targets[row.cat];
+    });
+  });
 }
 
 /* ═══════════════════════════════════════
    LOAD BUDGET REVIEW (PRIMARY P&L SOURCE)
 ═══════════════════════════════════════ */
 async function loadBudgetReview() {
-  var spmRows = await get(IDS.budget, 'SPM');
-  var gpmRows = await get(IDS.budget, 'GPM');
+  var spmRows     = await get(IDS.budget, 'SPM');
+  var gpmRows     = await get(IDS.budget, 'GPM');
+  var combinedRows = await get(IDS.budget, 'SPM & GPM');
   budSPM = parseBudget(spmRows);
   budGPM = parseBudget(gpmRows);
+  // Apply targets from combined tab (targets only live there)
+  var targets = parseTargets(combinedRows);
+  applyTargets(budSPM, targets);
+  applyTargets(budGPM, targets);
 
   // Auto-detect most recent month with data (columns 1-6 = Jan-Jun, index 0-based after header)
   for (var m = 5; m >= 0; m--) {
@@ -1043,9 +1101,9 @@ async function loadGregRentRoll() {
       return GREG_PROPERTIES.some(function(g){return prop.includes(g);});
     });
 
-    var occ  = gregData.filter(function(r){return /occupied/i.test(r[3]||'');}).length;
+    var occ  = gregData.filter(function(r){return /^current$/i.test((r[4]||'').trim());}).length;
     var tot  = gregData.length;
-    var rent = gregData.reduce(function(s,r){return s+n(r[4]);},0);
+    var rent = gregData.reduce(function(s,r){return s+n(r[6]);},0);
     var avg  = tot > 0 ? Math.round(rent/tot) : 0;
 
     el('gr-units', tot || '—');
@@ -1071,14 +1129,38 @@ async function loadGregRentRoll() {
       return;
     }
 
+    // Update KPIs on rent roll tab too
+    el('gr2-occ',  occ || '—');
+    el('gr2-vac',  (tot - occ) || '0');
+    el('gr2-tot',  tot || '—');
+    el('gr2-rent', fmt(rent, true));
+    el('gr2-occ-pct', tot > 0 ? Math.round(occ/tot*100)+'% occupancy' : '—');
+    el('gr2-vac-rent', tot > occ ? fmt((rent/occ)*(tot-occ), true)+' lost/mo est.' : '$0 lost/mo');
+
+    // Unit visual map
+    var umapEl = E('gr2-umap');
+    if (umapEl) {
+      umapEl.innerHTML = '';
+      gregData.forEach(function(r) {
+        var isOcc = /^current$/i.test((r[4]||'').trim());
+        var d = document.createElement('div');
+        d.style.cssText = 'width:100%;aspect-ratio:1;border-radius:3px;' +
+          (isOcc
+            ? 'background:rgba(40,167,69,0.25);border:1px solid rgba(40,167,69,0.45)'
+            : 'background:rgba(220,53,69,0.25);border:1px solid rgba(220,53,69,0.45)');
+        d.title = (r[3]||'No tenant') + ' · ' + (r[4]||'');
+        umapEl.appendChild(d);
+      });
+    }
+
     // Group by property
     var byProp = {};
     gregData.forEach(function(r){
       var p = r[1] || 'Unknown';
       if (!byProp[p]) byProp[p] = {name:p, units:[], rent:0, occ:0};
       byProp[p].units.push(r);
-      byProp[p].rent += n(r[4]);
-      if (/occupied/i.test(r[3]||'')) byProp[p].occ++;
+      byProp[p].rent += n(r[6]);
+      if (/^current$/i.test((r[4]||'').trim())) byProp[p].occ++;
     });
 
     html('greg-rr', Object.values(byProp).map(function(p){
