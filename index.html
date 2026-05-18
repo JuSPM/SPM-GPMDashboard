@@ -802,7 +802,7 @@ function parseTargets(rows) {
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
     if (!sec) continue;
-    var t = n(r[7] || '0'); // Column H = Monthly Target
+    var t = n(r[8] || '0'); // Column I = Monthly Target (col 8, after Average column)
     if (t > 0) targets[cat] = t;
   }
   return targets;
