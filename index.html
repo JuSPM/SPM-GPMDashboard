@@ -802,7 +802,7 @@ function parseTargets(rows) {
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
     if (!sec) continue;
-    var t = n(r[7] || '0'); // Column H = Monthly Target
+    var t = n(r[8] || '0'); // Column I = Monthly Target (col 8 — Average column shifts it)
     if (t > 0) targets[cat] = t;
   }
   return targets;
@@ -1019,9 +1019,11 @@ function renderPnL(mo) {
 /* ═══════════════════════════════════════
    BUDGET VS ACTUAL
 ═══════════════════════════════════════ */
-function bvaRow(cat, actual, target) {
+function bvaRow(cat, actual, target, isExpense) {
   var p = target > 0 ? Math.round(actual/target*100) : (actual > 0 ? 100 : 0);
-  var col = p >= 95 ? 'var(--green)' : p >= 80 ? 'var(--amber)' : 'var(--red)';
+  var col = isExpense
+    ? (p <= 80 ? 'var(--green)' : p <= 95 ? 'var(--amber)' : 'var(--red)')
+    : (p >= 95 ? 'var(--green)' : p >= 80 ? 'var(--amber)' : 'var(--red)');
   var dot = p >= 95 ? '●' : p >= 80 ? '●' : '●';
   return '<div class="bva">' +
     '<div class="bva-top">' +
@@ -1038,6 +1040,7 @@ function renderBudgetVsActual(mo) {
   if (!budSPM || !budGPM) return;
 
   function mkBVA(bud, sec, cid) {
+    var isExp = (sec !== 'income');
     var rows = bud[sec].filter(function(r){return r.target > 0 || r.vals[mo] > 0;});
     if (!rows.length) {
       html(cid, '<div class="placeholder" style="padding:20px 0">No data — add targets to Budget Review sheet</div>');
@@ -1047,8 +1050,8 @@ function renderBudgetVsActual(mo) {
     var tT = rows.reduce(function(s,r){return s+r.target;},0);
     var cleanCat = function(c){return c.replace(/^\d{4}-\d{2}\s+/,'').trim();};
     html(cid,
-      rows.map(function(r){return bvaRow(cleanCat(r.cat), r.vals[mo]||0, r.target);}).join('') +
-      '<div class="bva-divider">' + bvaRow('TOTAL', tA, tT) + '</div>'
+      rows.map(function(r){return bvaRow(cleanCat(r.cat), r.vals[mo]||0, r.target, isExp);}).join('') +
+      '<div class="bva-divider">' + bvaRow('TOTAL', tA, tT, isExp) + '</div>'
     );
   }
 
@@ -1097,13 +1100,13 @@ async function loadGregRentRoll() {
 
     // Filter to Greg's properties only
     var gregData = data.filter(function(r) {
-      var prop = (r[1] || '').toLowerCase();
+      var prop = (r[0] || '').toLowerCase();
       return GREG_PROPERTIES.some(function(g){return prop.includes(g);});
     });
 
-    var occ  = gregData.filter(function(r){return /^current$/i.test((r[4]||'').trim());}).length;
+    var occ  = gregData.filter(function(r){return /^current$/i.test((r[17]||'').trim());}).length;
     var tot  = gregData.length;
-    var rent = gregData.reduce(function(s,r){return s+n(r[6]);},0);
+    var rent = gregData.reduce(function(s,r){return s+n(r[24]);},0);
     var avg  = tot > 0 ? Math.round(rent/tot) : 0;
 
     el('gr-units', tot || '—');
@@ -1142,7 +1145,7 @@ async function loadGregRentRoll() {
     if (umapEl) {
       umapEl.innerHTML = '';
       gregData.forEach(function(r) {
-        var isOcc = /^current$/i.test((r[4]||'').trim());
+        var isOcc = /^current$/i.test((r[17]||'').trim());
         var d = document.createElement('div');
         d.style.cssText = 'width:100%;aspect-ratio:1;border-radius:3px;' +
           (isOcc
@@ -1156,11 +1159,11 @@ async function loadGregRentRoll() {
     // Group by property
     var byProp = {};
     gregData.forEach(function(r){
-      var p = r[1] || 'Unknown';
+      var p = r[0] || 'Unknown';
       if (!byProp[p]) byProp[p] = {name:p, units:[], rent:0, occ:0};
       byProp[p].units.push(r);
-      byProp[p].rent += n(r[6]);
-      if (/^current$/i.test((r[4]||'').trim())) byProp[p].occ++;
+      byProp[p].rent += n(r[24]);
+      if (/^current$/i.test((r[17]||'').trim())) byProp[p].occ++;
     });
 
     html('greg-rr', Object.values(byProp).map(function(p){
