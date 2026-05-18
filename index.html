@@ -291,6 +291,50 @@ body {
 </style>
 </head>
 <body>
+<script>
+// ── PASSWORD PROTECTION ──────────────────────────────
+// To change the password, edit the line below:
+var DASHBOARD_PASSWORD = 'Jw!DhGYxa0JL@#z9';
+
+(function() {
+  var auth = sessionStorage.getItem('gg_auth');
+  if (auth === DASHBOARD_PASSWORD) return; // already authenticated
+
+  // Build login screen
+  document.documentElement.style.overflow = 'hidden';
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f5f7;display:flex;align-items:center;justify-content:center;z-index:99999;font-family:DM Sans,-apple-system,sans-serif;';
+  overlay.innerHTML = '<div style="background:#fff;border-radius:16px;padding:40px 36px;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(0,0,0,0.08);text-align:center;">' +
+    '<div style="font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1d1d1f;margin-bottom:6px;">GG Portfolio</div>' +
+    '<div style="font-size:12px;color:#aeaeb2;margin-bottom:28px;">Enter password to continue</div>' +
+    '<input id="pw-input" type="password" placeholder="Password" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:9px;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;"/>' +
+    '<div id="pw-error" style="color:#dc3545;font-size:11px;margin-bottom:10px;height:14px;"></div>' +
+    '<button id="pw-btn" style="width:100%;padding:11px;background:#0071e3;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Continue</button>' +
+  '</div>';
+  document.body.appendChild(overlay);
+
+  function attempt() {
+    var val = document.getElementById('pw-input').value;
+    if (val === DASHBOARD_PASSWORD) {
+      sessionStorage.setItem('gg_auth', val);
+      document.documentElement.style.overflow = '';
+      overlay.remove();
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect password';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+
+  document.getElementById('pw-btn').addEventListener('click', attempt);
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') attempt();
+    document.getElementById('pw-error').textContent = '';
+  });
+  setTimeout(function(){ document.getElementById('pw-input').focus(); }, 100);
+})();
+</script>
+
 
 <!-- HEADER -->
 <header class="hdr">
