@@ -295,7 +295,7 @@ body {
 <script>
 // ── PASSWORD PROTECTION ──────────────────────────────
 // To change the password, edit the line below:
-var DASHBOARD_PASSWORD = 'WSQIb9qQ!#LRg*3q';
+var DASHBOARD_PASSWORD = 'Jw!DhGYxa0JL@#z9';
 
 (function() {
   var auth = sessionStorage.getItem('gg_auth');
@@ -916,8 +916,8 @@ function renderPnL(mo) {
            budGPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0);
   }
   function totT(sec) {
-    return budSPM[sec].reduce(function(s,r){return s+r.target;},0) +
-           budGPM[sec].reduce(function(s,r){return s+r.target;},0);
+    // Targets live in combined tab, applied to both SPM+GPM — only count once
+    return budSPM[sec].reduce(function(s,r){return s+r.target;},0);
   }
 
   var ti = tot('income',mo), tc = tot('cogs',mo), te = tot('expenses',mo);
@@ -1111,8 +1111,8 @@ function renderBudgetVsActual(mo) {
            budGPM[sec].reduce(function(s,r){return s+(r.vals[m]||0);},0);
   }
   function totT(sec) {
-    return budSPM[sec].reduce(function(s,r){return s+r.target;},0) +
-           budGPM[sec].reduce(function(s,r){return s+r.target;},0);
+    // Targets live in combined tab, applied to both SPM+GPM — only count once
+    return budSPM[sec].reduce(function(s,r){return s+r.target;},0);
   }
 
   var ti=tot('income',mo), tiT=totT('income');
