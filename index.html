@@ -822,7 +822,7 @@ function parseBudget(rows) {
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
-    if (/^Income$|Income$/i.test(cat)) { sec = 'income';   continue; }
+    if (/^Income$/i.test(cat)) { sec = 'income';   continue; }
     if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
@@ -842,7 +842,7 @@ function parseTargets(rows) {
     var r = rows[i];
     var cat = (r[0] || '').trim();
     if (!cat) continue;
-    if (/^Income$|Income$/i.test(cat)) { sec = 'income';   continue; }
+    if (/^Income$/i.test(cat)) { sec = 'income';   continue; }
     if (/^Cost of Goods/i.test(cat))  { sec = 'cogs';     continue; }
     if (/^Expenses?$/i.test(cat))     { sec = 'expenses'; continue; }
     if (/^Total|^Gross Profit|^Net Income|^SPM|^GPM/i.test(cat)) continue;
